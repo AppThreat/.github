@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="AppThreat_Emblem_NoBorder_DarkTheme_v01_R01-01.png">
-    <img src="AppThreat_Emblem_NoBorder_LightTheme_v01_R01-01.png" width="130" alt="AppThreat">
+    <source media="(prefers-color-scheme: dark)" srcset="profile/AppThreat_Emblem_NoBorder_DarkTheme_v01_R01-01.png">
+    <img src="profile/AppThreat_Emblem_NoBorder_LightTheme_v01_R01-01.png" width="130" alt="AppThreat">
   </picture>
 </p>
 
