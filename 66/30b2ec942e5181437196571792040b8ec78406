@@ -1,0 +1,35 @@
+README.md
+  s_7259a555d05c3e::t_d5ba530492ff98 38-41
+project/README.md
+  s_7259a555d05c3e::t_ab07ec28881703 1-13
+project/schema.json
+  s_fc89ab7aaf7907::t_2bd1a0573d20e9 1-323
+workflow-templates/project-sync.properties.json
+  s_7259a555d05c3e::t_df08e5a6683efe 1-6
+workflow-templates/project-sync.yml
+  s_7259a555d05c3e::t_4d234ee39d2cd1 1-27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "6630b2ec942e5181437196571792040b8ec78406",
+  "prompts": {},
+  "sessions": {
+    "s_7259a555d05c3e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "369df51b-6592-47e6-a54c-85110ab6d9b9",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    },
+    "s_fc89ab7aaf7907": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a35ce497-6ca1-43b0-8f2c-c0a89c5a6564",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
