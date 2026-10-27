@@ -1,0 +1,323 @@
+{
+  "title": "AppThreat roadmap",
+  "owner": "AppThreat",
+  "public": true,
+  "shortDescription": "Roadmap and work tracking for the AppThreat organization. See https://github.com/cdxgen/.github/tree/main/project",
+  "repositories": [
+    "AppThreat/atom",
+    "AppThreat/chen",
+    "AppThreat/vulnerability-db",
+    "AppThreat/atom-tools",
+    "AppThreat/blint-db"
+  ],
+  "fields": [
+    {
+      "name": "Status",
+      "builtin": true,
+      "options": [
+        {
+          "name": "Triage",
+          "color": "GRAY",
+          "description": "New, not yet looked at by a maintainer"
+        },
+        {
+          "name": "Backlog",
+          "color": "PURPLE",
+          "description": "Accepted, not scheduled"
+        },
+        {
+          "name": "Ready",
+          "color": "BLUE",
+          "description": "Scoped well enough for a person or an agent to start"
+        },
+        {
+          "name": "In progress",
+          "color": "YELLOW",
+          "description": "Someone is working on it, or a draft pull request is open"
+        },
+        {
+          "name": "In review",
+          "color": "ORANGE",
+          "description": "A pull request is open and ready for review"
+        },
+        {
+          "name": "Blocked",
+          "color": "RED",
+          "description": "Waiting on something outside the work itself"
+        },
+        {
+          "name": "Done",
+          "color": "GREEN",
+          "description": "Merged, or closed"
+        }
+      ]
+    },
+    {
+      "name": "Horizon",
+      "options": [
+        {
+          "name": "Now",
+          "color": "GREEN",
+          "description": "Being worked on this release cycle"
+        },
+        {
+          "name": "Next",
+          "color": "BLUE",
+          "description": "Planned for the following cycle"
+        },
+        {
+          "name": "Later",
+          "color": "GRAY",
+          "description": "Wanted, with no schedule"
+        }
+      ]
+    },
+    {
+      "name": "Priority",
+      "options": [
+        {
+          "name": "P0",
+          "color": "RED",
+          "description": "Broken output or a security problem for many users"
+        },
+        {
+          "name": "P1",
+          "color": "ORANGE",
+          "description": "Important for the next release"
+        },
+        {
+          "name": "P2",
+          "color": "GRAY",
+          "description": "Worth doing when time allows"
+        }
+      ]
+    },
+    {
+      "name": "Autonomy",
+      "options": [
+        {
+          "name": "Human",
+          "color": "GRAY",
+          "description": "A person did the task without AI"
+        },
+        {
+          "name": "Assist",
+          "color": "BLUE",
+          "description": "A person did the task and AI did part of it"
+        },
+        {
+          "name": "Pair",
+          "color": "PURPLE",
+          "description": "A person and AI did the task together"
+        },
+        {
+          "name": "Copilot",
+          "color": "ORANGE",
+          "description": "AI did the task and asked a person for decisions"
+        },
+        {
+          "name": "Auto",
+          "color": "GREEN",
+          "description": "A person set the task and AI agents carried it through"
+        }
+      ]
+    },
+    {
+      "name": "Area",
+      "options": [
+        {
+          "name": "JavaScript",
+          "color": "YELLOW"
+        },
+        {
+          "name": "Python",
+          "color": "BLUE"
+        },
+        {
+          "name": "Java",
+          "color": "ORANGE"
+        },
+        {
+          "name": "Scala",
+          "color": "RED"
+        },
+        {
+          "name": "Ruby",
+          "color": "RED"
+        },
+        {
+          "name": "PHP",
+          "color": "PURPLE"
+        },
+        {
+          "name": "C and C++",
+          "color": "GRAY"
+        },
+        {
+          "name": "Android",
+          "color": "GREEN"
+        },
+        {
+          "name": "Containers",
+          "color": "BLUE"
+        },
+        {
+          "name": "macOS",
+          "color": "GRAY"
+        },
+        {
+          "name": "Data flow",
+          "color": "PURPLE"
+        },
+        {
+          "name": "Performance",
+          "color": "YELLOW"
+        },
+        {
+          "name": "Security",
+          "color": "RED"
+        },
+        {
+          "name": "Documentation",
+          "color": "GRAY"
+        }
+      ]
+    }
+  ],
+  "labelFields": [
+    {
+      "field": "Autonomy",
+      "map": {
+        "ai-auto": "Auto",
+        "ai-copilot": "Copilot",
+        "ai-pair": "Pair",
+        "ai-assist": "Assist"
+      }
+    },
+    {
+      "field": "Area",
+      "map": {
+        "js": "JavaScript",
+        "jssrc": "JavaScript",
+        "react": "JavaScript",
+        "angular": "JavaScript",
+        "nuxt": "JavaScript",
+        "svelte": "JavaScript",
+        "python": "Python",
+        "java": "Java",
+        "jimple": "Java",
+        "jar": "Java",
+        "scala": "Scala",
+        "ruby": "Ruby",
+        "PHP": "PHP",
+        "c/c++": "C and C++",
+        "android": "Android",
+        "container": "Containers",
+        "macOS M": "macOS",
+        "flow": "Data flow",
+        "performance": "Performance",
+        "security": "Security",
+        "documentation": "Documentation"
+      }
+    }
+  ],
+  "labels": [
+    {
+      "name": "blocked",
+      "color": "B60205",
+      "description": "Waiting on something outside the work itself"
+    },
+    {
+      "name": "needs-decision",
+      "color": "FBCA04",
+      "description": "A maintainer has to choose before work can continue"
+    },
+    {
+      "name": "ai-assist",
+      "color": "9A3DD9",
+      "description": "A person did the task, and AI did part of it"
+    },
+    {
+      "name": "ai-pair",
+      "color": "988A98",
+      "description": "A person and AI did the task together; the person understands the internals in detail"
+    },
+    {
+      "name": "ai-copilot",
+      "color": "7E6BC4",
+      "description": "AI did the whole task, asking a person for decisions and approval along the way"
+    },
+    {
+      "name": "ai-auto",
+      "color": "63AAA1",
+      "description": "A person set the task, and AI agents carried it through to completion"
+    }
+  ],
+  "views": [
+    {
+      "name": "Status",
+      "layout": "BOARD_LAYOUT",
+      "filter": "-status:Done",
+      "note": "Columns by Status."
+    },
+    {
+      "name": "Horizon",
+      "layout": "BOARD_LAYOUT",
+      "filter": "-status:Done",
+      "note": "Set the column field to Horizon."
+    },
+    {
+      "name": "Triage",
+      "layout": "TABLE_LAYOUT",
+      "filter": "status:Triage",
+      "note": "",
+      "columns": [
+        "Title",
+        "Labels",
+        "Autonomy",
+        "Area",
+        "Repository"
+      ]
+    },
+    {
+      "name": "Releases",
+      "layout": "TABLE_LAYOUT",
+      "filter": "-status:Done",
+      "note": "Group by Milestone.",
+      "columns": [
+        "Title",
+        "Status",
+        "Priority",
+        "Autonomy",
+        "Area",
+        "Milestone",
+        "Linked pull requests"
+      ]
+    },
+    {
+      "name": "Agent queue",
+      "layout": "TABLE_LAYOUT",
+      "filter": "status:Ready autonomy:Auto",
+      "note": "",
+      "columns": [
+        "Title",
+        "Priority",
+        "Area",
+        "Linked pull requests"
+      ]
+    },
+    {
+      "name": "Needs a person",
+      "layout": "TABLE_LAYOUT",
+      "filter": "-status:Done label:blocked,needs-decision",
+      "note": "",
+      "columns": [
+        "Title",
+        "Status",
+        "Labels",
+        "Assignees",
+        "Priority"
+      ]
+    }
+  ]
+}

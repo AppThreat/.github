@@ -35,3 +35,7 @@ Beyond the tools, we take on custom security tool development, architecture revi
 ## Contact
 
 Write to [hello@appthreat.com](mailto:hello@appthreat.com) or visit [www.appthreat.com](https://www.appthreat.com/).
+
+## Project board
+
+Work across the active AppThreat repositories is tracked on the AppThreat roadmap project. Its schema and how it is kept up to date are described in [project/README.md](project/README.md).
