@@ -1,0 +1,19 @@
+project/schema.json
+  s_99b17920a63eb7::t_99965a424fc36c 12-14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "7a5a9e7b6abd5255f5365fe7fa7c9f7c78965679",
+  "prompts": {},
+  "sessions": {
+    "s_99b17920a63eb7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c22307c9-9f32-42a4-8936-a5ea4b86e3cb",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
