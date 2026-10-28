@@ -1,0 +1,45 @@
+name: Project backfill
+
+# Keeps the AppThreat roadmap project complete on a schedule: every open issue,
+# and every pull request and closed issue that has a milestone, is added to the
+# board, so the Pelorus view shows its finished work across atom, chen and edga.
+# The Free plan allows one auto-add repository, so this covers the rest. The
+# script only fills empty fields, so running it again changes nothing that a
+# person set. The scripts come from cdxgen/.github at a pinned commit.
+on:
+  schedule:
+    - cron: '41 3 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: project-backfill
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          repository: cdxgen/.github
+          ref: b284b1d6169d250298defacacdbe55b95246c1a1
+          path: scripts
+          sparse-checkout: project
+          persist-credentials: false
+      - name: Add milestoned work to the board
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "PROJECT_TOKEN is not available to this repository. Skipping."
+            exit 0
+          fi
+          node scripts/project/backfill.mjs --milestoned --apply --schema project/schema.json
