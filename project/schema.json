@@ -213,6 +213,11 @@
       "name": "ai-auto",
       "color": "63AAA1",
       "description": "A person set the task, and AI agents carried it through to completion"
+    },
+    {
+      "name": "needs agent",
+      "color": "5319E7",
+      "description": "Chosen for the agent workflow: a plan, an implementation and a review"
     }
   ],
   "views": [
@@ -263,11 +268,13 @@
     {
       "name": "Agent queue",
       "layout": "TABLE_LAYOUT",
-      "filter": "status:Ready label:ai-auto",
-      "note": "",
+      "filter": "label:\"needs agent\" -status:Done",
+      "note": "Group by Status and sort by Priority.",
       "columns": [
         "Title",
+        "Status",
         "Priority",
+        "Milestone",
         "Area",
         "Linked pull requests"
       ]
