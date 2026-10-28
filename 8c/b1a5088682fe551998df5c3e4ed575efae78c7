@@ -1,0 +1,14 @@
+project/schema.json
+  h_0926447d100ad2 271-272
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8cb1a5088682fe551998df5c3e4ed575efae78c7",
+  "prompts": {},
+  "humans": {
+    "h_0926447d100ad2": {
+      "author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
