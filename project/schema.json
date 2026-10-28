@@ -8,7 +8,8 @@
     "AppThreat/chen",
     "AppThreat/vulnerability-db",
     "AppThreat/atom-tools",
-    "AppThreat/blint-db"
+    "AppThreat/blint-db",
+    "AppThreat/edga"
   ],
   "fields": [
     {
@@ -226,6 +227,12 @@
       "layout": "BOARD_LAYOUT",
       "filter": "-status:Done",
       "note": "Set the column field to Horizon."
+    },
+    {
+      "name": "Pelorus",
+      "layout": "BOARD_LAYOUT",
+      "filter": "milestone:\"v4.0.0 Pelorus\",\"Pelorus\"",
+      "note": "Columns by Status. Pelorus is the shared codename for the v4 work in atom, chen and edga."
     },
     {
       "name": "Triage",
