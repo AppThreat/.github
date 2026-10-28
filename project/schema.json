@@ -9,7 +9,9 @@
     "AppThreat/vulnerability-db",
     "AppThreat/atom-tools",
     "AppThreat/blint-db",
-    "AppThreat/edga"
+    "AppThreat/edga",
+    "AppThreat/atom-parsetools",
+    "AppThreat/ruby_ast_gen"
   ],
   "fields": [
     {
