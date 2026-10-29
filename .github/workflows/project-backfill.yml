@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           repository: cdxgen/.github
-          ref: b284b1d6169d250298defacacdbe55b95246c1a1
+          ref: bc27caea468409b67cec247a195fa76ed0b6cb58
           path: scripts
           sparse-checkout: project
           persist-credentials: false
