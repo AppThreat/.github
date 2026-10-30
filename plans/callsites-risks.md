@@ -66,12 +66,14 @@ maintainer before the work they block.
     proprietary inputs (some APKs) are never committed, and recorded outputs that quote third-party
     code stay out of public repositories.
 
-## Decisions a maintainer has to make
+## Decisions
 
-| # | question | default until decided |
+Decided on 2026-10-30, recorded in [decisions/0001-callsites-what-counts.md](decisions/0001-callsites-what-counts.md):
+
+| # | question | decision |
 | --- | --- | --- |
-| P1 | What counts as a use: declaration types (parameters, fields), TypeScript `implements`, import lines, annotations, C macros, compiler-generated calls, test files. | Run-time uses count; declaration types and interface `implements` are recorded with their own kind and are neutral in scoring; import lines are not uses; tests are excluded. |
-| P2 | Attribution of a typed call: the receiver's static type or the declaring class (`claims.get` on a jjwt `Claims` declared by `java.util.Map`). | Receiver's static type; the declaring class is neutral. |
-| P3 | Standard libraries (Node built-ins, Python stdlib, JDK, PHP and Ruby core, libc): in the slice, in cdxgen occurrences? | In the slice with a builtin flag; excluded from scoring and from cdxgen occurrences. |
-| P4 | Where the harness lives (`atom/contrib/` or its own repository). | Its own private workspace until decided. |
-| P5 | Vendored third-party code inside a project (`vendor/`, `third_party/`, bundled JS). | Dependency, not project code, when a manifest or the BOM says so. |
+| P1 | What counts as a use: declaration types, TypeScript `implements`, C macros, generated code. | All of them, each with its own `kind`; all scored. Import lines are not uses on their own; tests stay out of scope by default. |
+| P2 | Attribution of a typed call: the receiver's static type or the declaring class. | The receiver's static type; the declaring class is kept as `declaringModule`. |
+| P3 | Standard libraries in the slice and in cdxgen occurrences. | Yes, both, flagged `builtin`; scored by default. |
+| P4 | Where the harness lives. | Not published; the manifest and the test fixtures are. |
+| P5 | Vendored third-party code. | External wherever recognisable, plus a path-regex option on every frontend (C/C++ first). |

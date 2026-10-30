@@ -37,7 +37,8 @@ each language in repotests.
 
 Generalise `attributeJsCallsites`: npm as today; pypi by top-level module through
 `ImportedModules`; maven by class through the Namespaces DB; composer and gem by namespace/constant
-through `Namespaces`; C/C++ by header through the include resolver. Prefer a record's `purl` when atom
+through `Namespaces`; C/C++ by header through the include resolver. Builtin records (decision 0001, P3) go to the runtime or standard
+library component when the BOM has one. Prefer a record's `purl` when atom
 filled it (core-js plan D5). Done when poku tests cover each ecosystem and repotests assert
 occurrences for a project per ecosystem.
 

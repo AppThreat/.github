@@ -54,7 +54,7 @@ do today (`callee-declared-in`). Done when curl's and libuv's global/enum refere
 
 Every expansion of an external macro (object-like and function-like) is recorded at its expansion
 site with the defining header, on both frontends; EDG keeps the macro identity of constant-folded
-`case` labels. Decide (risks P1) whether macro uses count as dependency evidence.
+`case` labels. Macro uses count as dependency evidence (decision 0001, P1).
 
 ### D3. EDG parity for includes (chen, edga)
 
@@ -77,11 +77,16 @@ with the language-versions plan D1).
 Slice function bodies defined in project headers; make the default ignore pattern match path
 segments under the input root, never the input root itself, and warn whenever it removes files.
 
+### D7. Mark vendored code external by path (atom, chen)
+
+A command-line option that takes a regular expression of paths (`third_party/`, `deps/`, copied
+single-header libraries) whose code every frontend marks `isExternal=true`, with C/C++ first, plus
+the BOM's component locations when a BOM is given (decision 0001, P5). Uses of that code from the
+project become callsites records with the vendored library as `module`.
+
 ## Risks and open questions
 
 - Without a compilation database, include resolution is guesswork; cdxgen must pass one
   (`--compile-commands`) for meaningful records.
-- Vendored libraries (`third_party/`, `deps/`) are project code by path and dependencies by meaning
-  (risks P5).
 - EDG is available only as the `edga` binary; its tests cancel in CI without it (risks B4).
 - C++20 modules are untested on both frontends.
