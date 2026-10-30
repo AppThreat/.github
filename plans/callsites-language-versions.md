@@ -2,7 +2,7 @@
 
 | | |
 | --- | --- |
-| Epic | EPIC_URL |
+| Epic | https://github.com/AppThreat/chen/issues/241 |
 | Owner | @prabhu |
 | AI use | Auto |
 | Corpus | [callsites-corpus.corpus.json](callsites-corpus.corpus.json) (synthetic `versions/` fixtures) |

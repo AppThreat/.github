@@ -2,7 +2,7 @@
 
 | | |
 | --- | --- |
-| Epic | EPIC_URL |
+| Epic | https://github.com/AppThreat/atom/issues/311 |
 | Owner | @prabhu |
 | AI use | Auto |
 | Corpus | [callsites-corpus.corpus.json](callsites-corpus.corpus.json) |
@@ -25,7 +25,7 @@ give byte-identical slices.
 ### D2. Failure isolation
 
 Per-file and per-record error handling with a counted warning and the failing node id; the slice is
-always written. Done with tests that inject failing nodes.
+always written. Tracked with the crash fix in the core plan (D1), which lands first.
 
 ### D3. Memory bounds
 

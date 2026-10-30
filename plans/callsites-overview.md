@@ -22,19 +22,19 @@ well on calls with both frontends, CDT and EDG, but misses external globals, enu
 
 ## The plans
 
-| plan | epic repository | what |
+| plan | epic | what |
 | --- | --- | --- |
-| [callsites-ground-truth.md](callsites-ground-truth.md) | atom | corpus, oracles per language, scorer, gates, CI fixtures |
-| [callsites-core-js.md](callsites-core-js.md) | atom | robustness, a language-neutral core, the JS/TS gaps |
-| [callsites-python.md](callsites-python.md) | atom | Python adapter and type-recovery fixes |
-| [callsites-jvm-android.md](callsites-jvm-android.md) | atom | Java source, JARs (Kotlin, Scala bytecode) and Android APK/DEX |
-| [callsites-c-cpp.md](callsites-c-cpp.md) | atom | C and C++ on both frontends, CDT and EDG |
-| [callsites-php.md](callsites-php.md) | chen | php2atom names, attributes, types, vendor handling, then the adapter |
-| [callsites-ruby.md](callsites-ruby.md) | chen | ruby2atom constant references, then the adapter |
-| [callsites-language-versions.md](callsites-language-versions.md) | chen | syntax coverage per language version, in every frontend and oracle |
-| [callsites-performance.md](callsites-performance.md) | atom | tag once, one process for several slices, usages cost |
-| [callsites-consumers.md](callsites-consumers.md) | atom | cdxgen and dep-scan consume callsites for every language |
-| [callsites-production.md](callsites-production.md) | atom | determinism, failure isolation, memory, docs, release chain |
+| [callsites-ground-truth.md](callsites-ground-truth.md) | [AppThreat/atom#304](https://github.com/AppThreat/atom/issues/304) | corpus, oracles per language, scorer, gates, CI fixtures |
+| [callsites-core-js.md](callsites-core-js.md) | [AppThreat/atom#305](https://github.com/AppThreat/atom/issues/305) | robustness, a language-neutral core, the JS/TS gaps |
+| [callsites-python.md](callsites-python.md) | [AppThreat/atom#306](https://github.com/AppThreat/atom/issues/306) | Python adapter and type-recovery fixes |
+| [callsites-jvm-android.md](callsites-jvm-android.md) | [AppThreat/atom#307](https://github.com/AppThreat/atom/issues/307) | Java source, JARs (Kotlin, Scala bytecode) and Android APK/DEX |
+| [callsites-c-cpp.md](callsites-c-cpp.md) | [AppThreat/atom#308](https://github.com/AppThreat/atom/issues/308) | C and C++ on both frontends, CDT and EDG |
+| [callsites-php.md](callsites-php.md) | [AppThreat/chen#239](https://github.com/AppThreat/chen/issues/239) | php2atom names, attributes, types, vendor handling, then the adapter |
+| [callsites-ruby.md](callsites-ruby.md) | [AppThreat/chen#240](https://github.com/AppThreat/chen/issues/240) | ruby2atom constant references, then the adapter |
+| [callsites-language-versions.md](callsites-language-versions.md) | [AppThreat/chen#241](https://github.com/AppThreat/chen/issues/241) | syntax coverage per language version, in every frontend and oracle |
+| [callsites-performance.md](callsites-performance.md) | [AppThreat/atom#309](https://github.com/AppThreat/atom/issues/309) | tag once, one process for several slices, usages cost |
+| [callsites-consumers.md](callsites-consumers.md) | [AppThreat/atom#310](https://github.com/AppThreat/atom/issues/310) | cdxgen and dep-scan consume callsites for every language |
+| [callsites-production.md](callsites-production.md) | [AppThreat/atom#311](https://github.com/AppThreat/atom/issues/311) | determinism, failure isolation, memory, docs, release chain |
 
 ## Order of work
 
