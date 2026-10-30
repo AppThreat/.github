@@ -58,8 +58,8 @@ plugins cover sources).
 ### D1. javasrc2cpg resolution fixes (chen)
 
 java.lang before wildcard guesses; static field initialisers; return types of external methods
-through the fetched dependency jars; parameter annotations with full names; Lombok members modelled
-or delombok by default; wire Java type recovery in if it measurably helps, else delete it. Twins for
+through the fetched dependency jars; parameter annotations with full names; Lombok and other
+generated members modelled, or delombok by default (generated code counts, decision 0001); wire Java type recovery in if it measurably helps, else delete it. Twins for
 each.
 
 ### D2. Java source adapter (atom)

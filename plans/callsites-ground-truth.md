@@ -39,14 +39,14 @@ Out of scope: redistributing third-party code. Projects are pinned by repository
 | JVM/Dalvik bytecode | `javap` / `dexdump` instruction owners with line tables | virtual/interface calls | app vs library boundary by package prefix; R8 obfuscation and inlining |
 
 Every oracle writes the same row schema (file, line, col, module, package, builtin, member, kind, via,
-certain). Declaration types, TypeScript type positions and uncertain rows are neutral: neither
-credited nor counted as false positives.
+certain). Declaration types, `implements`, macro uses and builtins are scored like any other use
+(decision 0001); only uncertain rows are neutral.
 
 ### Scoring
 
 The key is (file, line, package). A slice's module string is mapped to a package through the truth's
 own module→package table (longest prefix), so the scorer has no per-language package tables.
-Builtins are excluded on both sides by default. Reported per project: recall, precision, precision
+Builtins are included by default. Reported per project: recall, precision, precision
 without `via=type` records, recall by truth kind, precision by slice `via`, false-positive classes
 (import line, other line of the same package, package not used in the file, beyond end of file),
 samples of misses and false positives with source lines.
@@ -59,11 +59,11 @@ medium and large per language, plus synthetic fixtures per language and a per-ve
 
 ## Deliverables
 
-### D1. Publish the harness
+### D1. A reproducible private harness
 
-The oracles, scorer and scripts live in a reviewed repository (decision needed: `atom/contrib/` or a
-new `AppThreat/callsites-eval` repository), with the corpus manifest and a `fetch` script that
-reproduces every pinned project. Done when a clean machine reproduces the baseline table.
+The oracles, scorer and scripts stay private (decision 0001, P4), under version control, with the
+corpus manifest published here and a `fetch` script that reproduces every pinned project. Done when a
+clean machine with the private harness reproduces the baseline table from the manifest.
 
 ### D2. CI fixtures in atom
 
@@ -94,4 +94,4 @@ every executed external call site to be in `callsites`. Needs no oracle.
   spot-checked against source; disagreements are triaged by reading code, not by trusting either.
 - Agents may tune to the oracle. The gates are tests in the repositories; corpus numbers are a
   profile, not a target to iterate against.
-- Where the harness lives (D1) and whether corpus project licences allow publishing recorded outputs.
+- Corpus project licences: recorded outputs that quote third-party code stay in the private harness.

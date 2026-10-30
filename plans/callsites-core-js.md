@@ -45,7 +45,8 @@ language; dispatch on `metaData.language`. Every record carries a language-nativ
 
 ### D3. `implements` is its own kind (atom, chen if needed)
 
-Interfaces are type-only; emit kind `implements`, read from the TYPE_DECL rather than source text.
+Interfaces are type-only, but they are uses (decision 0001, P1): emit kind `implements`, read from the
+TYPE_DECL rather than source text, and count it as evidence.
 
 ### D4. Vue/Svelte/Astro positions (chen, atom)
 
@@ -66,7 +67,5 @@ repository types in under 5 minutes.
 
 ## Risks and open questions
 
-- Whether interface `implements` should still count as dependency evidence in cdxgen (policy, see
-  [callsites-risks.md](callsites-risks.md)).
 - D6 may show that the gap is type availability (no `node_modules` in cdxgen's usual input), which
   no slice change fixes.
