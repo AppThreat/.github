@@ -1,0 +1,31 @@
+plans/callsites-risks.md
+  s_79a7c562b49300::t_4d4e13681788e7 69,71-73,75-79
+plans/callsites-c-cpp.md
+  s_79a7c562b49300::t_4d4e13681788e7 57,80-86
+plans/decisions/0001-callsites-what-counts.md
+  s_79a7c562b49300::t_4d4e13681788e7 1-68
+plans/callsites-core-js.md
+  s_79a7c562b49300::t_4d4e13681788e7 48-49
+plans/callsites-consumers.md
+  s_79a7c562b49300::t_f3b4a12f968904 40-41
+plans/callsites-ground-truth.md
+  s_79a7c562b49300::t_8e2d150cc0e667 42-43,49,62,64-66,97
+plans/callsites-jvm-android.md
+  s_79a7c562b49300::t_0fd7c38dd51aae 61-62
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "9616b21da8215a6d11f0fa3003529c70beb841ea",
+  "prompts": {},
+  "sessions": {
+    "s_79a7c562b49300": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e06ad8c2-0767-47dd-913e-35689e5f05ba",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
