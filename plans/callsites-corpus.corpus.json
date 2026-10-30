@@ -1,0 +1,533 @@
+{
+  "plan": "callsites-overview.md",
+  "items": [
+    {
+      "name": "js-cdxgen",
+      "description": "js, size L, node CLI",
+      "source": "https://github.com/cdxgen/cdxgen@90baa955934985ea4a18630e8e382c96bc18a0bd",
+      "sha256": "776d75194726cd55e9794c7207adeef5ab5ad27d50e5ba5fb9f292d238fd3fc3",
+      "license": "Apache-2.0",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/cdxgen/cdxgen"
+      }
+    },
+    {
+      "name": "js-juice-shop",
+      "description": "ts, size M, express+angular",
+      "source": "https://github.com/juice-shop/juice-shop@33518f5a0911e25d9df747b1e70fb7af279a755c",
+      "sha256": "63b64ae82860fde4248566f097c2d1a7d2e295bd4b39cead93d4d93b08bc1404",
+      "license": "MIT",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/juice-shop/juice-shop"
+      }
+    },
+    {
+      "name": "js-bulletproof-react",
+      "description": "ts, size M, react",
+      "source": "https://github.com/alan2207/bulletproof-react@9506629ed003a561c6627735480cce4994244bb4",
+      "sha256": "c8920eb124d2183ed6edfa02b403724dc3c1383675d238a98dc12c756ebbf65c",
+      "license": "MIT",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/alan2207/bulletproof-react"
+      }
+    },
+    {
+      "name": "js-angular-realworld",
+      "description": "ts, size S, angular",
+      "source": "https://github.com/gothinkster/angular-realworld-example-app@dd99ed2cf39c805d719f943c5d7061a5683d98a8",
+      "sha256": "1b194c08b83d0bd915939d478fcf3f36eccf2a7534b077f1e0ff530284aa492f",
+      "license": "NOASSERTION",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/gothinkster/angular-realworld-example-app"
+      }
+    },
+    {
+      "name": "js-vue3-realworld",
+      "description": "ts, size S, vue",
+      "source": "https://github.com/mutoe/vue3-realworld-example-app@741c215ef0f674f90fcb03c5493a1b3a3a7f1b03",
+      "sha256": "fa720b26e5b45744486f8dadcd6a67ade6f2069229348a9fd0a50ce2055463a2",
+      "license": "MIT",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/mutoe/vue3-realworld-example-app"
+      }
+    },
+    {
+      "name": "js-svelte-realworld",
+      "description": "js, size S, svelte",
+      "source": "https://github.com/sveltejs/realworld@df796708040f5200ec572b28ab7f88ecee5794dd",
+      "sha256": "ea5c750533d20c6d560731e1af1b5b19b2fd15cb6bca0b01f31c93c8a2273953",
+      "license": "MIT",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/sveltejs/realworld"
+      }
+    },
+    {
+      "name": "js-nestjs-realworld",
+      "description": "ts, size S, nestjs",
+      "source": "https://github.com/lujakob/nestjs-realworld-example-app@c1c2cc4e448b279ff083272df1ac50d20c3304fa",
+      "sha256": "273f824a5cf0553ccbf03c6af8a7aff484a80712b7188e7cf7e40af68274e1e4",
+      "license": "NOASSERTION",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/lujakob/nestjs-realworld-example-app"
+      }
+    },
+    {
+      "name": "js-express-boilerplate",
+      "description": "js, size S, express",
+      "source": "https://github.com/hagopj13/node-express-boilerplate@179ae84efec61b14206d0305d941daed6c6d07f9",
+      "sha256": "10e21a6a9d27f8a13da72d875134ff0b1f8ed16d78d18966f1bba2f0ad29a5dc",
+      "license": "MIT",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/hagopj13/node-express-boilerplate"
+      }
+    },
+    {
+      "name": "js-express-realworld",
+      "description": "js, size S, express",
+      "source": "https://github.com/gothinkster/node-express-realworld-example-app@30b68e1e881462b2f4164ea09ab4c4f5699c7b0b",
+      "sha256": "a53e1fa6d585938a07eb0815dd70d5173ae0aed11895a2f586d353f1eb02f498",
+      "license": "NOASSERTION",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/gothinkster/node-express-realworld-example-app"
+      }
+    },
+    {
+      "name": "js-outline",
+      "description": "ts, size L, koa+react",
+      "source": "https://github.com/outline/outline@def01b0fa83567205077ccbba82fd8442661e79f",
+      "sha256": "5c42bacbc9c39d37230ee897ee371bd95ed6f50b748af5ad82da7dc142f7f516",
+      "license": "BUSL-1.1",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/outline/outline"
+      }
+    },
+    {
+      "name": "py-vulpy",
+      "description": "py, size S, flask",
+      "source": "https://github.com/fportantier/vulpy@5249cc8b05a1c37f6b2f757b1cf16a509c327122",
+      "sha256": "b371d854004077202f4206dce35b7fe3e6dd80b8c07ff5b9152cf682050d8851",
+      "license": "MIT",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/fportantier/vulpy"
+      }
+    },
+    {
+      "name": "py-dvpwa",
+      "description": "py, size S, aiohttp",
+      "source": "https://github.com/anxolerd/dvpwa@a1d8f89fac2e57093189853c6527c2b01fc1d9c1",
+      "sha256": "8ba6a7bfebe88bd7adbdf097e9a99c5eebe0aa75c773422e487cbc6ec7b5f30f",
+      "license": "MIT",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/anxolerd/dvpwa"
+      }
+    },
+    {
+      "name": "py-microblog",
+      "description": "py, size S, flask+sqlalchemy",
+      "source": "https://github.com/miguelgrinberg/microblog@a975ef64864354867c88e0ed3a17ba7d17dca752",
+      "sha256": "57651850a8ace59e60990cceb7fbb01e972625deafdbe31fe69af9a573c0ec16",
+      "license": "MIT",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/miguelgrinberg/microblog"
+      }
+    },
+    {
+      "name": "py-pygoat",
+      "description": "py, size S, django",
+      "source": "https://github.com/adeyosemanputra/pygoat@19d17cc8874861142b330636d068bbde54e86b85",
+      "sha256": "074f68580dcb634c1653388243f4267cec97de8dcd42b85962d09f5f39400c0c",
+      "license": "MIT",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/adeyosemanputra/pygoat"
+      }
+    },
+    {
+      "name": "py-httpie",
+      "description": "py, size M, cli",
+      "source": "https://github.com/httpie/cli@5b604c37c6c67e18e7c3e9aee6c88a8c22b98345",
+      "sha256": "10acb731a7df52d512da4dd234fe3135800bc37071bf0f1c5322272a1352d6b1",
+      "license": "BSD-3-Clause",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/httpie/cli"
+      }
+    },
+    {
+      "name": "py-celery",
+      "description": "py, size M, library",
+      "source": "https://github.com/celery/celery@9cc0fded120c6fa67655a444116854166279667f",
+      "sha256": "aa1db7bf180cbf5eb1f27f27e241ae94011cf4688b81b2fa88adab55630ba19d",
+      "license": "BSD-3-Clause",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/celery/celery"
+      }
+    },
+    {
+      "name": "py-django-oscar",
+      "description": "py, size M, django",
+      "source": "https://github.com/django-oscar/django-oscar@cdbfc4412c87dd9037d62b04755780b76490373c",
+      "sha256": "fa030f00c70adfe649bf7b7718989c03119c2ab47d885eb3b7019364a7c6552b",
+      "license": "BSD-3-Clause",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/django-oscar/django-oscar"
+      }
+    },
+    {
+      "name": "py-fastapi-template",
+      "description": "py, size S, fastapi+sqlmodel",
+      "source": "https://github.com/fastapi/full-stack-fastapi-template@cb740b656d7a0a6c5e12c7bf8e50343ec94ee9c7",
+      "sha256": "46fcfb8e87643e46bad6050131cbf2d407a55194863e6f3204326fac578c692d",
+      "license": "MIT",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/fastapi/full-stack-fastapi-template"
+      }
+    },
+    {
+      "name": "py-defectdojo",
+      "description": "py, size L, django+drf+celery",
+      "source": "https://github.com/DefectDojo/django-DefectDojo@523d2f64417f77c4a0ee2d8cd7e356b733d417fe",
+      "sha256": "d61bb9ee56390625eb5e50169574b7526de3641918ce16bf639826b43c269258",
+      "license": "BSD-3-Clause",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/DefectDojo/django-DefectDojo"
+      }
+    },
+    {
+      "name": "java-sec-code",
+      "description": "java, size S, spring-boot",
+      "source": "https://github.com/ngcloudsec/java-sec-code@0150106152f6e38b78873a98b0797f28586f8274",
+      "sha256": "04a4b63b6ca5155bc17bee00fa029b156dd385c1d0cd02e36cf65fe5d59a4a64",
+      "license": "NOASSERTION",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/ngcloudsec/java-sec-code"
+      }
+    },
+    {
+      "name": "java-petclinic",
+      "description": "java, size S, spring-boot",
+      "source": "https://github.com/spring-projects/spring-petclinic@818c4136ea971c21674525f9053de0d9c7ad8cfe",
+      "sha256": "033d8d17a6be34ac478c57d20dbce3e12e88a6924623765620a7495ccef75c5c",
+      "license": "Apache-2.0",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/spring-projects/spring-petclinic"
+      }
+    },
+    {
+      "name": "java-webgoat",
+      "description": "java, size M, spring-boot",
+      "source": "https://github.com/WebGoat/WebGoat@872d6149d4ef29e4929c2f4eda279f7fbedc52e8",
+      "sha256": "0badedda032d225f9fa27af8d3f2ed4a642a53a90129f035786d54be79b41423",
+      "license": "GPL-2.0-or-later",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/WebGoat/WebGoat"
+      }
+    },
+    {
+      "name": "java-shiro",
+      "description": "java, size M, library",
+      "source": "https://github.com/apache/shiro@8e0e4ac7a7af35c8c8ec552b51cf3bd809196622",
+      "sha256": "ca3537a4121a5e2d058b792bc6697ecce065f2285f4c64354e39387109b604d9",
+      "license": "Apache-2.0",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/apache/shiro"
+      }
+    },
+    {
+      "name": "java-mall",
+      "description": "java, size L, spring-boot multi-module",
+      "source": "https://github.com/macrozheng/mall@dcaa93b3150352e5044708d7211b5bed0af4509f",
+      "sha256": "7d4a2de091919f274466de4a7d950259e716ab652985faa8ec0545870dbf7774",
+      "license": "Apache-2.0",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/macrozheng/mall"
+      }
+    },
+    {
+      "name": "php-dvwa",
+      "description": "php, size S, plain",
+      "source": "https://github.com/digininja/DVWA@068d974487a297c155c48722f9fcf7180a83adc4",
+      "sha256": "4ca77a78463ce65741b711081d2b51d1877121a1328a2438568e08e0fa5ee1ed",
+      "license": "GPL-3.0",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/digininja/DVWA"
+      }
+    },
+    {
+      "name": "php-symfony-demo",
+      "description": "php, size M, symfony",
+      "source": "https://github.com/symfony/demo@8d2e2ef75c3e18df173d8bf2379a14abb58c4c31",
+      "sha256": "4dc102a6776ad02eccd3cc2ed405903eb944991f4cdfada3ce06bcc071c8b785",
+      "license": "MIT",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/symfony/demo"
+      }
+    },
+    {
+      "name": "php-koel",
+      "description": "php, size M, laravel",
+      "source": "https://github.com/koel/koel@4ef99acea71c212e74845522be27ac094b47f0c4",
+      "sha256": "7505e2d7b49f4702f156206df09ac523f3b1af85095e851ccbd17a0976b8125d",
+      "license": "MIT",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/koel/koel"
+      }
+    },
+    {
+      "name": "php-bookstack",
+      "description": "php, size L, laravel",
+      "source": "https://github.com/BookStackApp/BookStack@045c6a98cac21ea86906674bb91d01f375460db6",
+      "sha256": "d9cc25d9f4c5385bab944879767ee8909b27e09290b34275b72b83c9225f37ea",
+      "license": "MIT",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/BookStackApp/BookStack"
+      }
+    },
+    {
+      "name": "rb-railsgoat",
+      "description": "rb, size S, rails",
+      "source": "https://github.com/OWASP/railsgoat@f5951f13089d85c979de09e7da3c8c0fb982f94a",
+      "sha256": "3ebe47b5bba2712c005a04f3ce2c23a027e40cbcc297974a9df1d29a078cdfb9",
+      "license": "MIT",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/OWASP/railsgoat"
+      }
+    },
+    {
+      "name": "rb-maybe",
+      "description": "rb, size M, rails",
+      "source": "https://github.com/maybe-finance/maybe@77b5469832758d1cbee1a940f3012a1ae1c74cd3",
+      "sha256": "af3edb68d3c0980188df5f069a760aa4f996a8c5784e8580e91cbb18473aff06",
+      "license": "AGPL-3.0",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/maybe-finance/maybe"
+      }
+    },
+    {
+      "name": "rb-mastodon",
+      "description": "rb, size L, rails",
+      "source": "https://github.com/mastodon/mastodon@b4076a667129c14f6d536700d40379286d3d05c5",
+      "sha256": "f843614f1a900c6d5de699be2816ff34fea20bb1caf97af6df6078e95d17a2a5",
+      "license": "AGPL-3.0",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/mastodon/mastodon"
+      }
+    },
+    {
+      "name": "ver-js",
+      "description": "js, size S, syntax matrix",
+      "source": "synthetic fixture written for this corpus",
+      "sha256": "93bb1388c9ca9263166fa6da3389a7996e70e5663891ba6d28985fee2a5e647f",
+      "license": "Apache-2.0",
+      "storage": {
+        "kind": "repository",
+        "location": "callsites-corpus/synthetic/versions/js"
+      }
+    },
+    {
+      "name": "ver-py",
+      "description": "py, size S, syntax matrix",
+      "source": "synthetic fixture written for this corpus",
+      "sha256": "c95f163216581c10044f4ef2c4dec939b45d309864f50a73a1eb1dd730207d46",
+      "license": "Apache-2.0",
+      "storage": {
+        "kind": "repository",
+        "location": "callsites-corpus/synthetic/versions/python"
+      }
+    },
+    {
+      "name": "ver-java",
+      "description": "java, size S, syntax matrix",
+      "source": "synthetic fixture written for this corpus",
+      "sha256": "48d8d08b478686be48040d4c2d4a32de97ef447ff1e9f64ccda06bb47dd1b33b",
+      "license": "Apache-2.0",
+      "storage": {
+        "kind": "repository",
+        "location": "callsites-corpus/synthetic/versions/java"
+      }
+    },
+    {
+      "name": "ver-php",
+      "description": "php, size S, syntax matrix",
+      "source": "synthetic fixture written for this corpus",
+      "sha256": "7e0948581779ba6edee952a3fc2deeb67ad9f4afa1b29c8784b4e1466a2e9aa7",
+      "license": "Apache-2.0",
+      "storage": {
+        "kind": "repository",
+        "location": "callsites-corpus/synthetic/versions/php"
+      }
+    },
+    {
+      "name": "ver-rb",
+      "description": "rb, size S, syntax matrix",
+      "source": "synthetic fixture written for this corpus",
+      "sha256": "843794c659f98d6a8806c3e8e178b5b6a644e1564df384b7afa7a6000819f946",
+      "license": "Apache-2.0",
+      "storage": {
+        "kind": "repository",
+        "location": "callsites-corpus/synthetic/versions/ruby"
+      }
+    },
+    {
+      "name": "c-libuv",
+      "description": "c, size S, cdb:libuv-examples.json; hand flags (-I libuv)",
+      "source": "https://github.com/libuv/libuv@33395d143f267f00820a3327588b1c397c66b209",
+      "sha256": "19582bf7bceb832ff6c881525407d42ff94d153ca543b96488137ed5d4dec064",
+      "license": "MIT",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/libuv/libuv"
+      }
+    },
+    {
+      "name": "c-jq",
+      "description": "c, size M, cdb:jq.json; hand flags + generated src/version.h (oniguruma)",
+      "source": "https://github.com/jqlang/jq@ac35c7dcbb991fa0f3c3196dd00ca479211e9847",
+      "sha256": "2418cb541277607ccbb6cac9301f26a23002bed29061e6cc35290f7adc743942",
+      "license": "MIT",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/jqlang/jq"
+      }
+    },
+    {
+      "name": "c-openssl-apps",
+      "description": "c, size M, cdb:openssl-tls-apps.json; hand flags (-I openssl@4); copy of openssl/demos (atom ignores inputs named demos)",
+      "source": "https://github.com/openssl/openssl@4d25710dbfeacbb36d055592a3bc6811172248b1",
+      "sha256": "44566528b9230fce57a2f7a99487192c8906a916ba47b1d3d473debe9ff9c8de",
+      "license": "Apache-2.0",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/openssl/openssl"
+      }
+    },
+    {
+      "name": "c-curl",
+      "description": "c, size L, cdb:curl.json; cmake configure only (openssl,nghttp2,zlib,brotli,zstd,libpsl,libssh2)",
+      "source": "https://github.com/curl/curl@70239645940747a03ea51cecc4ec3b8abfda0414",
+      "sha256": "4b3401a14a65ef396c2861df996e0791af2c1b35888b12fa59e9033e826644ef",
+      "license": "curl",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/curl/curl"
+      }
+    },
+    {
+      "name": "c-leveldb",
+      "description": "c, size M, cdb:leveldb.json; C++17, cmake configure only (snappy,zstd)",
+      "source": "https://github.com/google/leveldb@7ee830d02b623e8ffe0b95d59a74db1e58da04c5",
+      "sha256": "ec08de9cdd5fa574a2c0ccd6e901d4acca47bb29f740c171e1404fc08c551ba1",
+      "license": "BSD-3-Clause",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/google/leveldb"
+      }
+    },
+    {
+      "name": "apk-termux-api",
+      "description": "apk, size S, android java (R8 renamed SourceFile)",
+      "source": "com.termux.api_1002.apk (F-Droid release)",
+      "sha256": "4497dbbf81906df52e59ed387a5223d225aa0de3aca817cc557a621e4dadda44",
+      "license": "GPL-3.0-only",
+      "storage": {
+        "kind": "release-asset",
+        "location": "android-corpus/tier2-fdroid/com.termux.api_1002.apk"
+      }
+    },
+    {
+      "name": "apk-termux",
+      "description": "apk, size M, android java terminal",
+      "source": "com.termux_1022.apk (F-Droid release)",
+      "sha256": "fdd476982cd74f2f00aac12d3683b1fa260a0b2d146411b94e09d773be3a7b56",
+      "license": "GPL-3.0-only",
+      "storage": {
+        "kind": "release-asset",
+        "location": "android-corpus/tier2-fdroid/com.termux_1022.apk"
+      }
+    },
+    {
+      "name": "apk-newpipe",
+      "description": "apk, size M, android java+kotlin",
+      "source": "org.schabi.newpipe_1015.apk (F-Droid release)",
+      "sha256": "1d66d19eedbab969b1be2e44e0ea35f5f8921cbe83b5c5ac810767ca1a84b7e8",
+      "license": "GPL-3.0-or-later",
+      "storage": {
+        "kind": "release-asset",
+        "location": "android-corpus/tier2-fdroid/org.schabi.newpipe_1015.apk"
+      }
+    },
+    {
+      "name": "apk-appmanager",
+      "description": "apk, size L, android java+kotlin",
+      "source": "io.github.muntashirakon.AppManager_451.apk (F-Droid release)",
+      "sha256": "e1f6ba10812c74016ad626e11e27a1ae450aec2c0964a11466abb9e7a9c8ef84",
+      "license": "GPL-3.0-or-later",
+      "storage": {
+        "kind": "release-asset",
+        "location": "android-corpus/tier2-fdroid/io.github.muntashirakon.AppManager_451.apk"
+      }
+    },
+    {
+      "name": "jar-detekt-formatting",
+      "description": "jar, size S, kotlin library jar (uber: ktlint, ec4j)",
+      "source": "detekt-formatting-1.23.8.jar (Maven Central release)",
+      "sha256": "a18a3f680d232ad746ccec3d5a251776ce39131b395c455b92e1bb0a9e8fb6ba",
+      "license": "Apache-2.0",
+      "storage": {
+        "kind": "release-asset",
+        "location": "kosi-vuln-corpus/Exposed/detekt/detekt-formatting-1.23.8.jar"
+      }
+    },
+    {
+      "name": "jar-scala-hmrc",
+      "description": "jar, size M, scala 3 play app, classes dir",
+      "source": "classes compiled locally from https://github.com/hmrc/bank-account-verification-frontend@015f0cfcc529782ca8974dadda427d6b4f776b1e (target/scala-3.3.7/classes)",
+      "sha256": "34ae04313504c23f96109a2dc9f0fd203fd4c7f356c37e85f89db7ddeb6991e1",
+      "license": "Apache-2.0",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/hmrc/bank-account-verification-frontend"
+      }
+    },
+    {
+      "name": "jar-scala-steward",
+      "description": "jar, size M, scala 2.13 cats-effect app, classes dir",
+      "source": "classes compiled locally from https://github.com/scala-steward-org/scala-steward@3dda7279d3db54a066b81223e9e1e07b2b3543d0 (modules/core/target/scala-2.13/classes)",
+      "sha256": "b13f8a5cf7e920619459afb984ce1fdfde0f80033b2170bc9a3ea43df21c04e6",
+      "license": "Apache-2.0",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/scala-steward-org/scala-steward"
+      }
+    }
+  ]
+}
