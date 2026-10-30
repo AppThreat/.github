@@ -1,0 +1,36 @@
+plans/callsites-c-cpp.md
+  h_0926447d100ad2 5
+plans/callsites-consumers.md
+  h_0926447d100ad2 5
+plans/callsites-core-js.md
+  h_0926447d100ad2 5
+plans/callsites-ground-truth.md
+  h_0926447d100ad2 5
+plans/callsites-jvm-android.md
+  h_0926447d100ad2 5
+plans/callsites-language-versions.md
+  h_0926447d100ad2 5
+plans/callsites-overview.md
+  h_0926447d100ad2 25,27-37
+plans/callsites-performance.md
+  h_0926447d100ad2 5
+plans/callsites-php.md
+  h_0926447d100ad2 5
+plans/callsites-production.md
+  h_0926447d100ad2 5,28
+plans/callsites-python.md
+  h_0926447d100ad2 5
+plans/callsites-ruby.md
+  h_0926447d100ad2 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "3dfc92619de5625b6f71331fe41386bf502350ca",
+  "prompts": {},
+  "humans": {
+    "h_0926447d100ad2": {
+      "author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
