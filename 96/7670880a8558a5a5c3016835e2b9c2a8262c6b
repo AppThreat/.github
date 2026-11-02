@@ -1,0 +1,23 @@
+plans/parsetools-native-js.md
+  s_79a7c562b49300::t_ba1903e3de965b 66-73
+plans/parsetools-native-overview.md
+  s_79a7c562b49300::t_7b4dcb6c1d15d4 142-147
+plans/parsetools-native.corpus.json
+  s_79a7c562b49300::t_e4703b8d47ebca 247-248
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "967670880a8558a5a5c3016835e2b9c2a8262c6b",
+  "prompts": {},
+  "sessions": {
+    "s_79a7c562b49300": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e06ad8c2-0767-47dd-913e-35689e5f05ba",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
