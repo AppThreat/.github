@@ -1,0 +1,268 @@
+{
+ "plan": "sootup-overview.md",
+ "items": [
+  {
+   "name": "jl-lang3",
+   "description": "jar, size S, plain Java library jar, multi-release",
+   "source": "org.apache.commons:commons-lang3:3.18.0 from Maven Central",
+   "sha256": "4eeeae8d20c078abb64b015ec158add383ac581571cddc45c68f0c9ae0230720",
+   "license": "Apache-2.0",
+   "storage": {
+    "kind": "release-asset",
+    "location": "jimple-native-corpus/inputs/jar-commons-lang3/commons-lang3-3.18.0.jar"
+   },
+   "sizeBytes": 702952
+  },
+  {
+   "name": "jl-issue271",
+   "description": "jar, size S, Scala 3 reproducer jar",
+   "source": "built from chen jimple2cpg test fixtures (jdkclasses, issue 271, dex fixtures)",
+   "sha256": "06289894e26666632c01d36b743e8a8f7c44bab1deeeee0c02719f5663c54564",
+   "license": "Apache-2.0",
+   "storage": {
+    "kind": "release-asset",
+    "location": "jimple-native-corpus/inputs/jar-issue-271/app.jar"
+   },
+   "sizeBytes": 1563
+  },
+  {
+   "name": "jl-jdkclasses",
+   "description": "jar, size S, JDK modules, records, sealed, indy concat",
+   "source": "built from chen jimple2cpg test fixtures (jdkclasses, issue 271, dex fixtures)",
+   "sha256": "627a752ec22ca88047890c534a4a436272f4e5ead6cd03523082d558569b0646",
+   "license": "Apache-2.0",
+   "storage": {
+    "kind": "release-asset",
+    "location": "jimple-native-corpus/inputs/jar-jdkclasses/demo.jar"
+   },
+   "sizeBytes": 10322
+  },
+  {
+   "name": "jl-jdk8",
+   "description": "dir, size S, --release 8, lambdas via LambdaMetafactory; sha256 is over sorted lines of relative path, NUL, file sha256",
+   "source": "built from chen jimple2cpg test fixtures (jdkclasses, issue 271, dex fixtures)",
+   "sha256": "1888cfcdb311e8993750ea6d30ee744dd27c21157c1dfa15dfa5eea568bd18a0",
+   "license": "Apache-2.0",
+   "storage": {
+    "kind": "release-asset",
+    "location": "jimple-native-corpus/inputs/java-jdkclasses-8"
+   }
+  },
+  {
+   "name": "jl-jdk17",
+   "description": "dir, size S, --release 17; sha256 is over sorted lines of relative path, NUL, file sha256",
+   "source": "built from chen jimple2cpg test fixtures (jdkclasses, issue 271, dex fixtures)",
+   "sha256": "0635869226e83503077efd7c08724d9e47d2dfe5e31b0eacb48d5e8ecffabe9d",
+   "license": "Apache-2.0",
+   "storage": {
+    "kind": "release-asset",
+    "location": "jimple-native-corpus/inputs/java-jdkclasses-17"
+   }
+  },
+  {
+   "name": "jl-jdk21",
+   "description": "dir, size S, --release 21; sha256 is over sorted lines of relative path, NUL, file sha256",
+   "source": "built from chen jimple2cpg test fixtures (jdkclasses, issue 271, dex fixtures)",
+   "sha256": "e801956aa03f99e8eb0a8e041fdccdaf19b4bb985cdef8a72fe84de6d93463eb",
+   "license": "Apache-2.0",
+   "storage": {
+    "kind": "release-asset",
+    "location": "jimple-native-corpus/inputs/java-jdkclasses-21"
+   }
+  },
+  {
+   "name": "jl-scala-play",
+   "description": "dir, size S, Scala Play classes (package dirs at root); sha256 is over sorted lines of relative path, NUL, file sha256",
+   "source": "compiled from the scala-corpus fixtures written for AppThreat (scala-corpus/fixtures)",
+   "sha256": "3602d6dc8887b44d40aab39b48cffd534832fb748e55d4cca19c4af1fafb9d5c",
+   "license": "Apache-2.0",
+   "storage": {
+    "kind": "release-asset",
+    "location": "jimple-native-corpus/inputs/scala-play-app"
+   }
+  },
+  {
+   "name": "jl-scala2-akka",
+   "description": "dir, size S, Scala 2.13 Akka; sha256 is over sorted lines of relative path, NUL, file sha256",
+   "source": "compiled from the scala-corpus fixtures written for AppThreat (scala-corpus/fixtures)",
+   "sha256": "e963f67c717be1d209df495161858cd2ad3a8810ec611f7d9978347fb29ad31b",
+   "license": "Apache-2.0",
+   "storage": {
+    "kind": "release-asset",
+    "location": "jimple-native-corpus/inputs/scala-scala2-akka/corpus"
+   }
+  },
+  {
+   "name": "jl-scala-callstack",
+   "description": "dir, size S, Scala 3 app; sha256 is over sorted lines of relative path, NUL, file sha256",
+   "source": "compiled from the scala-corpus fixtures written for AppThreat (scala-corpus/fixtures)",
+   "sha256": "72ed20d8b80b7dd009dec58bd90a9d0ab2becb549b5b3545e14b5949c3d35a54",
+   "license": "Apache-2.0",
+   "storage": {
+    "kind": "release-asset",
+    "location": "jimple-native-corpus/inputs/scala-callstack-app/corpus"
+   }
+  },
+  {
+   "name": "jl-dex-tier1",
+   "description": "dex, size S, single class dex",
+   "source": "built from chen jimple2cpg test fixtures (jdkclasses, issue 271, dex fixtures)",
+   "sha256": "6850bdef0500e8037cf7e269449ca364f7d86269d0728f8b3f62164365ee904f",
+   "license": "Apache-2.0",
+   "storage": {
+    "kind": "release-asset",
+    "location": "jimple-native-corpus/inputs/dex-tier1/classes.dex"
+   },
+   "sizeBytes": 1060
+  },
+  {
+   "name": "jl-dex-native",
+   "description": "dex, size S, native methods",
+   "source": "built from chen jimple2cpg test fixtures (jdkclasses, issue 271, dex fixtures)",
+   "sha256": "994b8abd11cf5038648d7f6db2d433387b5f28dad7a7a6d138d10aa5c818485c",
+   "license": "Apache-2.0",
+   "storage": {
+    "kind": "release-asset",
+    "location": "jimple-native-corpus/inputs/dex-nativebridge/classes.dex"
+   },
+   "sizeBytes": 1436
+  },
+  {
+   "name": "apk-insecurebank",
+   "description": "apk, size S, vulnerable app, known reachable flows",
+   "source": "https://github.com/dineshshetty/Android-InsecureBankv2 (InsecureBankv2.apk)",
+   "sha256": "b18af2a0e44d7634bbcdf93664d9c78a2695e050393fcfbb5e8b91f902d194a4",
+   "license": "MIT",
+   "storage": {
+    "kind": "release-asset",
+    "location": "java-corpus/insecurebank/InsecureBankv2.apk"
+   },
+   "sizeBytes": 3462429
+  },
+  {
+   "name": "apk-termux-api",
+   "description": "apk, size S, dex only, R8 renamed SourceFile",
+   "source": "com.termux.api_1002.apk (F-Droid release)",
+   "sha256": "4497dbbf81906df52e59ed387a5223d225aa0de3aca817cc557a621e4dadda44",
+   "license": "GPL-3.0-only",
+   "storage": {
+    "kind": "release-asset",
+    "location": "android-corpus/tier2-fdroid/com.termux.api_1002.apk"
+   }
+  },
+  {
+   "name": "apk-termux",
+   "description": "apk, size M, java terminal app",
+   "source": "com.termux_1022.apk (F-Droid release)",
+   "sha256": "fdd476982cd74f2f00aac12d3683b1fa260a0b2d146411b94e09d773be3a7b56",
+   "license": "GPL-3.0-only",
+   "storage": {
+    "kind": "release-asset",
+    "location": "android-corpus/tier2-fdroid/com.termux_1022.apk"
+   }
+  },
+  {
+   "name": "apk-newpipe",
+   "description": "apk, size M, java and kotlin, multidex",
+   "source": "org.schabi.newpipe_1015.apk (F-Droid release)",
+   "sha256": "1d66d19eedbab969b1be2e44e0ea35f5f8921cbe83b5c5ac810767ca1a84b7e8",
+   "license": "GPL-3.0-or-later",
+   "storage": {
+    "kind": "release-asset",
+    "location": "android-corpus/tier2-fdroid/org.schabi.newpipe_1015.apk"
+   }
+  },
+  {
+   "name": "apk-appmanager",
+   "description": "apk, size L, large, the slow case of atom#328",
+   "source": "io.github.muntashirakon.AppManager_451.apk (F-Droid release)",
+   "sha256": "e1f6ba10812c74016ad626e11e27a1ae450aec2c0964a11466abb9e7a9c8ef84",
+   "license": "GPL-3.0-or-later",
+   "storage": {
+    "kind": "release-asset",
+    "location": "android-corpus/tier2-fdroid/io.github.muntashirakon.AppManager_451.apk"
+   }
+  },
+  {
+   "name": "apk-fdroid",
+   "description": "apk, size L, kotlin compose",
+   "source": "org.fdroid.fdroid_2000050.apk (F-Droid release, https://f-droid.org/repo/org.fdroid.fdroid_2000050.apk)",
+   "sha256": "94938d324b03755fb324f143229240c75640e809cdd3a90cc0a545b5d0a61931",
+   "license": "GPL-3.0-or-later",
+   "storage": {
+    "kind": "release-asset",
+    "location": "android-corpus/tier2-fdroid/org.fdroid.fdroid_2000050.apk"
+   },
+   "sizeBytes": 12496223
+  },
+  {
+   "name": "jar-detekt",
+   "description": "jar, size S, kotlin uber jar",
+   "source": "detekt-formatting-1.23.8.jar (Maven Central release)",
+   "sha256": "a18a3f680d232ad746ccec3d5a251776ce39131b395c455b92e1bb0a9e8fb6ba",
+   "license": "Apache-2.0",
+   "storage": {
+    "kind": "release-asset",
+    "location": "kosi-vuln-corpus/Exposed/detekt/detekt-formatting-1.23.8.jar"
+   }
+  },
+  {
+   "name": "dir-scala-hmrc",
+   "description": "dir, size M, Scala 3 Play app",
+   "source": "classes compiled locally from https://github.com/hmrc/bank-account-verification-frontend@015f0cfcc529782ca8974dadda427d6b4f776b1e (target/scala-3.3.7/classes)",
+   "sha256": "34ae04313504c23f96109a2dc9f0fd203fd4c7f356c37e85f89db7ddeb6991e1",
+   "license": "Apache-2.0",
+   "storage": {
+    "kind": "repository",
+    "location": "https://github.com/hmrc/bank-account-verification-frontend"
+   }
+  },
+  {
+   "name": "dir-scala-steward",
+   "description": "dir, size M, Scala 2.13 cats-effect",
+   "source": "classes compiled locally from https://github.com/scala-steward-org/scala-steward@3dda7279d3db54a066b81223e9e1e07b2b3543d0 (modules/core/target/scala-2.13/classes)",
+   "sha256": "b13f8a5cf7e920619459afb984ce1fdfde0f80033b2170bc9a3ea43df21c04e6",
+   "license": "Apache-2.0",
+   "storage": {
+    "kind": "repository",
+    "location": "https://github.com/scala-steward-org/scala-steward"
+   }
+  },
+  {
+   "name": "apkm-deep",
+   "description": "apk, size S, hostile: nested bundle",
+   "source": "generated hostile fixture (android-corpus tier 4)",
+   "sha256": "7c8c7aefbfedfe40da26df88d44352fdc2beb2bf014cda1c6fcc8570853e229c",
+   "license": "Apache-2.0",
+   "storage": {
+    "kind": "release-asset",
+    "location": "android-corpus/tier4-hostile/deep_bundle.xapk"
+   },
+   "sizeBytes": 2278
+  },
+  {
+   "name": "apk-zipslip",
+   "description": "apk, size S, hostile: path traversal entries",
+   "source": "generated hostile fixture (android-corpus tier 4)",
+   "sha256": "b496f1e233b8080ef184b51707d6334ffb9a164f8a1709dfe9def7adb088ab2c",
+   "license": "Apache-2.0",
+   "storage": {
+    "kind": "release-asset",
+    "location": "android-corpus/tier4-hostile/zip_slip.apk"
+   },
+   "sizeBytes": 19166
+  },
+  {
+   "name": "apk-zipbomb",
+   "description": "apk, size S, hostile: decompression bomb",
+   "source": "generated hostile fixture (android-corpus tier 4)",
+   "sha256": "16ae1b042721d627d9f39888d5d02ce98335f6c989b6ab967c283986b02a0e60",
+   "license": "Apache-2.0",
+   "storage": {
+    "kind": "release-asset",
+    "location": "android-corpus/tier4-hostile/zip_bomb.apk"
+   },
+   "sizeBytes": 65498
+  }
+ ]
+}
