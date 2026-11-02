@@ -1,0 +1,255 @@
+{
+ "description": "Inputs for the native atom-parsetools gates. Paths are on the evaluation machine; commits pin each clone. 'truth' names the callsites scorer oracle output where one exists.",
+ "caps": {
+  "wall_seconds": 600,
+  "rss_mb": 8000
+ },
+ "inputs": [
+  {
+   "id": "js-cdxgen",
+   "lang": "js",
+   "size": "L",
+   "framework": "node CLI",
+   "path": "~/sandbox/callsites-corpus/repos/cdxgen",
+   "commit": "90baa955934985ea4a18630e8e382c96bc18a0bd",
+   "truth": "callsites-eval truth/js-cdxgen.json"
+  },
+  {
+   "id": "js-juice-shop",
+   "lang": "ts",
+   "size": "M",
+   "framework": "express+angular",
+   "path": "~/sandbox/juice-shop",
+   "commit": "33518f5a0911e25d9df747b1e70fb7af279a755c",
+   "truth": "callsites-eval truth/js-juice-shop.json"
+  },
+  {
+   "id": "js-bulletproof-react",
+   "lang": "ts",
+   "size": "M",
+   "framework": "react",
+   "path": "~/sandbox/frontend-corpus/samples/bulletproof-react",
+   "commit": "9506629ed003a561c6627735480cce4994244bb4",
+   "truth": "callsites-eval truth/js-bulletproof-react.json"
+  },
+  {
+   "id": "js-angular-realworld",
+   "lang": "ts",
+   "size": "S",
+   "framework": "angular",
+   "path": "~/sandbox/frontend-corpus/samples/angular-realworld",
+   "commit": "dd99ed2cf39c805d719f943c5d7061a5683d98a8",
+   "truth": "callsites-eval truth/js-angular-realworld.json"
+  },
+  {
+   "id": "js-vue3-realworld",
+   "lang": "ts",
+   "size": "S",
+   "framework": "vue",
+   "path": "~/sandbox/frontend-corpus/samples/vue3-realworld",
+   "commit": "741c215ef0f674f90fcb03c5493a1b3a3a7f1b03",
+   "truth": "callsites-eval truth/js-vue3-realworld.json"
+  },
+  {
+   "id": "js-svelte-realworld",
+   "lang": "js",
+   "size": "S",
+   "framework": "svelte",
+   "path": "~/sandbox/frontend-corpus/samples/svelte-realworld",
+   "commit": "df796708040f5200ec572b28ab7f88ecee5794dd",
+   "truth": "callsites-eval truth/js-svelte-realworld.json"
+  },
+  {
+   "id": "js-nestjs-realworld",
+   "lang": "ts",
+   "size": "S",
+   "framework": "nestjs",
+   "path": "~/sandbox/callsites-corpus/repos/nestjs-realworld",
+   "commit": "c1c2cc4e448b279ff083272df1ac50d20c3304fa",
+   "truth": "callsites-eval truth/js-nestjs-realworld.json"
+  },
+  {
+   "id": "js-express-boilerplate",
+   "lang": "js",
+   "size": "S",
+   "framework": "express",
+   "path": "~/sandbox/callsites-corpus/repos/node-express-boilerplate",
+   "commit": "179ae84efec61b14206d0305d941daed6c6d07f9",
+   "truth": "callsites-eval truth/js-express-boilerplate.json"
+  },
+  {
+   "id": "js-express-realworld",
+   "lang": "js",
+   "size": "S",
+   "framework": "express",
+   "path": "~/sandbox/callsites-corpus/repos/node-express-realworld",
+   "commit": "30b68e1e881462b2f4164ea09ab4c4f5699c7b0b",
+   "truth": "callsites-eval truth/js-express-realworld.json"
+  },
+  {
+   "id": "js-outline",
+   "lang": "ts",
+   "size": "L",
+   "framework": "koa+react",
+   "path": "~/sandbox/callsites-corpus/repos/outline",
+   "commit": "def01b0fa83567205077ccbba82fd8442661e79f",
+   "truth": "callsites-eval truth/js-outline.json"
+  },
+  {
+   "id": "php-dvwa",
+   "lang": "php",
+   "size": "S",
+   "framework": "plain",
+   "path": "~/sandbox/DVWA",
+   "commit": "068d974487a297c155c48722f9fcf7180a83adc4",
+   "truth": "callsites-eval truth/php-dvwa.json"
+  },
+  {
+   "id": "php-symfony-demo",
+   "lang": "php",
+   "size": "M",
+   "framework": "symfony",
+   "path": "~/sandbox/callsites-corpus/repos/symfony-demo",
+   "commit": "8d2e2ef75c3e18df173d8bf2379a14abb58c4c31",
+   "truth": "callsites-eval truth/php-symfony-demo.json"
+  },
+  {
+   "id": "php-koel",
+   "lang": "php",
+   "size": "M",
+   "framework": "laravel",
+   "path": "~/sandbox/callsites-corpus/repos/koel",
+   "commit": "4ef99acea71c212e74845522be27ac094b47f0c4",
+   "truth": "callsites-eval truth/php-koel.json"
+  },
+  {
+   "id": "php-bookstack",
+   "lang": "php",
+   "size": "L",
+   "framework": "laravel",
+   "path": "~/sandbox/callsites-corpus/repos/bookstack",
+   "commit": "045c6a98cac21ea86906674bb91d01f375460db6",
+   "truth": "callsites-eval truth/php-bookstack.json"
+  },
+  {
+   "id": "rb-railsgoat",
+   "lang": "rb",
+   "size": "S",
+   "framework": "rails",
+   "path": "~/sandbox/railsgoat",
+   "commit": "f5951f13089d85c979de09e7da3c8c0fb982f94a",
+   "truth": "callsites-eval truth/rb-railsgoat.json"
+  },
+  {
+   "id": "rb-maybe",
+   "lang": "rb",
+   "size": "M",
+   "framework": "rails",
+   "path": "~/sandbox/callsites-corpus/repos/maybe",
+   "commit": "77b5469832758d1cbee1a940f3012a1ae1c74cd3",
+   "truth": "callsites-eval truth/rb-maybe.json"
+  },
+  {
+   "id": "rb-mastodon",
+   "lang": "rb",
+   "size": "L",
+   "framework": "rails",
+   "path": "~/sandbox/callsites-corpus/repos/mastodon",
+   "commit": "b4076a667129c14f6d536700d40379286d3d05c5",
+   "truth": "callsites-eval truth/rb-mastodon.json"
+  },
+  {
+   "id": "ver-js",
+   "lang": "js",
+   "size": "S",
+   "framework": "syntax matrix",
+   "path": "~/sandbox/callsites-corpus/synthetic/versions/js",
+   "commit": "none",
+   "truth": "callsites-eval truth/ver-js.json"
+  },
+  {
+   "id": "fe-astro-examples",
+   "lang": "js",
+   "size": "S",
+   "framework": "astro-examples",
+   "path": "~/sandbox/frontend-corpus/samples/astro-examples",
+   "commit": "9050e3819c51b0383cced278c278bc6f45c63468",
+   "truth": null
+  },
+  {
+   "id": "fe-ember-super-rentals",
+   "lang": "js",
+   "size": "S",
+   "framework": "ember-super-rentals",
+   "path": "~/sandbox/frontend-corpus/samples/ember-super-rentals",
+   "commit": "cd19a7fc40192cb4aa9e752db8cab04939751e2b",
+   "truth": null
+  },
+  {
+   "id": "fe-nuxt-movies",
+   "lang": "js",
+   "size": "S",
+   "framework": "nuxt-movies",
+   "path": "~/sandbox/frontend-corpus/samples/nuxt-movies",
+   "commit": "215904c17d3f56e024afd4aa099f62727d99959a",
+   "truth": null
+  },
+  {
+   "id": "fe-vue-router-playground",
+   "lang": "js",
+   "size": "S",
+   "framework": "vue-router-playground",
+   "path": "~/sandbox/frontend-corpus/samples/vue-router-playground",
+   "commit": "0729ce7298ad11b011378f439a506fc78bbce491",
+   "truth": null
+  },
+  {
+   "id": "fe-angular-spotify",
+   "lang": "js",
+   "size": "S",
+   "framework": "angular-spotify",
+   "path": "~/sandbox/frontend-corpus/samples/angular-spotify",
+   "commit": "bb21f83b12ae2ce866977efb5bf8da17e5572aee",
+   "truth": null
+  },
+  {
+   "id": "fe-qwik-examples",
+   "lang": "js",
+   "size": "S",
+   "framework": "qwik-examples",
+   "path": "~/sandbox/frontend-corpus/samples/qwik-examples",
+   "commit": "a0721b0c20d00d46096db6a9a7eded131e9a0c1b",
+   "truth": null
+  },
+  {
+   "id": "fe-solid-realworld",
+   "lang": "js",
+   "size": "S",
+   "framework": "solid-realworld",
+   "path": "~/sandbox/frontend-corpus/samples/solid-realworld",
+   "commit": "f6e77ecd652bf32f0dc9238f291313fd1af7e98b",
+   "truth": null
+  },
+  {
+   "id": "fe-lit-starter",
+   "lang": "js",
+   "size": "S",
+   "framework": "lit-starter",
+   "path": "~/sandbox/frontend-corpus/samples/lit-starter",
+   "commit": "da3958188d8632419de74467a526ea9042ba98c4",
+   "truth": null
+  }
+ ],
+ "regression": [
+  {
+   "id": "js-cdxgen",
+   "file": "lib/cli/index.js",
+   "line": 975,
+   "why": "untyped let components = [] reassigned with concat in 25 sequential blocks makes type checking exponential in TypeScript 6 and 7"
+  }
+ ],
+ "to_add": [
+  "Svelte 5 application with a few hundred components (immich web/)",
+  "Flow: one pinned React Native release and some @flow packages"
+ ]
+}
