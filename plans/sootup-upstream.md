@@ -2,7 +2,7 @@
 
 | | |
 | --- | --- |
-| Epic | AppThreat/chen (opened with this plan) |
+| Epic | https://github.com/AppThreat/chen/issues/268 |
 | Owner | @prabhu |
 | AI use | Assist: agents prepare reproducers and patches; a maintainer files and signs off what goes upstream |
 | Corpus | [sootup.corpus.json](sootup.corpus.json) |

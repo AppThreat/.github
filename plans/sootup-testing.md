@@ -2,7 +2,7 @@
 
 | | |
 | --- | --- |
-| Epic | AppThreat/chen (opened with this plan) |
+| Epic | https://github.com/AppThreat/chen/issues/265 |
 | Owner | @prabhu |
 | AI use | Auto |
 | Corpus | [sootup.corpus.json](sootup.corpus.json) |

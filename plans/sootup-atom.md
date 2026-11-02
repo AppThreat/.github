@@ -2,7 +2,7 @@
 
 | | |
 | --- | --- |
-| Epic | AppThreat/atom (opened with this plan) |
+| Epic | https://github.com/AppThreat/atom/issues/351 |
 | Owner | @prabhu |
 | AI use | Auto |
 | Corpus | [sootup.corpus.json](sootup.corpus.json) |

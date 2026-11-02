@@ -56,13 +56,13 @@ NewPipe the line numbers differ from Soot's in 57,000 of 61,607 methods. Checked
 
 | plan | epic | what |
 | --- | --- | --- |
-| [sootup-testing.md](sootup-testing.md) | chen | baselines from main, the IR probe, CPG fingerprints, oracles and the test plan every other epic is gated by |
-| [sootup-jvm.md](sootup-jvm.md) | chen | jimple2cpg on SootUp for class files, jars, WARs and JVM languages |
-| [sootup-android.md](sootup-android.md) | chen | APK, DEX and bundles on SootUp, with typed bodies and correct lines |
-| [sootup-atom.md](sootup-atom.md) | atom | atom on the new frontend: slice parity, CLI, native image, consumers, removing Soot |
-| [sootup-upstream.md](sootup-upstream.md) | chen | the SootUp fixes and releases this work depends on, reported and contributed upstream |
+| [sootup-testing.md](sootup-testing.md) | [AppThreat/chen#265](https://github.com/AppThreat/chen/issues/265) | baselines from main, the IR probe, CPG fingerprints, oracles and the test plan every other epic is gated by |
+| [sootup-jvm.md](sootup-jvm.md) | [AppThreat/chen#266](https://github.com/AppThreat/chen/issues/266) | jimple2cpg on SootUp for class files, jars, WARs and JVM languages |
+| [sootup-android.md](sootup-android.md) | [AppThreat/chen#267](https://github.com/AppThreat/chen/issues/267) | APK, DEX and bundles on SootUp, with typed bodies and correct lines |
+| [sootup-atom.md](sootup-atom.md) | [AppThreat/atom#351](https://github.com/AppThreat/atom/issues/351) | atom on the new frontend: slice parity, CLI, native image, consumers, removing Soot |
+| [sootup-upstream.md](sootup-upstream.md) | [AppThreat/chen#268](https://github.com/AppThreat/chen/issues/268) | the SootUp fixes and releases this work depends on, reported and contributed upstream |
 
-The epic numbers are filled in when the epics are opened.
+All items carry the `v5.0.0` milestone in chen and atom.
 
 ## Order of work
 
