@@ -244,8 +244,8 @@
   {
    "id": "js-cdxgen",
    "file": "lib/cli/index.js",
-   "line": 953,
-   "why": "type checking exhausts memory in TypeScript 6 and tsgo"
+   "line": 975,
+   "why": "untyped let components = [] reassigned with concat in 25 sequential blocks makes type checking exponential in TypeScript 6 and 7"
   }
  ],
  "to_add": [

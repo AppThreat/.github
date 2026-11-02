@@ -63,10 +63,14 @@ output does not depend on it.
 
 ## D5. The cdxgen case
 
-Reduce `lib/cli/index.js` in cdxgen to the smallest file that still blows up, starting from the call
-`scanOnePathInner(path)` at line 953. Confirm whether TypeScript 6 and tsgo fail for the same reason,
-report it upstream with the reproducer, and add the guard from D3 so astgen finishes on cdxgen today
-and after the switch.
+The cause is known. `scanOnePathInner` in cdxgen's `lib/cli/index.js` declares `let components = [];`
+without a type and reassigns it with `concat` in 25 sequential `if` blocks. Type checking an evolving
+array in that shape grows exponentially with the number of blocks: a generated file with 20 blocks
+takes 9.6 s to check in TypeScript 6 and 6.0 s and 690 MB in TypeScript 7.1, and 22 blocks pass 3 GB
+in 7.1. With `/** @type {any[]} */` on that one declaration, `tsc` checks the whole cdxgen file in
+0.3 s and 177 MB. Inputs cannot be expected to carry that annotation, so astgen needs a per-file
+time budget on type collection (the existing budget covers only printing), today on TypeScript 6
+and later in the native binary. The generated reproducer goes to the upstream report (S5).
 
 ## D6. Babel-shaped AST from the tsgo parser
 

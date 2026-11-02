@@ -139,10 +139,12 @@ The native binary becomes the default for a language only when, on every corpus 
 - **Unbounded types.** With `TypeFormatFlagsNoTruncation`, tsgo ignores `MaxTruncationLength`. An
   uncapped probe run froze the test machine for hours. Every type write is bounded and every test
   run is capped (see the testing plan).
-- **One input that defeats both checkers.** On cdxgen, checking the call `scanOnePathInner(path)` at
-  `lib/cli/index.js:953` grows past 5 GB in tsgo with printing and `checkJs` off, and TypeScript 6
-  did not finish in 10 minutes. This is likely the cause of astgen's 67 minutes. It gets its own
-  task, a reproducer for upstream and a guard in the binary.
+- **Inputs that defeat both checkers.** astgen's 67 minutes on cdxgen come from one untyped
+  `let components = [];` reassigned with `concat` in 25 sequential `if` blocks. Checking that shape
+  grows exponentially with the number of blocks, in time for TypeScript 6 and in time and memory for
+  TypeScript 7 (a generated 22-block file passes 3 GB). One JSDoc annotation brings cdxgen's file down
+  to 0.3 s, but inputs cannot be relied on to have it, so type collection gets a per-file time
+  budget, and the reproducer goes upstream.
 - **Offsets.** Babel and chen use UTF-16 code unit offsets; Go strings use UTF-8 bytes. Every offset
   written is converted, and the tests include non-ASCII and astral characters.
 - **cgo.** Prism and a Rust PHP parser need cgo, which complicates cross-compiling for musl and
