@@ -1,0 +1,97 @@
+# Native atom-parsetools: JavaScript and TypeScript
+
+astgen writes two things per source file: the Babel 8 AST as JSON and a `.typemap` that maps node
+start offsets to type strings. jssrc2cpg in chen reads both (it handles 164 Babel node types across
+about 8,800 lines of Scala). This plan replaces how they are produced and keeps both formats.
+
+## D1. Go module and typescript-go pin
+
+A Go module in atom-parsetools (`native/`) that links typescript-go through generated shims over its
+`internal/` packages, the way oxc-project/tsgolint and web-infra-dev/rslint do. The source moved:
+`microsoft/typescript-go` was archived on 2026-08-31 and the code is now `microsoft/TypeScript`,
+directory `tsc/`, module `github.com/microsoft/TypeScript/tsc`, Go 1.27. The pin, the patch stack and
+the shim generator are checked in, with a script that upgrades the pin and reruns the type map tests.
+
+## D2. Type map on typescript-go
+
+Port astgen's type collection (`createTsc` and `addType` in `astgen.js`) to Go, rule for rule:
+call and new expressions (resolved signature, return type, the fallback to inferring a declaration's
+return type), function-like declarations (return and parameter types, async fallbacks), property and
+element access (also keyed at the name or argument), variable declarations (declared type, initializer
+type, call fallback), binding elements, parameters, object literal properties, dynamic `import()`,
+binary, conditional, logical, template, tagged template, yield, spread, delete, typeof and void
+expressions, class declarations (construct signature return), enum members, and the default rule
+with literal types widened. The scoring between candidate strings (`addTypeAtPosition`) and the
+unresolved-type filter move over unchanged.
+
+The spike's probe already shows the API differences to handle:
+
+- `GetTypeAtLocation` returns no type for identifiers in type positions. Use `GetTypeFromTypeNode` on
+  the enclosing type reference, which is what TypeScript 6 did internally.
+- JavaScript functions print as their signature in tsgo, where TypeScript 6 printed
+  `typeof setFromEuler`. chen's type name handling has to accept both during the transition.
+- Union and object member order and literal quote style differ (see the overview decision 6).
+- TypeScript 7 removed or changed compiler options (for example `baseUrl` handling,
+  `moduleResolution: node10` and `classic`, and ES5 targets). Projects whose tsconfig still uses
+  them must fall back to astgen's inferred defaults with a warning, not fail.
+
+The first release runs this next to the existing Babel parse: astgen calls the native type map
+binary when `ASTGEN_TYPES=native` is set and falls back to TypeScript 6 when the binary is missing.
+
+## D3. Bounded type printing and memory
+
+- Never pass `TypeFormatFlagsNoTruncation`; it disables `VerbosityContext.MaxTruncationLength`.
+  Write with a 4,096 character limit, retry once with type aliases by name, then give up on that
+  type and count it, the way astgen does today.
+- Add a per-type budget on node builder work. tsgo has no cancellation token for printing, so this
+  needs a small patch in the shim layer or a check on `approximateLength`.
+- Release printing state. On cdxgen the checker's heap grew about 50 MB per file with printing and
+  stayed flat without it. Find what holds the printed nodes and drop it per file, or recycle the
+  checker every N files; measure both.
+- Per-file wall time and memory budgets: a file that exceeds them gets no type map entries for the
+  rest of the file and a diagnostic in the manifest.
+
+## D4. Parallel checkers and project configuration
+
+Use tsgo's checker pool, with each file handled by its own checker under the exclusive lock
+(`GetTypeCheckerForFileExclusive`; the non-exclusive call races when two goroutines share a checker,
+which the spike hit). Port `createTscProgramConfig`: tsconfig discovery, extended configs, project
+references, the forced options (`allowJs`, `checkJs`, `noEmit`, `skipLibCheck`,
+`resolveJsonModule`), automatic `@types`, and the rule that keeps files discovery left out of the
+program. Default checker count follows `ASTGEN_TYPE_WORKERS`, now safe to turn on by default because
+output does not depend on it.
+
+## D5. The cdxgen case
+
+Reduce `lib/cli/index.js` in cdxgen to the smallest file that still blows up, starting from the call
+`scanOnePathInner(path)` at line 953. Confirm whether TypeScript 6 and tsgo fail for the same reason,
+report it upstream with the reproducer, and add the guard from D3 so astgen finishes on cdxgen today
+and after the switch.
+
+## D6. Babel-shaped AST from the tsgo parser
+
+Convert tsgo's AST to Babel 8 JSON in Go: node types, `start`/`end` as UTF-16 offsets, `loc` with
+line and column, comments, `extra` (raw values, parenthesized), BigInt as strings, `errors` on
+recovered parse errors, and the options astgen sets (`errorRecovery`, `createParenthesizedExpressions`,
+`tokens` where used). TypeScript-only syntax (decorators, enums, namespaces, `satisfies`, type
+parameters, accessors) maps to Babel's TS node types. Recovery differs between the two parsers: a file
+Babel recovers and tsgo does not (or the reverse) is a reviewed difference, not a silent one.
+
+## D7. Templates and single-file components
+
+Port the Vue SFC splitting and the HTML, Astro and Ember template mapping (`htmlAst.js`, `astroAst.js`,
+`emberAst.js`, about 1,900 lines). Svelte (`svelteAst.js`, 1,291 lines) depends on
+`svelte/compiler` for segmentation; port it or keep a Node fallback for `.svelte` files (overview
+decision 5). TypeScript 7.1's content mappers, which Vue and Svelte language tools are adopting, are
+the later route to types inside templates.
+
+## D8. Flow
+
+tsgo does not parse Flow. Options are swc's Flow parser through a Rust library, keeping
+`hermes-parser` in a Node fallback, or dropping Flow (overview decision 4). Flow files are rare in
+the corpus; measure how many the default excludes already skip before choosing.
+
+## D9. Command line and environment
+
+Same flags as `astgen` (`-i`, `-o`, `-t`, `-r`, `--tsTypes`) and the `ASTGEN_*` and `ATOM_*`
+variables in `docs/ENV.md`, with the same file discovery, ignore rules and test-file exclusion.
