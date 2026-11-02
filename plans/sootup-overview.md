@@ -109,9 +109,9 @@ the Android plan settles.
 1. **Which SootUp to build against.** The fixes this work needs (line attribution, local names
    when a slot is reused, annotation and member order, parameter annotations, SourceFile, the dex
    transformer fixes) are on SootUp's develop branch, 485 commits after 3.0.1, and the snapshot
-   repository stopped at 2026-10-08. Options: wait for 3.0.2; or publish a build of a pinned
-   develop commit to AppThreat's GitHub Packages, as chen does for cpg2. The second needs the
-   LGPL-2.1 notice and the commit id in the artifact.
+   repository stopped at 2026-10-08. Decided (2026-11-02): wait for the 3.0.2 release rather than
+   publish a build of a develop commit. Work that does not need those fixes (the test plan, the
+   upstream reports, measurements) goes ahead; the port of `AstCreator` (jvm D4) starts on 3.0.2.
 2. **What to do if DEX does not reach parity in time.** Ship v5 with SootUp for class files and Soot
    for DEX (isolated), or hold the release. The Android plan measures this early so the decision
    can be made with numbers.

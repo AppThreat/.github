@@ -133,8 +133,8 @@ target is missed. The numbers go into the pull request and the epic.
 ## Risks and open questions
 
 - The SootUp release this depends on (see the overview's first decision). Develop's API already
-  differs from 3.0.1 (hash-consed identifiers, PR #1745), so pick the version before D4 starts and
-  port once.
+  differs from 3.0.1 (hash-consed identifiers, PR #1745), so D4 starts on the 3.0.2 release and
+  ports once.
 - `TypeAssigner` falls back to `java.lang.Object` when a supertype is missing, where Soot kept the
   phantom type. With partial classpaths (most jars) local types may get coarser. D2's library
   locations and a fixture with a missing dependency measure it.

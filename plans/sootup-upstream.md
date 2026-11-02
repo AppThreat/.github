@@ -38,9 +38,9 @@ With a minimal input and the IR probe output for each:
 ### D2. A release with the October fixes
 
 Ask for a release that contains the fixes the migration needs: PRs #1763, #1767, #1746, #1754,
-#1755, #1787, #1788 and the dex fixes #1776, #1836, #1845, #1849. If none appears before the jvm
-plan's D4 starts, publish a build of a pinned develop commit to AppThreat's GitHub Packages (the
-overview's first decision), with the commit id in the version and the LGPL notice.
+#1755, #1787, #1788 and the dex fixes #1776, #1836, #1845, #1849, and help get it out (testing a
+release candidate on the corpus, reporting regressions). chen builds against the 3.0.2 release,
+not a build of a develop commit (the overview's first decision); the jvm plan's D4 waits for it.
 
 ### D3. A JDK location that does not scan the JDK
 

@@ -42,7 +42,7 @@ the callsites adapter for Android belong to the callsites plan
 
 ### D1. Measure develop first
 
-Build SootUp's develop branch at a pinned commit (or the 3.0.2 release if it exists by then) and
+Use the 3.0.2 release, or until it exists a local, unpublished build of SootUp's develop branch, and
 rerun the IR probe and the line oracle on the four corpus APKs and the DEX fixtures. Classify every
 remaining difference with the oracle (testing D4): SootUp wrong, Soot wrong, or both acceptable.
 Report the SootUp-wrong classes upstream with a minimal DEX ([sootup-upstream.md](sootup-upstream.md)).
