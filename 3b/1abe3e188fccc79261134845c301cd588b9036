@@ -1,0 +1,30 @@
+plans/parsetools-native-testing.md
+  s_79a7c562b49300::t_d07db47f4ee2ef 1-15,23-76
+  s_79a7c562b49300::t_8f016d65658fae 16-22
+plans/parsetools-native-ship.md
+  s_79a7c562b49300::t_ff6c0befbac3cc 1-39
+plans/parsetools-native-overview.md
+  s_79a7c562b49300::t_a8b2be045a51e9 1-149
+plans/parsetools-native-js.md
+  s_79a7c562b49300::t_3d95fdb1f56aa5 1-97
+plans/parsetools-native-ruby-php.md
+  s_79a7c562b49300::t_505081eee88a43 1-65
+plans/parsetools-native.corpus.json
+  s_79a7c562b49300::t_bb8bdc7d1a61fb 1-255
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "3b1abe3e188fccc79261134845c301cd588b9036",
+  "prompts": {},
+  "sessions": {
+    "s_79a7c562b49300": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e06ad8c2-0767-47dd-913e-35689e5f05ba",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
