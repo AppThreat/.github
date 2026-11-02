@@ -1,0 +1,29 @@
+plans/sootup-android.md
+  s_79a7c562b49300::t_bdad735b6a661e 5
+plans/sootup-atom.md
+  s_79a7c562b49300::t_9a6636fa166942 5
+plans/sootup-jvm.md
+  s_79a7c562b49300::t_07e08543aeee86 5
+plans/sootup-overview.md
+  s_79a7c562b49300::t_75d22dd59c58aa 59-63,65
+plans/sootup-testing.md
+  s_79a7c562b49300::t_976a3769a1563f 5
+plans/sootup-upstream.md
+  s_79a7c562b49300::t_19adde862541ae 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b54659e0ff26a73f55bb35636bcdea6edaf908a2",
+  "prompts": {},
+  "sessions": {
+    "s_79a7c562b49300": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e06ad8c2-0767-47dd-913e-35689e5f05ba",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
