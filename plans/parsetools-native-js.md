@@ -121,3 +121,26 @@ choosing.
 
 Same flags as `astgen` (`-i`, `-o`, `-t`, `-r`, `--tsTypes`) and the `ASTGEN_*` and `ATOM_*`
 variables in `docs/ENV.md`, with the same file discovery, ignore rules and test-file exclusion.
+
+## D10. Syntax only Babel parses
+
+Tracked in AppThreat/atom-parsetools#76.
+
+astgen turns on Babel syntax plugins for proposals (`babelSyntaxPlugins` in `astgen.js`). The
+typescript-go parser at the pinned commit handles most of them: `decorators-legacy`, explicit
+resource management, import attributes, and the import phases of `sourcePhaseImports` and
+`deferredImportEvaluation` (`import source x from`, `import defer * as ns from`, `import.source()`
+and `import.defer()`). It does not parse two:
+
+- `doExpressions`: `let x = do { ... }` (a stage 1 proposal).
+- `exportDefaultFrom`: `export v from "mod"` (a stage 1 proposal).
+
+tsgo recovers from both instead of failing, so as with Flow the file would get a wrong tree rather
+than an error. Until the outcome below is chosen, `ASTGEN_AST=native` writes tsgo's recovered tree
+with its `errors` array for these files, and the JavaScript default does not change. Count the files that use them on the corpus
+and in a sample of npm packages, then choose one of: detect them and record the file in
+`astgen_manifest.jsonl` as not parsed, with no `.json`; add them to the tsgo parser through a patch
+in `parsa/patches` (the converter then writes Babel's `DoExpression` and `ExportDefaultSpecifier`);
+or both, the patch for the forms chen uses and the record for the rest. Each syntax gets a fixture
+in `parsa/testdata/babel/`, so the chosen behaviour is tested and a later tsgo upgrade that changes
+it fails the tests.
