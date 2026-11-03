@@ -36,17 +36,20 @@ What has landed, the measurements so far and the next round are in
 | [callsites-ruby.md](callsites-ruby.md) | [AppThreat/chen#240](https://github.com/AppThreat/chen/issues/240) | ruby2atom constant references, then the adapter |
 | [callsites-language-versions.md](callsites-language-versions.md) | [AppThreat/chen#241](https://github.com/AppThreat/chen/issues/241) | syntax coverage per language version, in every frontend and oracle |
 | [callsites-performance.md](callsites-performance.md) | [AppThreat/atom#309](https://github.com/AppThreat/atom/issues/309) | tag once, one process for several slices, usages cost |
-| [callsites-consumers.md](callsites-consumers.md) | [AppThreat/atom#310](https://github.com/AppThreat/atom/issues/310) | cdxgen and dep-scan consume callsites for every language |
+| [callsites-consumers.md](callsites-consumers.md) | moved: [cdxgen/cdxgen#4718](https://github.com/cdxgen/cdxgen/issues/4718), [owasp-dep-scan/dep-scan#555](https://github.com/owasp-dep-scan/dep-scan/issues/555) | cdxgen and dep-scan consume callsites; now planned in cdxgen/.github and owasp-dep-scan/.github |
 | [callsites-production.md](callsites-production.md) | [AppThreat/atom#311](https://github.com/AppThreat/atom/issues/311) | determinism, failure isolation, memory, docs, release chain |
 
 ## Order of work
 
 ```
 sprint 1  ground truth (rest) ‖ core-js D1–D3 ‖ python ‖ performance D1–D3      → corpus run
-sprint 2  jvm-android (Java source first) ‖ consumers D1–D4 ‖ core-js D4–D6     → corpus run
+sprint 2  jvm-android (Java source first) ‖ core-js D4–D6                       → corpus run
 sprint 3  php ‖ ruby ‖ c-cpp ‖ jvm-android (bytecode, APK) ‖ language-versions  → corpus run
-sprint 4  production ‖ consumers D5–D6                                          → full corpus, release
+sprint 4  production                                                           → full corpus, release
 ```
+
+cdxgen and dep-scan read the slice on their own schedules (cdxgen 13.8.0, dep-scan v7), planned in
+their organizations' `.github/plans`; see [callsites-consumers.md](callsites-consumers.md).
 
 Chen-side deliverables of each language plan can start at once: they need only the oracles and
 their own tests. The atom adapters build on core-js D2 (the core split).

@@ -12,9 +12,9 @@ under milestone v4.0.0 Pelorus.
 Every atom language now has a `callsites` source: JavaScript and TypeScript, Python, Java source,
 PHP, Ruby, JVM bytecode (jars, Kotlin and Scala classes, Android APKs) and C and C++ on both
 frontends. Sprints 1 to 3 of the overview's order of work are done except
-for the language-versions plan and a few JavaScript and ground-truth tasks listed below. Nothing of
-the consumers plan (cdxgen and dep-scan) or the production plan has started, and cdxgen still runs
-`callsites` for JavaScript and TypeScript only.
+for the language-versions plan and a few JavaScript and ground-truth tasks listed below. The
+production plan has not started. cdxgen still runs `callsites` for JavaScript and TypeScript only;
+its part and dep-scan's are now planned in their own organizations (see below).
 
 The work was done in six tranches. In each, one AI agent implemented a written brief and another
 reviewed it, fixed what it found, measured again and opened the pull requests.
@@ -108,7 +108,10 @@ AppThreat/atom#312.
   atom-parsetools#34 (TC39 auto-accessors), atom#334 (Java method references and Lombok) and
   atom#335 (version matrix fixtures).
 - Performance (atom#309): #339 (the cost of `usages` on large Java and Python projects).
-- Consumers (atom#310): cdxgen#4690 to #4693 and dep-scan#552, #553, none started.
+- Consumers: moved out of this organization. cdxgen#4690 to #4693 are under cdxgen/cdxgen#4718
+  (milestone 13.8.0, plan `plans/cdxgen-callsites-evidence.md` in cdxgen/.github), and
+  dep-scan#552 and #553 under owasp-dep-scan/dep-scan#555 (milestone v7.0.0 Lodestar, plan
+  `plans/depscan-callsites.md` in owasp-dep-scan/.github). The consumers epic atom#310 is closed.
 - Production (atom#311): #340 to #344, none started.
 
 ## Known gaps
@@ -129,14 +132,13 @@ AppThreat/atom#312.
 
 ## Next
 
-The recommended next round is the consumers plan, deliverables D1 to D4: cdxgen runs `callsites`
-for every atom language (cdxgen#4690), attributes records to packages per ecosystem (#4691),
-honours `--exclude` and `--annotate` (#4692), and dep-scan passes and keeps the slice
-(dep-scan#552). That is the point of the work, and every language source it needs is on main. The
-JavaScript and C/C++ purls (#321) belong in the same round, because cdxgen's attribution reads them.
-After it, the production plan (#340 to #344, ending in the full corpus run and the release) and then
-consumers D5 and D6, as the overview orders them. The language-versions and ground-truth tasks can
-run beside either round.
+The recommended next round stays in atom and chen: the attribution the slice itself can give.
+atom#321 fills `purl` on JavaScript and TypeScript records from the SBOM, as Python, Java, PHP, Ruby
+and bytecode records already have it, and atom#346 brings the vendored-code option (`--external-paths`)
+from C and C++ to every frontend and adds the BOM's component locations as a second source. Both read
+the same BOM data. After it comes the production plan (#340 to #344): determinism, memory, docs, and
+the release chain that ends in the full corpus run and an atom 4 release, which is also what cdxgen
+and dep-scan wait for. The language-versions and ground-truth tasks can run beside either round.
 
 Each round follows the overview's rules: tests with bad and good twins, a mutation table, equivalence
 tests for changes that keep output, member-level and builtin checks beside the package score, and a
