@@ -13,9 +13,11 @@ install. `rbastgen` runs the `ruby_ast_gen` gem inside a Ruby 3.4 or 4.0 runtime
 `scalasem` reads what the Scala compiler wrote (TASTy and SemanticDB) and moves into the binary as
 well, keeping its small Java TASTy helper, which runs on the JVM a Scala project already needs.
 
-This plan replaces the first three with one native binary that needs no Node, PHP or Ruby runtime,
-keeps their JSON output contracts so chen's frontends do not change, and makes JavaScript and
-TypeScript type generation an order of magnitude faster.
+This plan replaces the first three with one native binary that needs no Node runtime, keeps their
+JSON output contracts so chen's frontends do not change, and makes JavaScript and TypeScript type
+generation an order of magnitude faster. The Ruby and PHP parsers are not rewritten: `parsa rb` and
+`parsa php` run `ruby_ast_gen` and nikic/php-parser in the user's Ruby and PHP, as rbastgen and
+phpastgen do today.
 
 ## Why
 
@@ -48,8 +50,7 @@ of the keys and needs `getTypeFromTypeNode` on the enclosing type reference inst
 Two more results matter. The stable ordering makes parallel type generation deterministic: the
 8-checker run matched the single-checker run on 261,600 of 261,635 keys for outline, where astgen's
 TypeScript 6 workers reorder unions between runs and the docs advise against them when output is
-compared. And no runtime install: a Go or Rust binary removes the PHP and Ruby prerequisites that
-users hit first today.
+compared. And a single binary removes the Node prerequisite for every language.
 
 ## The plans
 
@@ -58,7 +59,7 @@ users hit first today.
 | [parsetools-native-status.md](parsetools-native-status.md) | what has landed, measurements, decisions taken, known gaps, the next round |
 | [parsetools-native-testing.md](parsetools-native-testing.md) | corpus, baselines, contract differs, type and callsites scoring, resource caps, determinism |
 | [parsetools-native-js.md](parsetools-native-js.md) | type map on typescript-go, Babel-shaped AST from the tsgo parser, Vue, Svelte, Astro, Ember, HTML, Flow |
-| [parsetools-native-ruby-php.md](parsetools-native-ruby-php.md) | rbastgen on the Prism C library, phpastgen without a PHP runtime |
+| [parsetools-native-ruby-php.md](parsetools-native-ruby-php.md) | `parsa rb` and `parsa php`: rbastgen.js and phpastgen.js in Go, still running `ruby_ast_gen` and nikic |
 | [parsetools-native-ship.md](parsetools-native-ship.md) | binaries, npm packaging, atom and chen integration, upstream reports |
 | [parsetools-native.corpus.json](parsetools-native.corpus.json) | the inputs every gate runs on |
 
@@ -79,12 +80,11 @@ lists every breaking change (ship plan, S4). The subcommands write the same JSON
 - JavaScript and TypeScript: parse once with the typescript-go parser, check with its checker, and
   write the Babel 8 AST shape and `.typemap` files astgen writes today. One parser for both outputs
   removes today's need to keep Babel offsets and TypeScript offsets in step.
-- Ruby: the Prism C library (MIT, no CRuby dependency) linked through cgo, with Prism's parser-gem
-  translation ported to Go so the output stays in the `ruby_ast_gen` shape that ruby2atom reads.
-- PHP: the choice between mago-syntax (Rust, PHP 7.0 to 8.6) behind a C ABI, a Rust sidecar, or
-  keeping nikic in a PHP runtime is a decision below. No Go PHP parser covers PHP 8.3 to 8.5.
+- Ruby and PHP: the code around the parsers moves to Go and the parsers stay. `parsa rb` runs the
+  vendored `ruby_ast_gen` gem in the user's Ruby and `parsa php` runs nikic/php-parser in the user's
+  PHP, writing the same JSON byte for byte. parsa embeds the gem bundle and the PHP vendor tree.
 
-The Rust-centric alternative (oxc, swc for Flow, `ruby-prism`, mago in one Rust binary) has better
+The Rust-centric alternative (oxc, swc for Flow) has better
 parsers for everything except types, and that is the problem: its only source of exact types is the
 TypeScript 7.1 IPC API, which is a beta (7.1.0-beta, 2026-10-20), sends every query over msgpack,
 and has no cancellation and no maximum length for `typeToString`. oxc also writes ESTree, not Babel,
@@ -97,8 +97,8 @@ and does not parse Flow. It stays the fallback if the shim risk below turns out 
    This alone removes the slow part of astgen, needs no AST work, and can ship in a 1.x release.
 3. The Babel-shaped AST from the tsgo parser, file kinds in order of use: TS/JS, JSX/TSX, Vue,
    HTML, Astro, Ember, Svelte. Flow follows its decision.
-4. Ruby on Prism.
-5. PHP after its decision.
+4. `parsa rb`: rbastgen.js in Go.
+5. `parsa php`: phpastgen.js in Go.
 6. scalasem in Go: build discovery, SemanticDB decoding and the evidence it derives, with the
    same report format; the Java TASTy inspector stays.
 7. Packaging, then switching atom, chen and cdxgen to the native binary by default. Once every
@@ -118,14 +118,15 @@ The native binary becomes the default for a language only when, on every corpus 
 - Wall time is at most half of today's and peak memory is not higher, both measured under caps.
 - No input exceeds the caps (cdxgen included), and output is identical across checker counts and
   across two runs.
-- It runs without Node, PHP or Ruby on Linux glibc and musl (x64, arm64), macOS (arm64, x64) and
-  Windows (x64, arm64).
+- It runs without Node on Linux glibc and musl (x64, arm64), macOS (arm64, x64) and Windows (x64,
+  arm64). `parsa rb` and `parsa php` need the Ruby and PHP versions rbastgen and phpastgen need today.
 
 ## Decisions for a maintainer
 
 Decisions 1, 2 and 6 were taken as recommended (Go host, an AppThreat shim over `microsoft/TypeScript`
 `tsc/`, TypeScript 7's order kept), and decision 5 as a Go port of the Svelte handling with no Node
-fallback; see the status page. Decisions 3 and 4 are open.
+fallback; see the status page. Decision 3 was settled on 2026-11-03 by keeping nikic in a PHP
+runtime (and `ruby_ast_gen` in a Ruby runtime). Decision 4 is open.
 
 1. Go as the host language, with Rust only where no Go parser exists (recommended), or Rust as the
    host with types through the TypeScript 7.1 API.
@@ -134,7 +135,8 @@ fallback; see the status page. Decisions 3 and 4 are open.
    Options: reuse the oxc-project/tsgolint shim (pinned to the 2026-07-07 commit, six patches,
    about 446 KB of generated `//go:linkname` shims), or keep an AppThreat shim generated against
    `microsoft/TypeScript` as rslint has done since 2026-09-05.
-3. PHP: mago-syntax through a C ABI, a separate Rust binary, or keep nikic in a PHP runtime.
+3. PHP: mago-syntax through a C ABI, a separate Rust binary, or keep nikic in a PHP runtime
+   (settled: keep nikic).
 4. Flow: port to swc's Flow parser (Rust), keep `hermes-parser` in a Node fallback, or drop Flow.
 5. Svelte: port the template segmentation to Go, or keep a Node fallback for `.svelte` files.
 6. Whether type strings keep TypeScript 7's member order (chen expectations change once) or are
@@ -161,5 +163,5 @@ fallback; see the status page. Decisions 3 and 4 are open.
   budget, and the reproducer goes upstream.
 - **Offsets.** Babel and chen use UTF-16 code unit offsets; Go strings use UTF-8 bytes. Every offset
   written is converted, and the tests include non-ASCII and astral characters.
-- **cgo.** Prism and a Rust PHP parser need cgo, which complicates cross-compiling for musl and
-  Windows. The ship plan builds each target natively in CI.
+- **cgo.** parsa has none, which keeps cross-compiling and static Linux binaries simple. A Flow
+  parser in Rust (decision 4) would bring it back.

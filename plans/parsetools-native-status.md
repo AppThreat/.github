@@ -12,8 +12,9 @@ AppThreat roadmap board under milestone v5.0.0.
 
 Step 2 of the order of work (the type map on typescript-go, behind `ASTGEN_TYPES=native`) is done,
 together with the JavaScript and TypeScript half of the testing work. Babel still parses every file,
-and nothing changes unless `ASTGEN_TYPES=native` is set. Steps 3 to 6 (the Babel-shaped AST, Ruby,
-PHP, packaging and the default switch) have not started.
+and nothing changes unless `ASTGEN_TYPES=native` is set. Steps 3 to 6 (the Babel-shaped AST,
+`parsa rb`, `parsa php`, packaging and the default switch) have not started; the release builds of
+step 7 are in place (#72, #73).
 
 The work was done in two rounds by AI agents, each implemented by one agent and reviewed, fixed and
 measured again by another.
@@ -21,11 +22,12 @@ measured again by another.
 | pull request | what it did | state |
 |---|---|---|
 | AppThreat/atom-parsetools#68 | Go module (now `parsa/`, command `parsa js --types-only` since #71), typescript-go through a generated shim over `microsoft/TypeScript` `tsc/` pinned at 622d4f7 (`parsa/third_party/typescript.pin`) with one patch (`parsa/patches/0001-*`: builder budget, interrupt, work limit, printer cache release); astgen integration with fallback to TypeScript 6; type map differ and allow-list (`lib/typemap/`, `test-fixtures/typemap-allow.json`); watchdog and `npm run test:native`; CI job on Linux and macOS; package version 2.0.0, `ASTGEN_VERSION` 4.6.0 | merged |
-| AppThreat/atom-parsetools#71 | the native binary renamed `parsa` (module `parsa/`, `parsa js --types-only`) and `CHANGELOG.md` with the breaking changes of 2.0.0 | auto-merge on |
+| AppThreat/atom-parsetools#71 | the native binary renamed `parsa` (module `parsa/`, `parsa js --types-only`) and `CHANGELOG.md` with the breaking changes of 2.0.0 | merged |
+| AppThreat/atom-parsetools#72, #73 | release builds: `parsa/scripts/build-release.sh` cross-compiles six targets, `.github/workflows/parsa-release.yml` runs them on their platforms, pushes them to `ghcr.io/appthreat/parsa` on every push to main and attaches them to releases with hashes, provenance and a post-build SBOM (Go toolchain in the formulation) | merged |
 | AppThreat/atom-parsetools#69 | `.typespans` next to each `.typemap`: the type of each node keyed by `"start:end"`, native runs only (`docs/OUTPUT_FORMATS.md`) | merged |
 | AppThreat/chen#296 | jssrc2cpg reads native type maps; `TypeStringNormalizer` writes both engines' strings in one canonical spelling | merged |
-| AppThreat/chen#298 | jssrc2cpg types every node from `.typespans`, `TYPE_FULL_NAME` is one name or `ANY` in both modes (`TypeNames.scala`), type recovery starts from those names | in review, auto-merge on |
-| AppThreat/atom#363 | atom option `--frontend-args astgen-types=native` (or `ts6`), passed to chen and astgen as `ASTGEN_TYPES` | in the merge queue |
+| AppThreat/chen#298 | jssrc2cpg types every node from `.typespans`, `TYPE_FULL_NAME` is one name or `ANY` in both modes (`TypeNames.scala`), type recovery starts from those names | merged |
+| AppThreat/atom#363 | atom option `--frontend-args astgen-types=native` (or `ts6`), passed to chen and astgen as `ASTGEN_TYPES` | merged |
 
 atom-parsetools 2.0.0 is not published yet; the latest release is 1.10.6. To try the native type
 map, build the binary (`npm run test:native` builds and tests it; `parsa/scripts/fetch-typescript.sh`
@@ -85,7 +87,12 @@ time, memory, caps and determinism are met for the type map. The AST gate does n
   and `CHANGELOG.md` lists every breaking change. The Go command is renamed before 2.0.0 is
   published, so `atom-parsetools-native typemap` never ships.
 
-Decisions 3 (PHP parser, #61) and 4 (Flow, #56) are open.
+- Ruby and PHP (2026-11-03, settles decision 3): the parsers are not rewritten. `parsa rb` and
+  `parsa php` are `rbastgen.js` and `phpastgen.js` in Go, running `ruby_ast_gen` and nikic in the
+  user's Ruby and PHP, with the gem bundle and the nikic tree embedded in the binary as a tarball.
+  parsa stays free of cgo. See the [Ruby and PHP plan](parsetools-native-ruby-php.md).
+
+Decision 4 (Flow, #56) is open.
 
 ## Known gaps from the type map work
 
@@ -108,8 +115,8 @@ Decisions 3 (PHP parser, #61) and 4 (Flow, #56) are open.
 The recommended next round is epic #37, the Babel-shaped AST from the tsgo parser (D6 in the JS
 plan, task #53), started together with the Babel parts of #41, #42 and #43, because the AST work
 cannot be gated without Babel baselines, a Babel differ and per-node-type fixtures. Order within it:
-TS/JS, JSX/TSX, then the templates in #54. Ruby on Prism (#38) does not depend on it and can run in
-parallel. PHP waits for decision 3 (#61). Packaging and the default switch (#40) come after.
+TS/JS, JSX/TSX, then the templates in #54. `parsa rb` (#38) and `parsa php` (#39) do not depend on
+it and can run in parallel. Packaging and the default switch (#40) come after.
 
 Each round follows the testing plan's rules: every run under the watchdog with time and memory caps,
 one heavy job at a time on a developer machine, baselines kept outside the repositories, and any
