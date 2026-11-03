@@ -124,6 +124,9 @@ cannot be gated without Babel baselines, a Babel differ and per-node-type fixtur
 TS/JS, JSX/TSX, then the templates in #54. `parsa rb` (#38) and `parsa php` (#39) do not depend on
 it and can run in parallel. Packaging and the default switch (#40) come after.
 
+Before the JavaScript default changes, Flow files in projects not marked as Flow (D8, #75) and
+the two proposal syntaxes tsgo does not parse (D10, #76) need a defined outcome.
+
 Each round follows the testing plan's rules: every run under the watchdog with time and memory caps,
 one heavy job at a time on a developer machine, baselines kept outside the repositories, and any
 difference either fixed or allow-listed with a reason.
