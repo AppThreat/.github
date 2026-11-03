@@ -66,3 +66,15 @@ deprecated these have to come with `parsa`, which embeds them:
 - `PARSA_PLUGINS_HOME` points at an unpacked copy instead, and `parsa plugins extract DIR` writes one,
   for read-only file systems, container images (unpack at image build time) and offline use.
 - The tarball and its hash are listed in the post-build SBOM, with the gems and nikic as components.
+
+### Single executables of ruby_ast_gen
+
+ruby_ast_gen's release workflow builds tebako single executables that carry CRuby 4.0.6, prism and
+the gem (AppThreat/ruby_ast_gen#13): Linux glibc and musl on x64 and arm64, and macOS on arm64 and
+x64. Windows x64 is an experimental leg, Windows arm64 is not attempted, and no release with the
+executables has been published yet. If they can replace the gem, `parsa rb` runs the executable on
+the platforms that have one, users there need no Ruby, and parsa embeds the gem bundle only for the
+platforms without one (or not at all once all six targets are covered). Three spikes decide this:
+AppThreat/ruby_ast_gen#16 (parity, grammar coverage, size and start-up cost on Linux and macOS),
+AppThreat/ruby_ast_gen#17 (Windows x64, retried on a current tebako) and AppThreat/ruby_ast_gen#18
+(Windows arm64).
