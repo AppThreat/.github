@@ -71,7 +71,15 @@ time, memory, caps and determinism are met for the type map. The AST gate does n
 - New: astgen writes the type of each node by its extent (`.typespans`), and chen uses every native
   type, accepting graph changes where they make types more precise. That is the goal for v5.
 
-Decisions 3 (PHP parser, #61), 4 (Flow, #56) and 5 (Svelte, #55) are open.
+- Distribution (2026-11-03): no per-platform npm packages. Binaries go to `ghcr.io` on every push to
+  main and to GitHub releases with hashes, and cdxgen-plugins-bin bakes them into its platform
+  packages (cdxgen/cdxgen-plugins-bin#164, cdxgen/cdxgen#4721). See S2 in the ship plan.
+
+- Decision 5 (2026-11-03): the Svelte handling is ported to Go, with no Node fallback (#55).
+- scalasem (2026-11-03): ported to Go as well, keeping the Java TASTy helper, so that cdxgen can drop
+  the npm package.
+
+Decisions 3 (PHP parser, #61) and 4 (Flow, #56) are open.
 
 ## Known gaps from the type map work
 
