@@ -22,6 +22,9 @@ well on calls with both frontends, CDT and EDG, but misses external globals, enu
 
 ## The plans
 
+What has landed, the measurements so far and the next round are in
+[callsites-status.md](callsites-status.md).
+
 | plan | epic | what |
 | --- | --- | --- |
 | [callsites-ground-truth.md](callsites-ground-truth.md) | [AppThreat/atom#304](https://github.com/AppThreat/atom/issues/304) | corpus, oracles per language, scorer, gates, CI fixtures |
