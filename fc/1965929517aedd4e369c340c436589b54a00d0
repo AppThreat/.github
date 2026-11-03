@@ -1,0 +1,25 @@
+plans/callsites-consumers.md
+  s_c0804e5357f0c5::t_a50cb50c85c899 1,3-4,6-11,13-15
+plans/callsites-overview.md
+  s_c0804e5357f0c5::t_8e633d9dea9408 39,46,48,51-53
+plans/callsites-risks.md
+  s_c0804e5357f0c5::t_d6cece393ba599 12
+plans/callsites-status.md
+  s_c0804e5357f0c5::t_2320d60674e6e7 15-17,111-114,135-141
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "fc1965929517aedd4e369c340c436589b54a00d0",
+  "prompts": {},
+  "sessions": {
+    "s_c0804e5357f0c5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "75227701-fd30-4fc7-8eae-71a8df8f3a1c",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
