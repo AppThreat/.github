@@ -1,65 +1,68 @@
 # Native atom-parsetools: Ruby and PHP
 
-For Ruby and PHP, the gain from going native is less about speed and more about install: users
-need a Ruby 3.4 or 4.0 runtime for rbastgen and a PHP runtime for phpastgen today, and both fail in
-ways that are hard to diagnose from atom's side. Both commands keep their JSON output, because
-ruby2atom and php2atom in chen read it.
+Decision (2026-11-03): the Ruby and PHP parsers are not rewritten. `ruby_ast_gen` (Prism through the
+parser gem translation) and nikic/php-parser stay, running in the user's Ruby and PHP runtimes as
+they do today. What moves to Go is the Node code around them, `rbastgen.js` (166 lines) and
+`phpastgen.js` (2,114 lines), which become `parsa rb` and `parsa php`. Users still need Ruby 3.4 or
+4.0 for Ruby projects and PHP 8 for PHP projects; they no longer need Node for either. ruby2atom and
+php2atom in chen read the same JSON as before.
+
+This keeps parsa free of cgo (no Prism C library, no Rust PHP parser), so every target still
+cross-compiles from one Linux runner and the Linux binaries stay static.
 
 ## Ruby
 
-rbastgen runs the `ruby_ast_gen` gem (about 1,500 lines of Ruby), which parses with Prism through
-Prism's translation to the `parser` gem AST and writes that AST as JSON, plus provenance fields
-(`parser_backend`, `generator_version`, `ruby_version`, `magic_comments`, `encoding_scrubbed`,
-`truncated_nodes`).
+### R1. parsa rb
 
-### R1. Prism through cgo
+Port `rbastgen.js` to Go: the command line, the Ruby version check (`RUBY_VERSIONS_NEEDED`), how the
+vendored bundle is exposed through `GEM_PATH` (one gem repository per ABI directory, with prism and
+racc taken from the runtime's default gems), how the `ruby_ast_gen` script is found inside the
+bundle's git gems, the timeout, and the exit codes and messages. `ruby_ast_gen` itself and its
+output, including the provenance fields (`parser_backend`, `generator_version`, `ruby_version`,
+`magic_comments`, `encoding_scrubbed`, `truncated_nodes`), do not change.
 
-Vendor the Prism C library (ruby/prism, MIT; 2.1.0 released 2026-10-28) and call it through cgo.
-Prism needs no Ruby runtime. Grammar versions are chosen per parse (`3.3`, `3.4`, `4.0`, `4.1`), which
-replaces `--parser-target` and the closest-grammar fallback in `ruby_ast_gen.rb`. Prism 2.0 made
-"nearest" the default version and changed several APIs, so pin 2.1 and test the version switch.
+### R2. Ruby parity
 
-### R2. parser-gem translation in Go
-
-Port Prism's `Prism::Translation::Parser` (the Ruby code that turns Prism nodes into `parser` gem
-nodes) and `ruby_ast_gen`'s own JSON writer to Go, so the output stays byte-compatible. This is the
-bulk of the Ruby work; the translation is a few thousand lines of Ruby. The alternative, teaching
-ruby2atom to read Prism nodes directly, is a larger change in chen and is not planned for v5.
-
-### R3. Ruby parity
-
-Diff against rbastgen baselines on mastodon, maybe, railsgoat and the Ruby synthetic fixtures, then
-score ruby2atom's slices with the Prism oracle. DSL files matched by basename (Gemfile, Rakefile,
-Podfile and friends), magic comments and encoding scrubbing need their own fixtures.
+`test-fixtures/rbastgen-regression.js` runs against `parsa rb` unchanged, and the output is
+byte-identical to rbastgen 1.10.6 on mastodon, maybe, railsgoat and the Ruby synthetic fixtures with
+the same Ruby. Because the generator does not change, any difference is a bug in the port.
 
 ## PHP
 
-phpastgen (`phpastgen.js`, 2,114 lines, plus `phpbatch.php`) runs nikic/php-parser 5.8 (grammars 8.0
-to 8.5) in PHP worker processes and adds its own data: `framework_facts` on nodes (superglobal reads,
-declared attributes), depth truncation markers, encoding scrubbing, and the manifest and diagnostics
-files.
+### P1. parsa php
 
-### P1. Decision: parser
+Port `phpastgen.js` to Go: file discovery and the exclusion rules (`DEFAULT_EXCLUDE`,
+`--include-vendor`, the dependency directories, the PHP extensions), `--target-version` against
+`SUPPORTED_TARGET_VERSIONS`, the PHP worker processes running `phpbatch.php` with the bundled
+`php.ini`, chunking and concurrency, failure isolation, the manifest and diagnostics files, stale
+diagnostics, and the provenance that reads the vendored nikic version from `installed.php`. The
+parts that run inside PHP (`phpbatch.php`, nikic, `framework_facts`, `--max-depth` truncation,
+encoding scrubbing) do not change.
 
-| option | PHP coverage | AST | cost |
-|---|---|---|---|
-| mago-syntax (Rust, MIT or Apache-2.0, 1.59.0 on 2026-10-25) linked through a C ABI | 7.0 to 8.6, property hooks, asymmetric visibility, pipe operator | mago's own | a Rust build in the Go binary's toolchain; a nikic-shaped writer |
-| mago-syntax in a separate Rust binary | same | same | two binaries to ship |
-| keep nikic in a PHP runtime | 8.0 to 8.5 | nikic | no change in install |
-| a Go PHP parser | VKCOM/php-parser stops at 8.2 (last push 2023), z7zmey is dead since 2021 | | not viable |
+### P2. PHP parity
 
-The recommendation is to spike mago-syntax first: measure how far its AST is from nikic's on the PHP
-corpus before committing, because the writer has to reproduce nikic's node names, attribute names
-(`startLine`, `startFilePos`, ...) and child property names exactly.
+The `test-fixtures/phpastgen-*` contract, snapshot and property-based tests run against `parsa php`
+unchanged, and the output is byte-identical to phpastgen 1.10.6 on symfony-demo, bookstack, koel,
+DVWA and the PHP synthetic fixtures with the same PHP.
 
-### P2. nikic-shaped writer and phpastgen extras
+## Shipping the Ruby and PHP sources
 
-Write mago's AST as nikic JSON, then port `framework_facts`, truncation at `--max-depth`, encoding
-scrubbing, the exclusion rules, `--target-version`, and the manifest and diagnostics files. Name
-resolution stays in php2atom, as today.
+Today `build.sh` fills `plugins/` and the npm package ships it: `rubyastgen/` (the vendored pure-Ruby
+gem bundle with `ruby_ast_gen`, about 10 MB) and the PHP parts (`nikic/`, `composer/`, `autoload.php`,
+`bin/php-parse`, about 2 MB), with `phpbatch.php` next to `phpastgen.js`. Once the npm package is
+deprecated these have to come with `parsa`, which embeds them:
 
-### P3. PHP parity
-
-Diff against phpastgen baselines on symfony-demo, bookstack, koel, DVWA and the PHP synthetic
-fixtures, and score php2atom's slices with the nikic oracle. The existing contract and
-property-based tests in `test-fixtures/phpastgen-*` run against the native binary unchanged.
+- The release build packs exactly those Ruby and PHP files into one compressed tarball and embeds it
+  with `go:embed` (about 1.2 MB compressed). Nothing else goes in: `plugins/log4j2.xml` is unused
+  (atom has its own) and is deleted, and `php.ini` is not shipped today either. The tree is pure Ruby
+  and PHP source, so every target embeds the same tarball; prism and racc come from the user's Ruby.
+- A tarball rather than embedded files, because it is smaller in the binary and keeps what
+  `go:embed` would drop: dotfiles such as `rubyastgen/.bundle/config`, and the executable bit on
+  `bin/php-parse` and the gem executables.
+- On the first `parsa rb` or `parsa php` run the tarball is unpacked into the user cache directory
+  under a name that includes its hash (`<cache>/parsa/plugins-<sha256>`), into a temporary directory
+  that is then renamed into place, so concurrent runs do not collide and a new `parsa` gets a fresh
+  copy.
+- `PARSA_PLUGINS_HOME` points at an unpacked copy instead, and `parsa plugins extract DIR` writes one,
+  for read-only file systems, container images (unpack at image build time) and offline use.
+- The tarball and its hash are listed in the post-build SBOM, with the gems and nikic as components.

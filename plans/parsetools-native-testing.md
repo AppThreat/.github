@@ -42,14 +42,17 @@ file by file:
   `svelteName` keys are compared like any other key.
 - Type maps: compares per offset after normalizing union and object member order and quote style,
   and reports exact, normalized-equal, baseline-only and candidate-only counts per node kind.
-- nikic JSON (PHP) and `ruby_ast_gen` JSON (Ruby): same approach, including `framework_facts`,
-  truncation markers, `magic_comments` and the manifest fields.
+- nikic JSON (PHP) and `ruby_ast_gen` JSON (Ruby): the parsers do not change, so `parsa php` and
+  `parsa rb` must match phpastgen and rbastgen byte for byte, manifests and diagnostics included; a
+  plain digest comparison is the differ.
 
 Each differ has an allow-list file of reviewed difference classes. A class not on the list fails
 the run.
 
 **3. Unit and fixture tests** in the Go module: one fixture per Babel node type chen's jssrc2cpg
-reads (164 today), per Prism node type and per nikic node type, each with expected JSON checked in.
+reads (164 today), each with expected JSON checked in. Ruby and PHP keep their parsers, so their
+existing regression, contract and property tests cover `parsa rb` and `parsa php`, which must give
+byte-identical output.
 Fixtures for offsets cover CRLF, a byte order mark, two-byte, three-byte and four-byte characters
 (surrogate pairs), and files that end without a newline.
 
