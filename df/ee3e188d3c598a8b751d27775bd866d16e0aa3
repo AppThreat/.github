@@ -1,0 +1,14 @@
+plans/parsetools-native-status.md
+  h_0926447d100ad2 23-24,31,68
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "dfee3e188d3c598a8b751d27775bd866d16e0aa3",
+  "prompts": {},
+  "humans": {
+    "h_0926447d100ad2": {
+      "author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
