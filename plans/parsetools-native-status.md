@@ -20,14 +20,15 @@ measured again by another.
 
 | pull request | what it did | state |
 |---|---|---|
-| AppThreat/atom-parsetools#68 | Go module `native/`, command `atom-parsetools-native typemap`, typescript-go through a generated shim over `microsoft/TypeScript` `tsc/` pinned at 622d4f7 (`native/third_party/typescript.pin`) with one patch (`native/patches/0001-*`: builder budget, interrupt, work limit, printer cache release); astgen integration with fallback to TypeScript 6; type map differ and allow-list (`lib/typemap/`, `test-fixtures/typemap-allow.json`); watchdog and `npm run test:native`; CI job on Linux and macOS; package version 2.0.0, `ASTGEN_VERSION` 4.6.0 | merged |
+| AppThreat/atom-parsetools#68 | Go module (now `parsa/`, command `parsa js --types-only` since #71), typescript-go through a generated shim over `microsoft/TypeScript` `tsc/` pinned at 622d4f7 (`parsa/third_party/typescript.pin`) with one patch (`parsa/patches/0001-*`: builder budget, interrupt, work limit, printer cache release); astgen integration with fallback to TypeScript 6; type map differ and allow-list (`lib/typemap/`, `test-fixtures/typemap-allow.json`); watchdog and `npm run test:native`; CI job on Linux and macOS; package version 2.0.0, `ASTGEN_VERSION` 4.6.0 | merged |
+| AppThreat/atom-parsetools#71 | the native binary renamed `parsa` (module `parsa/`, `parsa js --types-only`) and `CHANGELOG.md` with the breaking changes of 2.0.0 | auto-merge on |
 | AppThreat/atom-parsetools#69 | `.typespans` next to each `.typemap`: the type of each node keyed by `"start:end"`, native runs only (`docs/OUTPUT_FORMATS.md`) | merged |
 | AppThreat/chen#296 | jssrc2cpg reads native type maps; `TypeStringNormalizer` writes both engines' strings in one canonical spelling | merged |
 | AppThreat/chen#298 | jssrc2cpg types every node from `.typespans`, `TYPE_FULL_NAME` is one name or `ANY` in both modes (`TypeNames.scala`), type recovery starts from those names | in review, auto-merge on |
 | AppThreat/atom#363 | atom option `--frontend-args astgen-types=native` (or `ts6`), passed to chen and astgen as `ASTGEN_TYPES` | in the merge queue |
 
 atom-parsetools 2.0.0 is not published yet; the latest release is 1.10.6. To try the native type
-map, build the binary (`npm run test:native` builds and tests it; `native/scripts/fetch-typescript.sh`
+map, build the binary (`npm run test:native` builds and tests it; `parsa/scripts/fetch-typescript.sh`
 fetches the pinned TypeScript checkout) and point `ASTGEN_NATIVE_BIN` at it, or put it next to
 `astgen.js` or on `PATH`. `docs/ASTGEN.md` ("Native type maps") documents the variables and the
 manifest record a native run writes.
@@ -64,7 +65,7 @@ time, memory, caps and determinism are met for the type map. The AST gate does n
 
 - Decision 1: Go hosts the binary.
 - Decision 2: an AppThreat shim generated against `microsoft/TypeScript` `tsc/`, not the tsgolint
-  pin. `native/scripts/bump-typescript.sh` moves the pin and reruns the tests.
+  pin. `parsa/scripts/bump-typescript.sh` moves the pin and reruns the tests.
 - Decision 6: TypeScript 7's member order is kept. chen's `TypeStringNormalizer` spells both engines
   the same way, and since chen#298 chen stores one name per node, so ordering no longer reaches the
   graph.
