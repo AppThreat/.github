@@ -4,9 +4,10 @@
 
 One Go binary per target, `parsa`, with the subcommands `js`, `php`, `rb` and `scala` and no links
 or wrappers under the old command names: Linux glibc and musl on x64 and arm64, macOS on arm64 and
-x64, Windows on x64 and arm64. parsa uses no cgo, so one Linux runner cross-compiles every target
+x64, Windows on x64 and arm64. parsa uses no cgo yet, so one Linux runner cross-compiles every target
 and the Linux binaries are static (one binary for glibc and musl); each binary then runs on its own
-platform in CI. Builds are reproducible (`-trimpath`, pinned toolchains) and carry a post-build SBOM
+platform in CI. A Flow parser linked with cgo (decision 4, AppThreat/atom-parsetools#75) changes
+this to a C++ toolchain per target, either `zig cc` from the Linux runner or a native runner each. Builds are reproducible (`-trimpath`, pinned toolchains) and carry a post-build SBOM
 and build provenance. The binary embeds the vendored `ruby_ast_gen` bundle and the nikic vendor tree
 that `parsa rb` and `parsa php` run.
 

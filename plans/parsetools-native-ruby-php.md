@@ -7,8 +7,8 @@ they do today. What moves to Go is the Node code around them, `rbastgen.js` (166
 4.0 for Ruby projects and PHP 8 for PHP projects; they no longer need Node for either. ruby2atom and
 php2atom in chen read the same JSON as before.
 
-This keeps parsa free of cgo (no Prism C library, no Rust PHP parser), so every target still
-cross-compiles from one Linux runner and the Linux binaries stay static.
+Ruby and PHP add no C or Rust code to parsa (no Prism C library, no Rust PHP parser), and their
+output stays byte for byte what rbastgen and phpastgen write today.
 
 ## Ruby
 

@@ -90,9 +90,13 @@ time, memory, caps and determinism are met for the type map. The AST gate does n
 - Ruby and PHP (2026-11-03, settles decision 3): the parsers are not rewritten. `parsa rb` and
   `parsa php` are `rbastgen.js` and `phpastgen.js` in Go, running `ruby_ast_gen` and nikic in the
   user's Ruby and PHP, with the gem bundle and the nikic tree embedded in the binary as a tarball.
-  parsa stays free of cgo. See the [Ruby and PHP plan](parsetools-native-ruby-php.md).
+  See the [Ruby and PHP plan](parsetools-native-ruby-php.md).
+- cgo (2026-11-03): allowed. parsa has none yet; the first candidate is Hermes's C++ parser for
+  Flow.
 
-Decision 4 (Flow, #56) is open.
+Decision 4 (Flow, #56) is open. AppThreat/atom-parsetools#75 measures Hermes's C++ parser linked
+with cgo. Flow files in projects not marked as Flow need a routing rule before the JavaScript
+default changes (see D8 in the [JavaScript plan](parsetools-native-js.md)).
 
 ## Known gaps from the type map work
 

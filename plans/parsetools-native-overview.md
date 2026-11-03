@@ -137,7 +137,9 @@ runtime (and `ruby_ast_gen` in a Ruby runtime). Decision 4 is open.
    `microsoft/TypeScript` as rslint has done since 2026-09-05.
 3. PHP: mago-syntax through a C ABI, a separate Rust binary, or keep nikic in a PHP runtime
    (settled: keep nikic).
-4. Flow: port to swc's Flow parser (Rust), keep `hermes-parser` in a Node fallback, or drop Flow.
+4. Flow: link Hermes's C++ parser with cgo (spike #75), port to swc's Flow parser (Rust), keep
+   `hermes-parser` in a Node fallback, or drop Flow. Flow files also occur in projects not marked
+   as Flow, so each option includes a rule that routes them away from tsgo.
 5. Svelte: port the template segmentation to Go, or keep a Node fallback for `.svelte` files.
 6. Whether type strings keep TypeScript 7's member order (chen expectations change once) or are
    reordered to look like TypeScript 6 (more code, no precision gain). Keeping TypeScript 7's order
@@ -163,5 +165,7 @@ runtime (and `ruby_ast_gen` in a Ruby runtime). Decision 4 is open.
   budget, and the reproducer goes upstream.
 - **Offsets.** Babel and chen use UTF-16 code unit offsets; Go strings use UTF-8 bytes. Every offset
   written is converted, and the tests include non-ASCII and astral characters.
-- **cgo.** parsa has none, which keeps cross-compiling and static Linux binaries simple. A Flow
-  parser in Rust (decision 4) would bring it back.
+- **cgo.** cgo is allowed. parsa has none today, which lets one Linux runner cross-compile every
+  target with static Linux binaries. A Flow parser in C++ or Rust (decision 4) brings it in, and
+  with it a C++ toolchain per target (`zig cc` or native runners), a static C++ runtime on Linux,
+  and the C++ components in the post-build SBOM.

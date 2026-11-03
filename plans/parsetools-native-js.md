@@ -94,9 +94,24 @@ the later route to types inside templates.
 
 ## D8. Flow
 
-tsgo does not parse Flow. Options are swc's Flow parser through a Rust library, keeping
-`hermes-parser` in a Node fallback, or dropping Flow (overview decision 4). Flow files are rare in
-the corpus; measure how many the default excludes already skip before choosing.
+tsgo does not parse Flow, and it recovers from Flow syntax instead of failing, so a Flow file
+parsed by tsgo gets a wrong tree rather than an error. astgen reaches Flow in two ways: `-t flow`
+sends JavaScript files to `hermes-parser` first, and any other JavaScript file that Babel rejects
+with the TypeScript plugin falls through to Babel's Flow plugin and then to `hermes-parser`
+(`codeToJsAst`). The second path covers Flow-annotated files in projects nobody marked as Flow,
+such as React Native apps and `@flow` packages.
+
+Options (overview decision 4): Hermes's C++ parser linked into parsa with cgo, swc's Flow parser
+through a Rust library, keeping `hermes-parser` in a Node fallback, or dropping Flow. The first is
+measured in AppThreat/atom-parsetools#75. `hermes-parser` is that same C++ parser compiled to
+WebAssembly; its C++ side writes a flat buffer and about 4,200 lines of JavaScript turn it into
+ESTree and then Babel shape, so the spike also costs that step in Go.
+
+Whatever the route, parsa needs a rule that sends a JavaScript file to the Flow parser when no
+project type says Flow (the `@flow` pragma, tsgo parse errors of Flow-only kinds, or both). Until
+that rule exists, `ASTGEN_AST=native` writes a wrong tree for those files, and the default for
+JavaScript does not change. Measure how many Flow files the default excludes already skip before
+choosing.
 
 ## D9. Command line and environment
 
