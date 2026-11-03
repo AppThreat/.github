@@ -94,9 +94,28 @@ the later route to types inside templates.
 
 ## D8. Flow
 
-tsgo does not parse Flow. Options are swc's Flow parser through a Rust library, keeping
-`hermes-parser` in a Node fallback, or dropping Flow (overview decision 4). Flow files are rare in
-the corpus; measure how many the default excludes already skip before choosing.
+tsgo does not parse Flow, and it recovers from Flow syntax instead of failing, so a Flow file
+parsed by tsgo gets a wrong tree rather than an error. astgen reaches Flow in two ways: `-t flow`
+sends JavaScript files to `hermes-parser` first, and any other JavaScript file that Babel rejects
+with the TypeScript plugin falls through to Babel's Flow plugin and then to `hermes-parser`
+(`codeToJsAst`). The second path covers Flow-annotated files in projects nobody marked as Flow,
+such as React Native apps and `@flow` packages.
+
+Route (overview decision 4, settled): Hermes's C++ parser, the parser inside `hermes-parser`,
+compiled to WebAssembly for WASI with wasi-sdk from a pinned Hermes commit, embedded in parsa and run
+by wazero, a WebAssembly runtime written in Go. parsa needs no cgo for it, every target still
+cross-compiles from one Linux runner, and a crash or runaway allocation in the parser stays inside
+the instance, which has its own memory limit, so the file is recorded as failed and the run goes on.
+The C++ side writes the program into a flat buffer; `hermes-parser` turns that into ESTree and then
+Babel shape in about 4,200 lines of JavaScript, and that step is written in Go, with the node
+deserializers generated from Hermes's node definitions as upstream does. AppThreat/atom-parsetools#75
+builds and measures it against `hermes-parser` on Node.
+
+parsa also needs a rule that sends a JavaScript file to the Flow parser when no
+project type says Flow (the `@flow` pragma, tsgo parse errors of Flow-only kinds, or both). Until
+that rule exists, `ASTGEN_AST=native` writes a wrong tree for those files, and the default for
+JavaScript does not change. Measure how many Flow files the default excludes already skip before
+choosing.
 
 ## D9. Command line and environment
 
