@@ -101,13 +101,17 @@ with the TypeScript plugin falls through to Babel's Flow plugin and then to `her
 (`codeToJsAst`). The second path covers Flow-annotated files in projects nobody marked as Flow,
 such as React Native apps and `@flow` packages.
 
-Options (overview decision 4): Hermes's C++ parser linked into parsa with cgo, swc's Flow parser
-through a Rust library, keeping `hermes-parser` in a Node fallback, or dropping Flow. The first is
-measured in AppThreat/atom-parsetools#75. `hermes-parser` is that same C++ parser compiled to
-WebAssembly; its C++ side writes a flat buffer and about 4,200 lines of JavaScript turn it into
-ESTree and then Babel shape, so the spike also costs that step in Go.
+Route (overview decision 4, settled): Hermes's C++ parser, the parser inside `hermes-parser`,
+compiled to WebAssembly for WASI with wasi-sdk from a pinned Hermes commit, embedded in parsa and run
+by wazero, a WebAssembly runtime written in Go. parsa needs no cgo for it, every target still
+cross-compiles from one Linux runner, and a crash or runaway allocation in the parser stays inside
+the instance, which has its own memory limit, so the file is recorded as failed and the run goes on.
+The C++ side writes the program into a flat buffer; `hermes-parser` turns that into ESTree and then
+Babel shape in about 4,200 lines of JavaScript, and that step is written in Go, with the node
+deserializers generated from Hermes's node definitions as upstream does. AppThreat/atom-parsetools#75
+builds and measures it against `hermes-parser` on Node.
 
-Whatever the route, parsa needs a rule that sends a JavaScript file to the Flow parser when no
+parsa also needs a rule that sends a JavaScript file to the Flow parser when no
 project type says Flow (the `@flow` pragma, tsgo parse errors of Flow-only kinds, or both). Until
 that rule exists, `ASTGEN_AST=native` writes a wrong tree for those files, and the default for
 JavaScript does not change. Measure how many Flow files the default excludes already skip before

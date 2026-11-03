@@ -101,7 +101,8 @@ and does not parse Flow. It stays the fallback if the shim risk below turns out 
 5. `parsa php`: phpastgen.js in Go.
 6. scalasem in Go: build discovery, SemanticDB decoding and the evidence it derives, with the
    same report format; the Java TASTy inspector stays.
-7. Packaging, then switching atom, chen and cdxgen to the native binary by default. Once every
+7. Packaging, then switching atom, chen and cdxgen to the native binary by default. chen and
+   atom v5 keep working with atom-parsetools 1.x as well (S3 in the ship plan). Once every
    command is native, cdxgen no longer depends on the `@appthreat/atom-parsetools` npm package.
 
 Steps 4, 5 and 6 do not depend on 2 and 3 and can run in parallel with them.
@@ -126,7 +127,8 @@ The native binary becomes the default for a language only when, on every corpus 
 Decisions 1, 2 and 6 were taken as recommended (Go host, an AppThreat shim over `microsoft/TypeScript`
 `tsc/`, TypeScript 7's order kept), and decision 5 as a Go port of the Svelte handling with no Node
 fallback; see the status page. Decision 3 was settled on 2026-11-03 by keeping nikic in a PHP
-runtime (and `ruby_ast_gen` in a Ruby runtime). Decision 4 is open.
+runtime (and `ruby_ast_gen` in a Ruby runtime), and decision 4 by running Hermes's parser as
+WebAssembly inside parsa.
 
 1. Go as the host language, with Rust only where no Go parser exists (recommended), or Rust as the
    host with types through the TypeScript 7.1 API.
@@ -137,9 +139,10 @@ runtime (and `ruby_ast_gen` in a Ruby runtime). Decision 4 is open.
    `microsoft/TypeScript` as rslint has done since 2026-09-05.
 3. PHP: mago-syntax through a C ABI, a separate Rust binary, or keep nikic in a PHP runtime
    (settled: keep nikic).
-4. Flow: link Hermes's C++ parser with cgo (spike #75), port to swc's Flow parser (Rust), keep
-   `hermes-parser` in a Node fallback, or drop Flow. Flow files also occur in projects not marked
-   as Flow, so each option includes a rule that routes them away from tsgo.
+4. Flow: link Hermes's C++ parser with cgo, run it as WebAssembly, port to swc's Flow parser
+   (Rust), keep `hermes-parser` in a Node fallback, or drop Flow (settled: Hermes as WebAssembly).
+   Flow files also occur in projects not marked as Flow, so the route includes a rule that sends
+   them to Hermes instead of tsgo.
 5. Svelte: port the template segmentation to Go, or keep a Node fallback for `.svelte` files.
 6. Whether type strings keep TypeScript 7's member order (chen expectations change once) or are
    reordered to look like TypeScript 6 (more code, no precision gain). Keeping TypeScript 7's order
@@ -165,7 +168,8 @@ runtime (and `ruby_ast_gen` in a Ruby runtime). Decision 4 is open.
   budget, and the reproducer goes upstream.
 - **Offsets.** Babel and chen use UTF-16 code unit offsets; Go strings use UTF-8 bytes. Every offset
   written is converted, and the tests include non-ASCII and astral characters.
-- **cgo.** cgo is allowed. parsa has none today, which lets one Linux runner cross-compile every
-  target with static Linux binaries. A Flow parser in C++ or Rust (decision 4) brings it in, and
-  with it a C++ toolchain per target (`zig cc` or native runners), a static C++ runtime on Linux,
-  and the C++ components in the post-build SBOM.
+- **cgo.** cgo is allowed, but nothing planned needs it: Flow runs as WebAssembly (decision 4).
+  Without cgo one Linux runner cross-compiles every target and the Linux binaries are static.
+- **WebAssembly speed.** Hermes under wazero is slower than native code and pays to compile the
+  module. Flow files are a small share of most projects; #75 measures both costs and wazero's
+  compilation cache.
