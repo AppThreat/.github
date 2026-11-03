@@ -2,8 +2,8 @@
 
 ## S1. Binaries
 
-One Go binary per target with the commands `astgen`, `phpastgen` and `rbastgen` (subcommands, plus
-the old names as links or small wrappers): Linux glibc and musl on x64 and arm64, macOS on arm64 and
+One Go binary per target, `atom-parsetools`, with the subcommands `astgen`, `phpastgen`, `rbastgen`
+and `scalasem` and no links or wrappers under the old names: Linux glibc and musl on x64 and arm64, macOS on arm64 and
 x64, Windows on x64 and arm64. cgo (Prism, and Rust if mago is chosen) rules out simple
 cross-compiling, so each target builds natively in CI, the Windows ARM64 build on the existing
 Windows test VM until a hosted runner exists. Builds are reproducible (`-trimpath`, pinned
@@ -18,23 +18,27 @@ Each release attaches the binaries to the GitHub release with a `.sha256` file a
 cdxgen users get the binary through `@cdxgen/cdxgen-plugins-bin`, whose release workflow downloads
 it from a pinned atom-parsetools release, checks the hash and bakes it into the platform packages, the
 way it ships kosi (cdxgen/cdxgen-plugins-bin#164, used by cdxgen/cdxgen#4721). There are no separate
-per-platform npm packages for atom-parsetools. `@appthreat/atom-parsetools` keeps its name and
-commands; its entry points run the binary when they find it (`ASTGEN_NATIVE_BIN`, next to the script,
-on `PATH`, or in an installed plugins-bin package) and the Node implementation otherwise. scalasem
-moves into the binary too, so once every command is native the npm package is only a thin wrapper and
-cdxgen drops its dependency on it (cdxgen copies the Svelte parsing it does in process from
-`svelteAst.js`). The Node implementation stays for one minor release after the default switches, then
-is removed.
+per-platform npm packages for atom-parsetools. Until a subcommand is native, the
+`@appthreat/atom-parsetools` npm package keeps the Node implementation of that tool (today astgen
+calls the binary only for type maps). Once every subcommand is native, the npm package is deprecated
+and consumers use the binary alone; cdxgen keeps the Svelte parsing it does in process by copying it
+from `svelteAst.js` (cdxgen/cdxgen#4722).
 
 ## S3. atom and chen
 
-chen's `AstGenRunner` calls `astgen` from the path and reads the output directory, so the binary
-works without code changes once installed. atom's and chen's container images download the binary
-from the GitHub release and check its hash. atom gets an option and an environment variable to force
-the native or the Node implementation for one release, the container images drop Node, PHP and Ruby
-where nothing else needs them, and `atom --version` reports which implementation and versions ran.
+Every consumer is changed to call `atom-parsetools <subcommand>`: chen's `AstGenRunner` and the
+PHP, Ruby and Scala runners, atom's frontend wiring and container images, and cdxgen's
+`lib/inventory/atomUtils.js` and `lib/ecosystems/scalasem.js`. The container images download the
+binary from the GitHub release and check its hash, and drop Node, PHP and Ruby where nothing else
+needs them. `atom --version` reports the atom-parsetools version that ran.
 
-## S4. Documentation
+## S4. Documentation and changelog
+
+`CHANGELOG.md` in atom-parsetools lists every breaking change per release with what a consumer has to
+change: removed command names and their subcommand replacements, flags and environment variables
+added, renamed or removed, output differences (type string spelling and ordering, newly typed nodes,
+`.typespans`, AST differences on the reviewed allow-lists), platforms without a binary, and the
+runtimes no longer needed. Each pull request that breaks something adds its entry.
 
 Update the parsetools guides (`ASTGEN.md`, `PHPASTGEN.md`, `RBASTGEN.md`, `ENV.md`, `PERFORMANCE.md`,
 `PACKAGING.md`, `TROUBLESHOOTING.md`) and atom's install docs: no runtimes to install, the new type

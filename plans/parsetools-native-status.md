@@ -79,6 +79,10 @@ time, memory, caps and determinism are met for the type map. The AST gate does n
 - scalasem (2026-11-03): ported to Go as well, keeping the Java TASTy helper, so that cdxgen can drop
   the npm package.
 
+- Commands (2026-11-03): one `atom-parsetools` binary with a subcommand per tool and no wrappers
+  under the old names; chen, atom and cdxgen are changed to call it, and `CHANGELOG.md` lists every
+  breaking change.
+
 Decisions 3 (PHP parser, #61) and 4 (Flow, #56) are open.
 
 ## Known gaps from the type map work
