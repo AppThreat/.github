@@ -70,10 +70,11 @@ because astgen asks for a type at nearly every node (61,000 to 274,000 queries p
 in process each query is a function call, and the checker's own length limit and node builder are
 directly reachable when a type has to be cut short.
 
-The binary is one command, `atom-parsetools`, with a subcommand per tool (`astgen`, `phpastgen`,
-`rbastgen`, `scalasem`) that takes the flags the tool takes today. The old command names are not kept:
-chen, atom and cdxgen are changed to call the subcommands, and the changelog lists every breaking
-change (ship plan, S4). The subcommands write the same JSON:
+The binary is one command, `parsa` ("parse for atom"), with a subcommand per language: `parsa js`
+(today's astgen: JavaScript, TypeScript and templates, AST and type maps), `parsa php` (phpastgen),
+`parsa rb` (rbastgen) and `parsa scala` (scalasem), each taking the flags the tool takes today. The
+old command names are not kept: chen, atom and cdxgen are changed to call `parsa`, and the changelog
+lists every breaking change (ship plan, S4). The subcommands write the same JSON:
 
 - JavaScript and TypeScript: parse once with the typescript-go parser, check with its checker, and
   write the Babel 8 AST shape and `.typemap` files astgen writes today. One parser for both outputs

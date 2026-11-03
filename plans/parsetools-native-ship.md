@@ -2,8 +2,8 @@
 
 ## S1. Binaries
 
-One Go binary per target, `atom-parsetools`, with the subcommands `astgen`, `phpastgen`, `rbastgen`
-and `scalasem` and no links or wrappers under the old names: Linux glibc and musl on x64 and arm64, macOS on arm64 and
+One Go binary per target, `parsa`, with the subcommands `js`, `php`, `rb` and `scala` and no links
+or wrappers under the old command names: Linux glibc and musl on x64 and arm64, macOS on arm64 and
 x64, Windows on x64 and arm64. cgo (Prism, and Rust if mago is chosen) rules out simple
 cross-compiling, so each target builds natively in CI, the Windows ARM64 build on the existing
 Windows test VM until a hosted runner exists. Builds are reproducible (`-trimpath`, pinned
@@ -20,22 +20,23 @@ it from a pinned atom-parsetools release, checks the hash and bakes it into the 
 way it ships kosi (cdxgen/cdxgen-plugins-bin#164, used by cdxgen/cdxgen#4721). There are no separate
 per-platform npm packages for atom-parsetools. Until a subcommand is native, the
 `@appthreat/atom-parsetools` npm package keeps the Node implementation of that tool (today astgen
-calls the binary only for type maps). Once every subcommand is native, the npm package is deprecated
-and consumers use the binary alone; cdxgen keeps the Svelte parsing it does in process by copying it
+calls `parsa js --types-only` for its type maps). Once every subcommand is native, the npm package is deprecated
+and consumers use `parsa` alone; cdxgen keeps the Svelte parsing it does in process by copying it
 from `svelteAst.js` (cdxgen/cdxgen#4722).
 
 ## S3. atom and chen
 
-Every consumer is changed to call `atom-parsetools <subcommand>`: chen's `AstGenRunner` and the
-PHP, Ruby and Scala runners, atom's frontend wiring and container images, and cdxgen's
-`lib/inventory/atomUtils.js` and `lib/ecosystems/scalasem.js`. The container images download the
-binary from the GitHub release and check its hash, and drop Node, PHP and Ruby where nothing else
-needs them. `atom --version` reports the atom-parsetools version that ran.
+Every consumer is changed to call `parsa <language>`: chen's `AstGenRunner` and its PHP, Ruby and
+Scala runners, atom's frontend wiring and container images, and cdxgen's
+`lib/inventory/atomUtils.js` and `lib/ecosystems/scalasem.js`. The container images download
+`parsa` from the GitHub release and check its hash, and drop Node, PHP and Ruby where nothing else
+needs them. `atom --version` reports the `parsa` version that ran.
 
 ## S4. Documentation and changelog
 
 `CHANGELOG.md` in atom-parsetools lists every breaking change per release with what a consumer has to
-change: removed command names and their subcommand replacements, flags and environment variables
+change: the removed commands and their replacements (`astgen` to `parsa js`, `phpastgen` to
+`parsa php`, `rbastgen` to `parsa rb`, `scalasem` to `parsa scala`), flags and environment variables
 added, renamed or removed, output differences (type string spelling and ordering, newly typed nodes,
 `.typespans`, AST differences on the reviewed allow-lists), platforms without a binary, and the
 runtimes no longer needed. Each pull request that breaks something adds its entry.
