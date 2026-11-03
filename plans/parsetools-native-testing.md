@@ -4,6 +4,10 @@ Every change is checked against outputs recorded from today's Node tools, on the
 hard resource caps. The goal is that no difference reaches chen unseen, and that no run can take a
 machine down.
 
+Status (2026-11-03): levels 1, 2, 5 and 6 exist for JavaScript and TypeScript type maps, level 3 for
+offsets, level 4 as a harness outside the repositories, and level 7 for the native type map only.
+See [parsetools-native-status.md](parsetools-native-status.md).
+
 ## Corpus
 
 [parsetools-native.corpus.json](parsetools-native.corpus.json) lists the inputs, their pins and

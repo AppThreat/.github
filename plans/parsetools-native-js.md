@@ -4,6 +4,9 @@ astgen writes two things per source file: the Babel 8 AST as JSON and a `.typema
 start offsets to type strings. jssrc2cpg in chen reads both (it handles 164 Babel node types across
 about 8,800 lines of Scala). This plan replaces how they are produced and keeps both formats.
 
+Status (2026-11-03): D1 to D5 have landed in AppThreat/atom-parsetools#68 and #69. D6 to D9 have not
+started, apart from two output-name fixes in astgen for D9. See [parsetools-native-status.md](parsetools-native-status.md).
+
 ## D1. Go module and typescript-go pin
 
 A Go module in atom-parsetools (`native/`) that links typescript-go through generated shims over its

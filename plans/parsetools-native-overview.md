@@ -1,7 +1,9 @@
 # Native atom-parsetools (overview)
 
-Status: proposed for v5.0.0. The measurements below come from a spike run on 2026-11-02 by AI agents
-on a 48 GB Apple silicon laptop. Every number names its input and tool, so it can be rerun.
+Status: in progress for v5.0.0. The native type map has landed behind `ASTGEN_TYPES=native`; what has
+landed, what is in review and what comes next is in [parsetools-native-status.md](parsetools-native-status.md).
+The measurements below come from a spike run on 2026-11-02 by AI agents on a 48 GB Apple silicon
+laptop. Every number names its input and tool, so it can be rerun.
 
 atom-parsetools today is a Node.js package with four commands. `astgen` parses JavaScript and
 TypeScript (plus Vue, Svelte, Astro, Ember and HTML templates) with `@babel/parser` 8, Flow with
@@ -52,6 +54,7 @@ users hit first today.
 
 | plan | what it covers |
 |---|---|
+| [parsetools-native-status.md](parsetools-native-status.md) | what has landed, measurements, decisions taken, known gaps, the next round |
 | [parsetools-native-testing.md](parsetools-native-testing.md) | corpus, baselines, contract differs, type and callsites scoring, resource caps, determinism |
 | [parsetools-native-js.md](parsetools-native-js.md) | type map on typescript-go, Babel-shaped AST from the tsgo parser, Vue, Svelte, Astro, Ember, HTML, Flow |
 | [parsetools-native-ruby-php.md](parsetools-native-ruby-php.md) | rbastgen on the Prism C library, phpastgen without a PHP runtime |
@@ -112,6 +115,9 @@ The native binary becomes the default for a language only when, on every corpus 
   Windows (x64, arm64).
 
 ## Decisions for a maintainer
+
+Decisions 1, 2 and 6 were taken as recommended (Go host, an AppThreat shim over `microsoft/TypeScript`
+`tsc/`, TypeScript 7's order kept); see the status page. Decisions 3, 4 and 5 are open.
 
 1. Go as the host language, with Rust only where no Go parser exists (recommended), or Rust as the
    host with types through the TypeScript 7.1 API.
