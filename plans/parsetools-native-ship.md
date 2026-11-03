@@ -20,9 +20,11 @@ it from a pinned atom-parsetools release, checks the hash and bakes it into the 
 way it ships kosi (cdxgen/cdxgen-plugins-bin#164, used by cdxgen/cdxgen#4721). There are no separate
 per-platform npm packages for atom-parsetools. `@appthreat/atom-parsetools` keeps its name and
 commands; its entry points run the binary when they find it (`ASTGEN_NATIVE_BIN`, next to the script,
-on `PATH`, or in an installed plugins-bin package) and the Node implementation otherwise. `scalasem`
-stays in JavaScript, so the npm package stays for it. The Node implementation of the other commands
-stays for one minor release after the default switches, then is removed.
+on `PATH`, or in an installed plugins-bin package) and the Node implementation otherwise. scalasem
+moves into the binary too, so once every command is native the npm package is only a thin wrapper and
+cdxgen drops its dependency on it (cdxgen copies the Svelte parsing it does in process from
+`svelteAst.js`). The Node implementation stays for one minor release after the default switches, then
+is removed.
 
 ## S3. atom and chen
 

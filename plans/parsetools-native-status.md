@@ -75,7 +75,11 @@ time, memory, caps and determinism are met for the type map. The AST gate does n
   main and to GitHub releases with hashes, and cdxgen-plugins-bin bakes them into its platform
   packages (cdxgen/cdxgen-plugins-bin#164, cdxgen/cdxgen#4721). See S2 in the ship plan.
 
-Decisions 3 (PHP parser, #61), 4 (Flow, #56) and 5 (Svelte, #55) are open.
+- Decision 5 (2026-11-03): the Svelte handling is ported to Go, with no Node fallback (#55).
+- scalasem (2026-11-03): ported to Go as well, keeping the Java TASTy helper, so that cdxgen can drop
+  the npm package.
+
+Decisions 3 (PHP parser, #61) and 4 (Flow, #56) are open.
 
 ## Known gaps from the type map work
 

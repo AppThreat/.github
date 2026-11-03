@@ -10,7 +10,8 @@ TypeScript (plus Vue, Svelte, Astro, Ember and HTML templates) with `@babel/pars
 `hermes-parser`, and computes a type map with the TypeScript 6 compiler API
 (`@typescript/typescript6`). `phpastgen` runs nikic/php-parser 5.8 inside a PHP runtime the user must
 install. `rbastgen` runs the `ruby_ast_gen` gem inside a Ruby 3.4 or 4.0 runtime the user must install.
-`scalasem` wraps the Scala compiler and stays as it is.
+`scalasem` reads what the Scala compiler wrote (TASTy and SemanticDB) and moves into the binary as
+well, keeping its small Java TASTy helper, which runs on the JVM a Scala project already needs.
 
 This plan replaces the first three with one native binary that needs no Node, PHP or Ruby runtime,
 keeps their JSON output contracts so chen's frontends do not change, and makes JavaScript and
@@ -95,9 +96,12 @@ and does not parse Flow. It stays the fallback if the shim risk below turns out 
    HTML, Astro, Ember, Svelte. Flow follows its decision.
 4. Ruby on Prism.
 5. PHP after its decision.
-6. Packaging, then switching atom and chen to the native binary by default.
+6. scalasem in Go: build discovery, SemanticDB decoding and the evidence it derives, with the
+   same report format; the Java TASTy inspector stays.
+7. Packaging, then switching atom, chen and cdxgen to the native binary by default. Once every
+   command is native, cdxgen no longer depends on the `@appthreat/atom-parsetools` npm package.
 
-Steps 4 and 5 do not depend on 2 and 3 and can run in parallel with them.
+Steps 4, 5 and 6 do not depend on 2 and 3 and can run in parallel with them.
 
 ## Gates for changing the default
 
@@ -117,7 +121,8 @@ The native binary becomes the default for a language only when, on every corpus 
 ## Decisions for a maintainer
 
 Decisions 1, 2 and 6 were taken as recommended (Go host, an AppThreat shim over `microsoft/TypeScript`
-`tsc/`, TypeScript 7's order kept); see the status page. Decisions 3, 4 and 5 are open.
+`tsc/`, TypeScript 7's order kept), and decision 5 as a Go port of the Svelte handling with no Node
+fallback; see the status page. Decisions 3 and 4 are open.
 
 1. Go as the host language, with Rust only where no Go parser exists (recommended), or Rust as the
    host with types through the TypeScript 7.1 API.
