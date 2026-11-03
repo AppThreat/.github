@@ -10,8 +10,8 @@ under milestone v4.0.0 Pelorus.
 ## Where it stands
 
 Every atom language now has a `callsites` source: JavaScript and TypeScript, Python, Java source,
-PHP, Ruby, JVM bytecode (jars, Kotlin and Scala classes, Android APKs) and, once AppThreat/atom#364
-merges, C and C++ on both frontends. Sprints 1 to 3 of the overview's order of work are done except
+PHP, Ruby, JVM bytecode (jars, Kotlin and Scala classes, Android APKs) and C and C++ on both
+frontends. Sprints 1 to 3 of the overview's order of work are done except
 for the language-versions plan and a few JavaScript and ground-truth tasks listed below. Nothing of
 the consumers plan (cdxgen and dep-scan) or the production plan has started, and cdxgen still runs
 `callsites` for JavaScript and TypeScript only.
@@ -28,8 +28,7 @@ reviewed it, fixed what it found, measured again and opened the pull requests.
 | 5 | AppThreat/atom#359 | the bytecode source with an application boundary for APKs and fat jars, the Android SDK path, synthetic line tables, class-to-artifact mapping from `META-INF` and the Gradle cache |
 | 6 | AppThreat/edga#10, #11, AppThreat/chen#297, AppThreat/atom#364 | edga exports includes, macro uses and enumerators from the IL; c2cpg and edg2atom tag the declaring header of every call, reference, field access, constructor call and macro use; CDT parses C23 attributes, digit separators and C++23 explicit object parameters; the C and C++ source with builtin headers decided by where they resolved; `--external-paths` for C and C++ |
 
-AppThreat/atom#364 is in CI with auto-merge on. It points atom's CI back at chen main, which already
-has chen#297.
+All six tranches are merged; the last, AppThreat/atom#364, merged on 2026-11-03.
 
 ## Measurements
 
@@ -95,7 +94,7 @@ AppThreat/atom#312.
 
 ## Open work by epic
 
-- Ground truth (atom#304): #313 gets its last language, C and C++, with atom#364. #312 (a
+- Ground truth (atom#304): #313 is done; every language has its test suite. #312 (a
   reproducible harness), #314 (typed oracles for JS and Python), #315 (complete Java and C/C++
   truth) and #316 (a dynamic recall floor) have not started.
 - Core and JS (atom#305): #320 (Vue, Svelte and Astro positions; the cause is astgen masking void
