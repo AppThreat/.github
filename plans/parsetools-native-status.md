@@ -1,20 +1,20 @@
 # Native atom-parsetools: status
 
-Updated 2026-11-03. This page says what has landed, what is in review and what comes next, so the
+Updated 2026-11-04. This page says what has landed, what is in review and what comes next, so the
 work can be picked up from here. The design is in the other plans
 ([overview](parsetools-native-overview.md), [JS/TS](parsetools-native-js.md),
 [testing](parsetools-native-testing.md), [Ruby and PHP](parsetools-native-ruby-php.md),
 [ship](parsetools-native-ship.md)); this page does not repeat it. The epics and tasks are issues in
-AppThreat/atom-parsetools (#35 to #67), AppThreat/chen#295 and AppThreat/atom#361, all on the
+AppThreat/atom-parsetools (#35 to #76), AppThreat/chen#295 and AppThreat/atom#361, all on the
 AppThreat roadmap board under milestone v5.0.0.
 
 ## Where it stands
 
-Step 2 of the order of work (the type map on typescript-go, behind `ASTGEN_TYPES=native`) is done,
-together with the JavaScript and TypeScript half of the testing work. Babel still parses every file,
-and nothing changes unless `ASTGEN_TYPES=native` is set. Steps 3 to 6 (the Babel-shaped AST,
-`parsa rb`, `parsa php`, packaging and the default switch) have not started; the release builds of
-step 7 are in place (#72, #73).
+The scope is the type map only (2026-11-04, see the overview). Steps 1 and 2 of the order of work
+(testing and the type map on typescript-go, behind `ASTGEN_TYPES=native`) are done, and the release
+builds of step 3 are in place (#72, #73). Babel still parses every file, and nothing changes unless
+`ASTGEN_TYPES=native` is set. Getting `parsa` to npm users, the default switch and the releases
+remain.
 
 The work was done in two rounds by AI agents, each implemented by one agent and reviewed, fixed and
 measured again by another.
@@ -60,10 +60,18 @@ through receivers typed with an imported package's class, native types give call
 everywhere, and precision within 0.03 of TypeScript 6 where it is lower (details in chen#298).
 
 Against the gates for changing the default in the overview: type map agreement, callsites, wall
-time, memory, caps and determinism are met for the type map. The AST gate does not apply yet
-(Babel still parses), and running without Node is step 6.
+time, memory, caps and determinism are met for the type map. The remaining gate is that astgen
+finds `parsa` from cdxgen-plugins-bin and in atom's images on every platform.
 
 ## Decisions taken
+
+- Distribution (2026-11-04, settles decision 7): no npm packages for `parsa`. It reaches users
+  through the cdxgen-plugins-bin platform packages and a direct download in container images, and
+  astgen also looks in an installed plugins-bin package. This replaces the 2026-11-03 entry below.
+- Scope (2026-11-04): only the type map is native. Babel and `hermes-parser` keep writing the AST
+  in Node, phpastgen, rbastgen and scalasem stay, and Node stays a requirement. The decisions below
+  on commands, scalasem, Svelte, Ruby and PHP, cgo and Flow belonged to the earlier no-Node scope
+  and are superseded; they are kept as a record.
 
 - Decision 1: Go hosts the binary.
 - Decision 2: an AppThreat shim generated against `microsoft/TypeScript` `tsc/`, not the tsgolint
@@ -98,7 +106,8 @@ time, memory, caps and determinism are met for the type map. The AST gate does n
   builds and measures it. Flow files in projects not marked as Flow need a routing rule before the
   JavaScript default changes (see D8 in the [JavaScript plan](parsetools-native-js.md)).
 - atom-parsetools 1.x and 2.x (2026-11-03): chen and atom v5 work with both (S3 in the
-  [ship plan](parsetools-native-ship.md)).
+  [ship plan](parsetools-native-ship.md)). The `release/1.x` branch, from v1.10.6, takes 1.x fixes
+  and publishes under the npm dist-tag `release-1.x` (AppThreat/atom-parsetools#77, #78).
 
 ## Known gaps from the type map work
 
@@ -108,25 +117,27 @@ time, memory, caps and determinism are met for the type map. The AST gate does n
   `baseUrl` as a module root and only `paths` aliases are emulated.
 - A type alias that one engine prints by name and the other expands is not yet a normalized class.
 - The cdxgen evolving-array reproducer has not been reported to TypeScript (#67).
-- Baselines, differs and node-type fixtures exist only for JavaScript and TypeScript type maps:
-  nothing yet for Babel JSON, nikic JSON or `ruby_ast_gen` JSON (#41, #42, #43).
 - The callsites scores come from a harness kept outside the repositories; there is no single
   command in atom-parsetools for it yet (#44).
 - Hostile-input tests cover the native type map (invalid UTF-8, binary files, a huge array literal,
   a large file, symlink loops, output outside the output directory) but not the Node tools (#46).
+- Type maps for files with syntax tsgo does not parse (Flow, `do` expressions, `export v from`)
+  have not been measured: tsgo checks its recovered tree, so some nodes may be untyped or typed
+  from the wrong span.
 - vue3-realworld callsites precision (0.772) is the lowest of the subset and has not been looked at.
 
 ## Next
 
-The recommended next round is epic #37, the Babel-shaped AST from the tsgo parser (D6 in the JS
-plan, task #53), started together with the Babel parts of #41, #42 and #43, because the AST work
-cannot be gated without Babel baselines, a Babel differ and per-node-type fixtures. Order within it:
-TS/JS, JSX/TSX, then the templates in #54. `parsa rb` (#38) and `parsa php` (#39) do not depend on
-it and can run in parallel. Packaging and the default switch (#40) come after.
+1. `parsa` in cdxgen-plugins-bin's platform packages (cdxgen/cdxgen-plugins-bin#164) and astgen's
+   lookup of an installed plugins-bin package (S2 in the ship plan, #65).
+2. Native types as astgen's default with the TypeScript 6 fallback, and the docs and changelog for it
+   (S3 and S4, #40, #66).
+3. chen's jssrc2cpg tests against atom-parsetools 1.x and 2.x in CI (AppThreat/chen#295), and atom's
+   images with `parsa` and the version report (AppThreat/atom#361).
+4. Releases: atom-parsetools 2.0.0, then chen and atom.
 
-Before the JavaScript default changes, Flow files in projects not marked as Flow (D8, #75) and
-the two proposal syntaxes tsgo does not parse (D10, #76) need a defined outcome.
-
-Each round follows the testing plan's rules: every run under the watchdog with time and memory caps,
-one heavy job at a time on a developer machine, baselines kept outside the repositories, and any
-difference either fixed or allow-listed with a reason.
+The upstream reports (#67), the callsites command (#44), the Node hostile-input tests (#46) and the
+unclassified type map differences can run alongside. Each round follows the testing plan's rules:
+every run under the watchdog with time and memory caps, one heavy job at a time on a developer
+machine, baselines kept outside the repositories, and any difference either fixed or allow-listed
+with a reason.

@@ -1,11 +1,13 @@
 # Native atom-parsetools: testing plan
 
-Every change is checked against outputs recorded from today's Node tools, on the same inputs, under
-hard resource caps. The goal is that no difference reaches chen unseen, and that no run can take a
+Every change to the native type map is checked against outputs recorded from today's Node tools,
+on the same inputs, under hard resource caps. The goal is that no difference reaches chen unseen, and that no run can take a
 machine down.
 
-Status (2026-11-03): levels 1, 2, 5 and 6 exist for JavaScript and TypeScript type maps, level 3 for
-offsets, level 4 as a harness outside the repositories, and level 7 for the native type map only.
+Status (2026-11-04): levels 1, 2, 5 and 6 exist for JavaScript and TypeScript type maps, level 3 for
+offsets and type map rules, level 4 as a harness outside the repositories, and level 7 for the native
+type map only. With the types-only scope (overview), the Babel JSON, nikic JSON and `ruby_ast_gen`
+JSON baselines, differs and fixtures this plan listed are no longer needed.
 See [parsetools-native-status.md](parsetools-native-status.md).
 
 ## Corpus
@@ -22,43 +24,29 @@ for the JS/TS, PHP and Ruby entries:
   solid-realworld and lit-starter, plus the Vue, Svelte, Astro and Ember fixtures in
   atom-parsetools `test-fixtures/`. A Svelte 5 application of a few hundred components (immich
   `web/`, which the parsetools performance notes already measure) is to be added.
-- Flow: no Flow corpus exists yet. Collect one pinned React Native release and a few `@flow`
-  packages before the Flow decision.
-- PHP: symfony-demo, bookstack, koel, DVWA, the PHP synthetic fixtures with `EXPECTED.tsv`.
-- Ruby: mastodon, maybe, railsgoat, the Ruby synthetic fixtures with `EXPECTED.tsv`.
+- PHP and Ruby inputs (symfony-demo, bookstack, koel, DVWA, mastodon, maybe, railsgoat) stay in
+  the corpus list for the callsites scorer; nothing native runs on them.
 
 ## Levels
 
-**1. Baselines.** Run astgen (with and without types), phpastgen and rbastgen 1.10.6 on every input
+**1. Baselines.** Run astgen 1.10.6 with and without types on every JavaScript and TypeScript input
 and keep: output trees as tarballs with per-file digests, the run manifests, wall time, peak RSS,
 and for JS/TS projects atom's `usages`, `callsites` and `reachables` slices built from those outputs.
 Rerun when the pinned parsetools release changes.
 
-**2. Contract differs.** One differ per output shape, each reading baseline and candidate trees
-file by file:
-
-- Babel JSON: compares node type, `start`, `end`, `loc`, child order and literal values, ignores
-  key order, reports differences grouped by node type and path. Svelte's `svelteKind` and
-  `svelteName` keys are compared like any other key.
-- Type maps: compares per offset after normalizing union and object member order and quote style,
-  and reports exact, normalized-equal, baseline-only and candidate-only counts per node kind.
-- nikic JSON (PHP) and `ruby_ast_gen` JSON (Ruby): the parsers do not change, so `parsa php` and
-  `parsa rb` must match phpastgen and rbastgen byte for byte, manifests and diagnostics included; a
-  plain digest comparison is the differ.
-
-Each differ has an allow-list file of reviewed difference classes. A class not on the list fails
+**2. Type map differ.** `lib/typemap/diff.mjs` reads baseline and candidate trees file by file,
+compares per offset after normalizing union and object member order and quote style, and reports
+exact, normalized-equal, baseline-only and candidate-only counts per node kind. It reads an allow-list
+of reviewed difference classes (`test-fixtures/typemap-allow.json`); a class not on the list fails
 the run.
 
-**3. Unit and fixture tests** in the Go module: one fixture per Babel node type chen's jssrc2cpg
-reads (164 today), each with expected JSON checked in. Ruby and PHP keep their parsers, so their
-existing regression, contract and property tests cover `parsa rb` and `parsa php`, which must give
-byte-identical output.
-Fixtures for offsets cover CRLF, a byte order mark, two-byte, three-byte and four-byte characters
-(surrogate pairs), and files that end without a newline.
+**3. Unit and fixture tests** in the Go module: the type map rules, project configuration and
+single-file components (`parsa/testdata/typemap/`), and offsets with CRLF, a byte order mark,
+two-byte, three-byte and four-byte characters (surrogate pairs), and files that end without a
+newline.
 
 **4. Scoring.** The callsites scorer from the callsites evaluation (`harness/score.py`, with the
-TypeScript binder oracle, the Prism oracle and the nikic oracle) runs on slices built from native
-output and from baseline output. Recall and precision must not drop.
+TypeScript binder oracle) runs on slices built from native and from TypeScript 6 type maps. Recall and precision must not drop.
 
 **5. Determinism.** Two runs give byte-identical output trees. For JS/TS, runs with 1, 4 and 8
 checkers give identical type maps.
