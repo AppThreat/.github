@@ -84,8 +84,8 @@ their names and flags.
 
 1. Testing and baselines for the type map (done).
 2. The type map on typescript-go, behind `ASTGEN_TYPES=native` (done).
-3. Getting `parsa` to users: release binaries (done), and a way for astgen to find one after a
-   normal install (ship plan, S2).
+3. Getting `parsa` to users (ship plan, S2): release binaries (done), the platform packages of
+   cdxgen-plugins-bin, and a download with a hash check in atom's container images.
 4. Native types as astgen's default, with TypeScript 6 kept as the fallback (ship plan, S3).
 5. Releases of atom-parsetools 2.0.0, chen and atom with native types on by default.
 
@@ -99,14 +99,17 @@ Native type maps become astgen's default only when, on every JavaScript and Type
 - Wall time is at most half of today's and peak memory is not higher, both measured under caps.
 - No input exceeds the caps (cdxgen included), and output is identical across checker counts and
   across two runs.
-- A normal install of atom-parsetools finds a `parsa` binary on Linux glibc and musl (x64, arm64),
-  macOS (arm64, x64) and Windows (x64, arm64), and falls back to TypeScript 6 elsewhere.
+- astgen finds `parsa` from an installed cdxgen-plugins-bin platform package and in atom's container
+  images on Linux glibc and musl (x64, arm64), macOS (arm64, x64) and Windows (x64, arm64), and
+  falls back to TypeScript 6 where there is none (a plain `npm install` of atom-parsetools).
 
 ## Decisions for a maintainer
 
 Decisions 1, 2 and 6 were taken as recommended (Go host, an AppThreat shim over `microsoft/TypeScript`
 `tsc/`, TypeScript 7's order kept); see the status page. Decisions 3 to 5 (the PHP parser, Flow and
-Svelte in a native AST) no longer arise with the types-only scope. Decision 7 is open.
+Svelte in a native AST) no longer arise with the types-only scope. Decision 7 was settled on
+2026-11-04: no npm packages for `parsa`; it reaches users through cdxgen-plugins-bin and a direct
+download in container images.
 
 - Decision 1: Go as the host language, or Rust as the host with types through the TypeScript 7.1 API.
 - Decision 2: how to track typescript-go. The `microsoft/typescript-go` repository was archived on 2026-08-31
@@ -115,10 +118,10 @@ Svelte in a native AST) no longer arise with the types-only scope. Decision 7 is
    `microsoft/TypeScript` as rslint has done since 2026-09-05.
 - Decision 6: whether type strings keep TypeScript 7's member order (chen expectations change once) or are
    reordered to look like TypeScript 6. Keeping TypeScript 7's order is recommended.
-- Decision 7: how an npm install of atom-parsetools gets `parsa` (ship plan, S2): per-platform npm packages as
-   optional dependencies, as `@typescript/native-preview` and esbuild do (recommended now that Node
-   stays), or no npm packages, with users and images installing the binary from the GitHub release
-   or cdxgen-plugins-bin.
+- Decision 7: how users get `parsa` (ship plan, S2): per-platform npm packages as optional
+   dependencies of atom-parsetools, as `@typescript/native-preview` and esbuild do, or no npm
+   packages, with cdxgen-plugins-bin and container images carrying the binary (settled: the
+   latter).
 
 ## Risks
 

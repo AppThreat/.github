@@ -15,19 +15,19 @@ Every push to main pushes each target's binary to `ghcr.io/appthreat/parsa` with
 commit and a moving `main` tag), and each release attaches the binaries to the GitHub release with a
 `.sha256` file, build provenance and the SBOM.
 
-The `@appthreat/atom-parsetools` npm package keeps all four commands. astgen finds `parsa` through
-`ASTGEN_NATIVE_BIN`, next to `astgen.js`, or on `PATH`, and falls back to TypeScript 6 when it finds
-none. What is missing is a way for a normal `npm install` to bring the binary (overview, decision 7):
+The `@appthreat/atom-parsetools` npm package keeps all four commands and does not carry `parsa`;
+there are no per-platform npm packages for it (overview, decision 7, settled 2026-11-04). `parsa`
+reaches users in two ways:
 
-- Per-platform npm packages (`@appthreat/parsa-linux-x64` and so on) listed as optional
-  dependencies, so npm installs only the one for the machine, as `@typescript/native-preview` and
-  esbuild do. astgen also looks in that package. Recommended now that Node stays.
-- Or no npm packages: atom's images and cdxgen-plugins-bin carry the binary (cdxgen-plugins-bin bakes
-  it into its platform packages, cdxgen/cdxgen-plugins-bin#164), and other users download it from the
-  GitHub release.
+- cdxgen-plugins-bin: its release workflow downloads the binary from a pinned atom-parsetools
+  release, checks the `.sha256`, and places it under `plugins/parsa/` in each platform package
+  (cdxgen/cdxgen-plugins-bin#164); cdxgen points astgen at it (cdxgen/cdxgen#4721).
+- Container images: atom's images download the binary from the GitHub release and check its hash
+  (AppThreat/atom#361).
 
-The decision taken on 2026-11-03 against per-platform npm packages assumed the npm package would be
-retired; with Node staying, it is open again.
+astgen looks for `parsa` through `ASTGEN_NATIVE_BIN`, next to `astgen.js`, on `PATH`, and in an
+installed cdxgen-plugins-bin platform package, and falls back to TypeScript 6 when it finds none, as
+it will after a plain `npm install` of atom-parsetools.
 
 ## S3. Default, atom and chen
 

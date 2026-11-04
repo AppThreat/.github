@@ -60,11 +60,14 @@ through receivers typed with an imported package's class, native types give call
 everywhere, and precision within 0.03 of TypeScript 6 where it is lower (details in chen#298).
 
 Against the gates for changing the default in the overview: type map agreement, callsites, wall
-time, memory, caps and determinism are met for the type map. The remaining gate is that a normal
-install finds a `parsa` binary on every platform (overview, decision 7).
+time, memory, caps and determinism are met for the type map. The remaining gate is that astgen
+finds `parsa` from cdxgen-plugins-bin and in atom's images on every platform.
 
 ## Decisions taken
 
+- Distribution (2026-11-04, settles decision 7): no npm packages for `parsa`. It reaches users
+  through the cdxgen-plugins-bin platform packages and a direct download in container images, and
+  astgen also looks in an installed plugins-bin package. This replaces the 2026-11-03 entry below.
 - Scope (2026-11-04): only the type map is native. Babel and `hermes-parser` keep writing the AST
   in Node, phpastgen, rbastgen and scalasem stay, and Node stays a requirement. The decisions below
   on commands, scalasem, Svelte, Ruby and PHP, cgo and Flow belonged to the earlier no-Node scope
@@ -125,7 +128,8 @@ install finds a `parsa` binary on every platform (overview, decision 7).
 
 ## Next
 
-1. Decision 7 in the overview: how `npm install` brings `parsa` (S2 in the ship plan, #65).
+1. `parsa` in cdxgen-plugins-bin's platform packages (cdxgen/cdxgen-plugins-bin#164) and astgen's
+   lookup of an installed plugins-bin package (S2 in the ship plan, #65).
 2. Native types as astgen's default with the TypeScript 6 fallback, and the docs and changelog for it
    (S3 and S4, #40, #66).
 3. chen's jssrc2cpg tests against atom-parsetools 1.x and 2.x in CI (AppThreat/chen#295), and atom's
