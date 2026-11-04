@@ -114,6 +114,10 @@ AppThreat/atom#312.
   (milestone 13.8.0, plan `plans/cdxgen-callsites-evidence.md` in cdxgen/.github), and
   dep-scan#552 and #553 under owasp-dep-scan/dep-scan#555 (milestone v7.0.0 Lodestar, plan
   `plans/depscan-callsites.md` in owasp-dep-scan/.github). The consumers epic atom#310 is closed.
+- Package coverage (decision 0002): a user's evinse run on ngx-admin showed that callsites adds
+  occurrences but no package; the same holds on the 13 frontend corpus apps. Side-effect imports
+  become records (#367, core-js D7) and the harness gains a package-coverage gate and the frontend
+  apps (#368, ground-truth D6).
 - Production (atom#311): #340 to #344, none started.
 
 ## Known gaps

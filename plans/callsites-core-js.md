@@ -65,6 +65,13 @@ slice, and reproduce the `-t ts` stall on cdxgen with `ASTGEN_TYPE_TIMING=1` for
 atom-parsetools. Done when typed recall is ≥ 0.85 on the typed-oracle projects and cdxgen's
 repository types in under 5 minutes.
 
+### D7. Side-effect imports (atom, chen if needed)
+
+Decision 0002 (Q1): an import that binds nothing, or a bare `require` statement, is one record with
+kind `import`. Done when the polyfill imports of ngx-admin (`zone.js`, `core-js`, `classlist.js`,
+`web-animations-js`) are records, binding imports still give no record of their own, and every other
+slice is byte-identical to main. Tracked in AppThreat/atom#367.
+
 ## Risks and open questions
 
 - D6 may show that the gap is type availability (no `node_modules` in cdxgen's usual input), which
