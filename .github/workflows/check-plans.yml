@@ -1,0 +1,29 @@
+name: Check plans
+
+# Validates the plans and data files on every pull request: JSON parses, the
+# corpus manifests match plans/corpus-manifest.schema.json, and Markdown has
+# no em-dashes, no emojis and no broken relative links. The check is required
+# on main, so pull requests here can use auto-merge.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: check-plans-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  check-plans:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check plans and data files
+        run: python3 -I .github/scripts/check-plans.py

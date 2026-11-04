@@ -23,7 +23,8 @@ for the JS/TS, PHP and Ruby entries:
   ember-super-rentals, nuxt-movies, vue-router-playground, angular-spotify, qwik-examples,
   solid-realworld and lit-starter, plus the Vue, Svelte, Astro and Ember fixtures in
   atom-parsetools `test-fixtures/`. A Svelte 5 application of a few hundred components (immich
-  `web/`, which the parsetools performance notes already measure) is to be added.
+  `web/`, which the parsetools performance notes already measure) is to be added, and so are Flow
+  inputs: one pinned React Native release and some packages written with `@flow`.
 - PHP and Ruby inputs (symfony-demo, bookstack, koel, DVWA, mastodon, maybe, railsgoat) stay in
   the corpus list for the callsites scorer; nothing native runs on them.
 
