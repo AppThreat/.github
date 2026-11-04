@@ -1,0 +1,14 @@
+plans/parsetools-native-ruby-php.md
+  h_0926447d100ad2 69-80
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "dbeaf6f73af8311715b679a635aa940bf012739c",
+  "prompts": {},
+  "humans": {
+    "h_0926447d100ad2": {
+      "author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
