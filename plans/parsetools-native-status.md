@@ -61,13 +61,14 @@ everywhere, and precision within 0.03 of TypeScript 6 where it is lower (details
 
 Against the gates for changing the default in the overview: type map agreement, callsites, wall
 time, memory, caps and determinism are met for the type map. The remaining gate is that astgen
-finds `parsa` from cdxgen-plugins-bin and in atom's images on every platform.
+runs `parsa` when cdxgen starts it from cdxgen-plugins-bin and in atom's images on every platform.
 
 ## Decisions taken
 
 - Distribution (2026-11-04, settles decision 7): no npm packages for `parsa`. It reaches users
-  through the cdxgen-plugins-bin platform packages and a direct download in container images, and
-  astgen also looks in an installed plugins-bin package. This replaces the 2026-11-03 entry below.
+  through the cdxgen-plugins-bin platform packages and a direct download in container images. astgen
+  does not search for those itself: cdxgen and the images point it at `parsa` through
+  `ASTGEN_NATIVE_BIN` (or the images place it next to `astgen.js`). This replaces the 2026-11-03 entry below.
 - Scope (2026-11-04): only the type map is native. Babel and `hermes-parser` keep writing the AST
   in Node, phpastgen, rbastgen and scalasem stay, and Node stays a requirement. The decisions below
   on commands, scalasem, Svelte, Ruby and PHP, cgo and Flow belonged to the earlier no-Node scope
@@ -128,8 +129,9 @@ finds `parsa` from cdxgen-plugins-bin and in atom's images on every platform.
 
 ## Next
 
-1. `parsa` in cdxgen-plugins-bin's platform packages (cdxgen/cdxgen-plugins-bin#164) and astgen's
-   lookup of an installed plugins-bin package (S2 in the ship plan, #65).
+1. `parsa` in cdxgen-plugins-bin's platform packages (cdxgen/cdxgen-plugins-bin#164), with cdxgen
+   setting `ASTGEN_NATIVE_BIN` from it (cdxgen/cdxgen#4721), and in atom's images (AppThreat/atom#361);
+   S2 in the ship plan, #65.
 2. Native types as astgen's default with the TypeScript 6 fallback, and the docs and changelog for it
    (S3 and S4, #40, #66).
 3. chen's jssrc2cpg tests against atom-parsetools 1.x and 2.x in CI (AppThreat/chen#295), and atom's
