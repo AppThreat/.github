@@ -1,6 +1,6 @@
 # callsites: status
 
-Updated 2026-11-03. This page says what has landed, what is in review and what comes next, so the
+Updated 2026-11-04. This page says what has landed, what is in review and what comes next, so the
 work can be picked up from here. The design is in the other callsites plans, starting with the
 [overview](callsites-overview.md), and the rules for what counts as a use are in
 [decision 0001](decisions/0001-callsites-what-counts.md); this page does not repeat them. The epics
@@ -16,7 +16,7 @@ for the language-versions plan and a few JavaScript and ground-truth tasks liste
 production plan has not started. cdxgen still runs `callsites` for JavaScript and TypeScript only;
 its part and dep-scan's are now planned in their own organizations (see below).
 
-The work was done in six tranches. In each, one AI agent implemented a written brief and another
+The work was done in seven tranches. In each, one AI agent implemented a written brief and another
 reviewed it, fixed what it found, measured again and opened the pull requests.
 
 | tranche | pull requests | what landed |
@@ -27,8 +27,9 @@ reviewed it, fixed what it found, measured again and opened the pull requests.
 | 4 | AppThreat/chen#263, #264, AppThreat/atom#350 | cpg2 3.1.2, ruby2atom constant references, names for calls on constants, heritage and mixins from gems, the Ruby source |
 | 5 | AppThreat/atom#359 | the bytecode source with an application boundary for APKs and fat jars, the Android SDK path, synthetic line tables, class-to-artifact mapping from `META-INF` and the Gradle cache |
 | 6 | AppThreat/edga#10, #11, AppThreat/chen#297, AppThreat/atom#364 | edga exports includes, macro uses and enumerators from the IL; c2cpg and edg2atom tag the declaring header of every call, reference, field access, constructor call and macro use; CDT parses C23 attributes, digit separators and C++23 explicit object parameters; the C and C++ source with builtin headers decided by where they resolved; `--external-paths` for C and C++ |
+| 7 | AppThreat/chen#300, AppThreat/atom#365 | JavaScript and TypeScript records carry the SBOM's purl; `--external-paths` works on every source frontend through one x2cpg pass, and a BOM's component locations (`cdx:vendored:path`, `cdx:cmake:sourceDir`) mark vendored code too, with the component's purl on its records; c2cpg gives a translation unit's file-scope method the unit's own file instead of its first header's; Java `implements` is no longer reported as `extends` |
 
-All six tranches are merged; the last, AppThreat/atom#364, merged on 2026-11-03.
+All seven tranches are merged; the last, AppThreat/atom#365, merged on 2026-11-04.
 
 ## Measurements
 
@@ -85,7 +86,8 @@ AppThreat/atom#312.
 - Decision 0001: every reference is a use (declared types, `implements`, C macros, generated code);
   a typed call is attributed to the receiver's static type, with the declaring class kept as
   `declaringModule`; standard library uses are in the slice with `builtin` set; vendored code is
-  external where it can be recognised, plus a path-regex option.
+  external where it can be recognised, plus a path-regex option and the BOM's component locations.
+  Without either, every slice is byte-identical to what it was before tranche 7.
 - `usages` stays and keeps being fixed where it is touched; `callsites` is the additional slice.
 - A header, class or module is builtin by where it resolved (SDK, sysroot, compiler, standard
   library, platform jar), never by its name.
@@ -97,13 +99,13 @@ AppThreat/atom#312.
 - Ground truth (atom#304): #313 is done; every language has its test suite. #312 (a
   reproducible harness), #314 (typed oracles for JS and Python), #315 (complete Java and C/C++
   truth) and #316 (a dynamic recall floor) have not started.
-- Core and JS (atom#305): #320 (Vue, Svelte and Astro positions; the cause is astgen masking void
-  elements), #321 (purls: filled for Python, Java, bytecode, PHP and Ruby, missing for JavaScript
-  and C/C++), #322 (typed-call recall) and AppThreat/atom-parsetools#33 (type generation stalls on
+- Core and JS (atom#305): #321 is done (JavaScript purls; C and C++ records get one only from a
+  BOM component location). #320 (Vue, Svelte and Astro positions; the cause is astgen masking void
+  elements), #322 (typed-call recall) and AppThreat/atom-parsetools#33 (type generation stalls on
   cdxgen's repository; the native type map work handles that input, see
   [parsetools-native-status.md](parsetools-native-status.md)).
-- C and C++ (atom#308): #346 asks for the vendored-code option on every frontend and for BOM
-  component locations; only C and C++ have it.
+- C and C++ (atom#308): #346 is done; every source frontend has the vendored-code option and
+  reads BOM component locations.
 - Language versions (chen#241): #255 (report files that could not be parsed),
   atom-parsetools#34 (TC39 auto-accessors), atom#334 (Java method references and Lombok) and
   atom#335 (version matrix fixtures).
@@ -126,19 +128,20 @@ AppThreat/atom#312.
 - PHP names with one segment cannot be attributed by the scorer, and Ruby's recall has a ceiling
   because ruby2atom excludes `db/migrate` by default. Whether that default should change has not been
   decided.
+- With `--external-paths`, PHP and Ruby calls on untyped top-level locals into vendored code get
+  no record, the same as calls into any other dependency, and Python imports of namespace packages
+  (a directory without `__init__.py`) are recorded as dependencies with or without the option.
 - Bytecode renamed by R8 needs `mapping.txt` (atom#360), and calls through lambdas and method
   references are missing from reachables and callsites (atom#354). The SootUp migration
   (atom#351) will replace the Soot frontend these slices run on, in v5.
 
 ## Next
 
-The recommended next round stays in atom and chen: the attribution the slice itself can give.
-atom#321 fills `purl` on JavaScript and TypeScript records from the SBOM, as Python, Java, PHP, Ruby
-and bytecode records already have it, and atom#346 brings the vendored-code option (`--external-paths`)
-from C and C++ to every frontend and adds the BOM's component locations as a second source. Both read
-the same BOM data. After it comes the production plan (#340 to #344): determinism, memory, docs, and
-the release chain that ends in the full corpus run and an atom 4 release, which is also what cdxgen
-and dep-scan wait for. The language-versions and ground-truth tasks can run beside either round.
+The recommended next round starts the production plan in atom: byte-identical output across runs
+and across separately built atoms (#340), the callsites process within the usages process's memory
+on the same atom (#341), and docs and help for every language (#342). The release chain (#343) and
+the decision on what `usages` keeps (#344) follow it and are the maintainer's. The language-versions
+and ground-truth tasks can run beside it.
 
 Each round follows the overview's rules: tests with bad and good twins, a mutation table, equivalence
 tests for changes that keep output, member-level and builtin checks beside the package score, and a
