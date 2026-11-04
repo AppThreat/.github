@@ -99,8 +99,8 @@ Native type maps become astgen's default only when, on every JavaScript and Type
 - Wall time is at most half of today's and peak memory is not higher, both measured under caps.
 - No input exceeds the caps (cdxgen included), and output is identical across checker counts and
   across two runs.
-- astgen finds `parsa` from an installed cdxgen-plugins-bin platform package and in atom's container
-  images on Linux glibc and musl (x64, arm64), macOS (arm64, x64) and Windows (x64, arm64), and
+- astgen runs `parsa` when cdxgen starts it from an installed cdxgen-plugins-bin platform package and
+  in atom's container images on Linux glibc and musl (x64, arm64), macOS (arm64, x64) and Windows (x64, arm64), and
   falls back to TypeScript 6 where there is none (a plain `npm install` of atom-parsetools).
 
 ## Decisions for a maintainer

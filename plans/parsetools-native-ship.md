@@ -25,9 +25,12 @@ reaches users in two ways:
 - Container images: atom's images download the binary from the GitHub release and check its hash
   (AppThreat/atom#361).
 
-astgen looks for `parsa` through `ASTGEN_NATIVE_BIN`, next to `astgen.js`, on `PATH`, and in an
-installed cdxgen-plugins-bin platform package, and falls back to TypeScript 6 when it finds none, as
-it will after a plain `npm install` of atom-parsetools.
+astgen keeps its lookup as it is: `ASTGEN_NATIVE_BIN`, next to `astgen.js`, then `PATH`, and falls
+back to TypeScript 6 when it finds none, as it will after a plain `npm install` of atom-parsetools.
+astgen does not search cdxgen-plugins-bin or `CDXGEN_PLUGINS_DIR` itself. cdxgen already resolves its
+plugins directory and sets `ASTGEN_NATIVE_BIN` when it starts atom, and the images either place
+`parsa` next to `astgen.js` or set the same variable. This keeps cdxgen's package names and
+environment variables out of atom-parsetools.
 
 ## S3. Default, atom and chen
 
