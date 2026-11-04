@@ -11,11 +11,35 @@ An earlier version of this plan ported `rbastgen.js` and `phpastgen.js` to Go as
 
 ## Single executables of ruby_ast_gen
 
-ruby_ast_gen's release workflow builds tebako single executables that carry CRuby 4.0.6, prism and
-the gem (AppThreat/ruby_ast_gen#13): Linux glibc and musl on x64 and arm64, and macOS on arm64 and
-x64. Windows x64 is an experimental leg, Windows arm64 is not attempted, and no release with the
-executables has been published yet. If they can replace the gem, rbastgen can run the executable on
-the platforms that have one, so users there need no Ruby, and the npm package can stop carrying the
-gem bundle for those platforms. Three spikes decide this: AppThreat/ruby_ast_gen#16 (parity, grammar
-coverage, size and start-up cost on Linux and macOS), AppThreat/ruby_ast_gen#17 (Windows x64,
-retried on a current tebako) and AppThreat/ruby_ast_gen#18 (Windows arm64).
+ruby_ast_gen's release workflow builds tebako single executables that carry CRuby, prism and the
+gem. If they can replace the gem, rbastgen can run the executable on the platforms that have one, so
+users there need no Ruby, and the npm package can stop carrying the gem bundle for those platforms.
+Three spikes asked whether they can (AppThreat/ruby_ast_gen#16, #17 and #18). They were answered
+in AppThreat/ruby_ast_gen#19 (merged 2026-11-04), with the numbers in `docs/sea-spike.md` of that
+repository, and are closed.
+
+What the spikes found, with tebako v2.8.68 and CRuby 4.0.7:
+
+- Linux glibc and musl (x64, arm64) and macOS (arm64, x64) build in CI. On the syntax fixtures,
+  railsgoat, maybe and mastodon the executables write the same AST JSON as the gem with prism 1.9,
+  backend included; only `ruby_version` differs, and neither chen nor atom reads it. The glibc
+  executables need glibc 2.31 (Ubuntu 20.04, Debian 11, RHEL 9), the macOS ones macOS 14.
+- Each executable is 92 to 156 MB, against about 10 MB for the gem bundle, unpacks 86 to 147 MB
+  into `~/.tebako` on its first run, and costs about 0.2 s and 100 MB of peak RSS more per run than
+  the gem.
+- A caller has to set `TEBAKO_HOME` and `TMPDIR` to writable directories that allow executing files,
+  remove `RUBYOPT`, `BUNDLE_*`, `GEM_*` and `RUBYLIB` from the child environment, fall back to the
+  gem when the bootstrap fails, and check `parser_backend` in the manifest, because a prism that
+  fails to load falls back to the Ruby 3.3 grammar with exit status 0.
+- Windows x64 builds only with the runtime's prism 1.8.1, because prism 1.9's native extension does
+  not compile during a Windows press; it is not published. Windows arm64 cannot be pressed until
+  tebako ships its press tools for that platform; the x64 executable runs there under emulation.
+
+Open work in ruby_ast_gen: provenance, an SBOM and a signing decision before the first release with
+executables (AppThreat/ruby_ast_gen#20), and the Windows executables (AppThreat/ruby_ast_gen#21).
+atom-parsetools still pins ruby_ast_gen at 4ac8432, before the Windows input path fix from #19.
+
+Parked (2026-11-04): rbastgen keeps running the gem, and the executables are revisited once the
+Windows builds are solved. The spikes show that rbastgen could run them on the six Linux and macOS
+targets, at the download size and memory cost above, but not on Windows yet. #20 and #21 stay open
+outside the current milestone, and no atom-parsetools work item exists for them.

@@ -62,7 +62,7 @@ compared.
 | [parsetools-native-status.md](parsetools-native-status.md) | what has landed, measurements, decisions taken, known gaps, the next round |
 | [parsetools-native-testing.md](parsetools-native-testing.md) | corpus, baselines, the type map differ, callsites scoring, resource caps, determinism |
 | [parsetools-native-js.md](parsetools-native-js.md) | the type map on typescript-go; the sections on a native AST are kept as a record and not planned |
-| [parsetools-native-ruby-php.md](parsetools-native-ruby-php.md) | not planned; the ruby_ast_gen single-executable spikes |
+| [parsetools-native-ruby-php.md](parsetools-native-ruby-php.md) | not planned; the ruby_ast_gen single-executable spike results and what is left |
 | [parsetools-native-ship.md](parsetools-native-ship.md) | binaries, how astgen finds `parsa`, the default switch, atom and chen, upstream reports |
 | [parsetools-native.corpus.json](parsetools-native.corpus.json) | the inputs every gate runs on |
 
