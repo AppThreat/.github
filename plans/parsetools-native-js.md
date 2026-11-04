@@ -1,15 +1,17 @@
 # Native atom-parsetools: JavaScript and TypeScript
 
 astgen writes two things per source file: the Babel 8 AST as JSON and a `.typemap` that maps node
-start offsets to type strings. jssrc2cpg in chen reads both (it handles 164 Babel node types across
-about 8,800 lines of Scala). This plan replaces how they are produced and keeps both formats.
+start offsets to type strings (and, in native runs, a `.typespans` keyed by `"start:end"`).
+jssrc2cpg in chen reads both (it handles 164 Babel node types across about 8,800 lines of Scala).
+This plan moves the type map to typescript-go. Babel keeps writing the AST.
 
-Status (2026-11-03): D1 to D5 have landed in AppThreat/atom-parsetools#68 and #69. D6 to D9 have not
-started, apart from two output-name fixes in astgen for D9. See [parsetools-native-status.md](parsetools-native-status.md).
+Status (2026-11-04): D1 to D5 and D9 have landed in AppThreat/atom-parsetools#68, #69 and #71.
+D6 to D8 and D10 described a native AST and are not planned (see the overview's scope); they are
+kept below, shortened, as a record of what was found. See [parsetools-native-status.md](parsetools-native-status.md).
 
 ## D1. Go module and typescript-go pin
 
-A Go module in atom-parsetools (`native/`) that links typescript-go through generated shims over its
+A Go module in atom-parsetools (`parsa/`) that links typescript-go through generated shims over its
 `internal/` packages, the way oxc-project/tsgolint and web-infra-dev/rslint do. The source moved:
 `microsoft/typescript-go` was archived on 2026-08-31 and the code is now `microsoft/TypeScript`,
 directory `tsc/`, module `github.com/microsoft/TypeScript/tsc`, Go 1.27. The pin, the patch stack and
@@ -75,72 +77,35 @@ in 7.1. With `/** @type {any[]} */` on that one declaration, `tsc` checks the wh
 time budget on type collection (the existing budget covers only printing), today on TypeScript 6
 and later in the native binary. The generated reproducer goes to the upstream report (S5).
 
-## D6. Babel-shaped AST from the tsgo parser
+## D6 to D8. Native AST, templates and Flow (not planned)
 
-Convert tsgo's AST to Babel 8 JSON in Go: node types, `start`/`end` as UTF-16 offsets, `loc` with
-line and column, comments, `extra` (raw values, parenthesized), BigInt as strings, `errors` on
-recovered parse errors, and the options astgen sets (`errorRecovery`, `createParenthesizedExpressions`,
-`tokens` where used). TypeScript-only syntax (decorators, enums, namespaces, `satisfies`, type
-parameters, accessors) maps to Babel's TS node types. Recovery differs between the two parsers: a file
-Babel recovers and tsgo does not (or the reverse) is a reviewed difference, not a silent one.
+These sections planned a Babel-shaped AST converted from the tsgo parse in Go, the template handling
+in Go, and Flow through Hermes's parser run as WebAssembly. They were dropped on 2026-11-04 in favour
+of keeping Babel and `hermes-parser` in Node. What was learned, for anyone who reopens them:
 
-## D7. Templates and single-file components
+- Matching Babel's JSON from tsgo's tree has to rebuild spans without leading trivia, Babel's
+  comment attachment, `extra` fields, optional chains, JSX text and Babel's script or module choice,
+  and the two parsers recover from syntax errors differently.
+- tsgo recovers from Flow syntax instead of failing, so a Flow file gets a wrong tree rather than an
+  error, and astgen reaches Flow not only with `-t flow` but through its parser fallback chain for
+  any JavaScript file Babel rejects with the TypeScript plugin (`codeToJsAst`).
+- `hermes-parser` is Hermes's C++ parser built as WebAssembly; its C++ side writes a flat buffer and
+  about 4,200 lines of JavaScript turn that into ESTree and then Babel shape.
 
-Port the Vue SFC splitting and the HTML, Astro and Ember template mapping (`htmlAst.js`, `astroAst.js`,
-`emberAst.js`, about 1,900 lines). Svelte (`svelteAst.js`, 1,291 lines) depends on
-`svelte/compiler` for segmentation; port it or keep a Node fallback for `.svelte` files (overview
-decision 5). TypeScript 7.1's content mappers, which Vue and Svelte language tools are adopting, are
-the later route to types inside templates.
-
-## D8. Flow
-
-tsgo does not parse Flow, and it recovers from Flow syntax instead of failing, so a Flow file
-parsed by tsgo gets a wrong tree rather than an error. astgen reaches Flow in two ways: `-t flow`
-sends JavaScript files to `hermes-parser` first, and any other JavaScript file that Babel rejects
-with the TypeScript plugin falls through to Babel's Flow plugin and then to `hermes-parser`
-(`codeToJsAst`). The second path covers Flow-annotated files in projects nobody marked as Flow,
-such as React Native apps and `@flow` packages.
-
-Route (overview decision 4, settled): Hermes's C++ parser, the parser inside `hermes-parser`,
-compiled to WebAssembly for WASI with wasi-sdk from a pinned Hermes commit, embedded in parsa and run
-by wazero, a WebAssembly runtime written in Go. parsa needs no cgo for it, every target still
-cross-compiles from one Linux runner, and a crash or runaway allocation in the parser stays inside
-the instance, which has its own memory limit, so the file is recorded as failed and the run goes on.
-The C++ side writes the program into a flat buffer; `hermes-parser` turns that into ESTree and then
-Babel shape in about 4,200 lines of JavaScript, and that step is written in Go, with the node
-deserializers generated from Hermes's node definitions as upstream does. AppThreat/atom-parsetools#75
-builds and measures it against `hermes-parser` on Node.
-
-parsa also needs a rule that sends a JavaScript file to the Flow parser when no
-project type says Flow (the `@flow` pragma, tsgo parse errors of Flow-only kinds, or both). Until
-that rule exists, `ASTGEN_AST=native` writes a wrong tree for those files, and the default for
-JavaScript does not change. Measure how many Flow files the default excludes already skip before
-choosing.
+The work items were AppThreat/atom-parsetools#37, #53, #54, #55, #56, #57 and #75, closed as not
+planned.
 
 ## D9. Command line and environment
 
-Same flags as `astgen` (`-i`, `-o`, `-t`, `-r`, `--tsTypes`) and the `ASTGEN_*` and `ATOM_*`
-variables in `docs/ENV.md`, with the same file discovery, ignore rules and test-file exclusion.
+`parsa js --types-only -i SRC -o OUT` reads the same `ASTGEN_*` discovery variables as astgen
+(`docs/ENV.md`), with the same file discovery, ignore rules and test-file exclusion, so the type maps
+cover the files astgen writes ASTs for. astgen keeps its own flags and starts `parsa` itself.
 
-## D10. Syntax only Babel parses
+## D10. Syntax only Babel parses (not planned)
 
-Tracked in AppThreat/atom-parsetools#76.
-
-astgen turns on Babel syntax plugins for proposals (`babelSyntaxPlugins` in `astgen.js`). The
-typescript-go parser at the pinned commit handles most of them: `decorators-legacy`, explicit
-resource management, import attributes, and the import phases of `sourcePhaseImports` and
-`deferredImportEvaluation` (`import source x from`, `import defer * as ns from`, `import.source()`
-and `import.defer()`). It does not parse two:
-
-- `doExpressions`: `let x = do { ... }` (a stage 1 proposal).
-- `exportDefaultFrom`: `export v from "mod"` (a stage 1 proposal).
-
-tsgo recovers from both instead of failing, so as with Flow the file would get a wrong tree rather
-than an error. Until the outcome below is chosen, `ASTGEN_AST=native` writes tsgo's recovered tree
-with its `errors` array for these files, and the JavaScript default does not change. Count the files that use them on the corpus
-and in a sample of npm packages, then choose one of: detect them and record the file in
-`astgen_manifest.jsonl` as not parsed, with no `.json`; add them to the tsgo parser through a patch
-in `parsa/patches` (the converter then writes Babel's `DoExpression` and `ExportDefaultSpecifier`);
-or both, the patch for the forms chen uses and the record for the rest. Each syntax gets a fixture
-in `parsa/testdata/babel/`, so the chosen behaviour is tested and a later tsgo upgrade that changes
-it fails the tests.
+tsgo at the pinned commit does not parse two proposals astgen enables in Babel, `doExpressions`
+(`let x = do { ... }`) and `exportDefaultFrom` (`export v from "mod"`), and recovers from them
+instead of failing. With Babel writing the AST this matters only for the type map of such a file,
+which tsgo computes on its recovered tree; how many nodes that leaves untyped or mistyped has not
+been measured. AppThreat/atom-parsetools#76
+is closed as not planned.
