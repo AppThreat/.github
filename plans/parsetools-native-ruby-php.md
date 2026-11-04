@@ -39,6 +39,7 @@ Open work in ruby_ast_gen: provenance, an SBOM and a signing decision before the
 executables (AppThreat/ruby_ast_gen#20), and the Windows executables (AppThreat/ruby_ast_gen#21).
 atom-parsetools still pins ruby_ast_gen at 4ac8432, before the Windows input path fix from #19.
 
-Not decided: whether rbastgen should run the executables. The spikes show that it can on the six
-Linux and macOS targets; the cost is the download size and memory above, against removing the Ruby
-requirement for users on those platforms. No atom-parsetools work item exists until that is decided.
+Parked (2026-11-04): rbastgen keeps running the gem, and the executables are revisited once the
+Windows builds are solved. The spikes show that rbastgen could run them on the six Linux and macOS
+targets, at the download size and memory cost above, but not on Windows yet. #20 and #21 stay open
+outside the current milestone, and no atom-parsetools work item exists for them.
