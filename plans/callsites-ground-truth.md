@@ -88,6 +88,17 @@ more than 5 % of its files in `errorFiles`.
 Run test suites under tracing (Python `sys.monitoring`, a Java agent, Node's inspector) and require
 every executed external call site to be in `callsites`. Needs no oracle.
 
+### D6. Package coverage and frontend apps
+
+Decision 0002 (Q3). The harness lists, per JavaScript and TypeScript project, the declared packages
+the sources reference by channel (code imports, styles, framework configuration, HTML) and reports
+the share the callsites slice names and the share with BOM occurrences after evinse, with and
+without callsites. The corpus gains akveo/ngx-admin and the frontend corpus apps (angular-spotify,
+nuxt-movies, nuxt-atidone, svelte-realworld, solid-realworld, ember-super-rentals, lit-starter,
+astro-examples, react-router-examples, vue-router-playground), plus one workspace monorepo, each
+pinned by commit with its BOM inputs. Done when the table runs from the harness on every JS project
+and the code-channel share is a gate in the release run. Tracked in AppThreat/atom#368.
+
 ## Risks and open questions
 
 - Oracle mistakes become "slice bugs". Every oracle has a fixture with hand-written answers and is

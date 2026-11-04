@@ -23,7 +23,8 @@ annotation-processor and compiler-generated calls) all count. Each keeps a disti
 The ground truth credits and penalises them like any other use.
 
 Unchanged by this decision: import lines are recorded by `kind` but are not uses on their own; test
-files stay out of scope by default.
+files stay out of scope by default. [Decision 0002](0002-callsites-side-effect-imports-and-package-coverage.md)
+amends the first part: an import that binds nothing is a use.
 
 ### P2. A typed call belongs to the receiver's static type
 
