@@ -13,10 +13,11 @@ Every atom language now has a `callsites` source: JavaScript and TypeScript, Pyt
 PHP, Ruby, JVM bytecode (jars, Kotlin and Scala classes, Android APKs) and C and C++ on both
 frontends. Sprints 1 to 3 of the overview's order of work are done except
 for the language-versions plan and a few JavaScript and ground-truth tasks listed below. The
-production plan has not started. cdxgen still runs `callsites` for JavaScript and TypeScript only;
+production plan is under way: output is deterministic, memory is checked and every language is
+documented. cdxgen still runs `callsites` for JavaScript and TypeScript only;
 its part and dep-scan's are now planned in their own organizations (see below).
 
-The work was done in seven tranches. In each, one AI agent implemented a written brief and another
+The work was done in eight tranches. In each, one AI agent implemented a written brief and another
 reviewed it, fixed what it found, measured again and opened the pull requests.
 
 | tranche | pull requests | what landed |
@@ -28,8 +29,9 @@ reviewed it, fixed what it found, measured again and opened the pull requests.
 | 5 | AppThreat/atom#359 | the bytecode source with an application boundary for APKs and fat jars, the Android SDK path, synthetic line tables, class-to-artifact mapping from `META-INF` and the Gradle cache |
 | 6 | AppThreat/edga#10, #11, AppThreat/chen#297, AppThreat/atom#364 | edga exports includes, macro uses and enumerators from the IL; c2cpg and edg2atom tag the declaring header of every call, reference, field access, constructor call and macro use; CDT parses C23 attributes, digit separators and C++23 explicit object parameters; the C and C++ source with builtin headers decided by where they resolved; `--external-paths` for C and C++ |
 | 7 | AppThreat/chen#300, AppThreat/atom#365 | JavaScript and TypeScript records carry the SBOM's purl; `--external-paths` works on every source frontend through one x2cpg pass, and a BOM's component locations (`cdx:vendored:path`, `cdx:cmake:sourceDir`) mark vendored code too, with the component's purl on its records; c2cpg gives a translation unit's file-scope method the unit's own file instead of its first header's; Java `implements` is no longer reported as `extends` |
+| 8 | AppThreat/atom#369 | byte-identical slices across runs and across separately built atoms (ties in `CallSiteRecord.dedupe` and in the JavaScript, Python, PHP and vendored-code sources broken on stable properties, checked on reordered graphs); `callsites` peaks at or below `usages` in memory on five large projects; the lesson, CLI page and help text cover every language, and a test runs the lesson's commands; CI keeps one macOS job per pull request (AppThreat/atom#370 asks for reliable macOS runners) |
 
-All seven tranches are merged; the last, AppThreat/atom#365, merged on 2026-11-04.
+All eight tranches are merged; the last, AppThreat/atom#369, merged on 2026-11-04.
 
 ## Measurements
 
@@ -117,8 +119,12 @@ AppThreat/atom#312.
 - Package coverage (decision 0002): a user's evinse run on ngx-admin showed that callsites adds
   occurrences but no package; the same holds on the 13 frontend corpus apps. Side-effect imports
   become records (#367, core-js D7) and the harness gains a package-coverage gate and the frontend
-  apps (#368, ground-truth D6).
-- Production (atom#311): #340 to #344, none started.
+  apps (#368, ground-truth D6). The cdxgen side of the same report (duplicate occurrences on Windows
+  from mixed path separators, and `offset` and `symbol` on each occurrence) is cdxgen/cdxgen#4726,
+  milestone 13.7.0.
+- Production (atom#311): #340 to #342 are done. #373 (every source writes `/` in paths on every
+  platform; today the Java and PHP sources write backslashes on Windows) is open. #343 (the release
+  chain) and #344 (what `usages` keeps) are the maintainer's.
 
 ## Known gaps
 
@@ -141,11 +147,11 @@ AppThreat/atom#312.
 
 ## Next
 
-The recommended next round starts the production plan in atom: byte-identical output across runs
-and across separately built atoms (#340), the callsites process within the usages process's memory
-on the same atom (#341), and docs and help for every language (#342). The release chain (#343) and
-the decision on what `usages` keeps (#344) follow it and are the maintainer's. The language-versions
-and ground-truth tasks can run beside it.
+The next round is about JavaScript package coverage, from decision 0002: side-effect imports as
+records (#367), correct lines in Vue, Svelte and Astro components (#320), the package-coverage gate
+with the frontend apps in the corpus (#368), and `/` in every source's paths (#373). The release
+chain (#343) and the decision on what `usages` keeps (#344) remain the maintainer's. The
+language-versions and other ground-truth tasks can run beside it.
 
 Each round follows the overview's rules: tests with bad and good twins, a mutation table, equivalence
 tests for changes that keep output, member-level and builtin checks beside the package score, and a
