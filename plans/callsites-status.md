@@ -110,9 +110,9 @@ evinse is the same with and without the callsites slice on every app; that part 
   reproducible harness), #314 (typed oracles for JS and Python), #315 (complete Java and C/C++
   truth) and #316 (a dynamic recall floor) have not started.
 - Core and JS (atom#305): #321 is done (JavaScript purls; C and C++ records get one only from a
-  BOM component location). #320 (Vue, Svelte and Astro positions; the cause is astgen masking void
-  elements), #322 (typed-call recall) and AppThreat/atom-parsetools#33 (type generation stalls on
-  cdxgen's repository; the native type map work handles that input, see
+  BOM component location). #320 (Vue, Svelte and Astro positions; fixed in astgen by
+  AppThreat/atom-parsetools#83 and #84, waiting on a 1.x release), #322 (typed-call recall) and
+  AppThreat/atom-parsetools#33 (type generation stalls on cdxgen's repository; the native type map work handles that input, see
   [parsetools-native-status.md](parsetools-native-status.md)).
 - C and C++ (atom#308): #346 is done; every source frontend has the vendored-code option and
   reads BOM component locations.
@@ -135,30 +135,39 @@ evinse is the same with and without the callsites slice on every app; that part 
 
 ## Known gaps
 
-- CDT's C++ recall on leveldb (0.279, against EDG's 0.781) has not been analysed.
-- CDT misses curl's `bool` macro (1,459 rows of the recall gap on curl).
+Each gap is an issue on the AppThreat roadmap board, in the Backlog with no milestone.
+
+- CDT's C++ recall on leveldb (0.279, against EDG's 0.781) has not been analysed
+  (AppThreat/chen#304).
+- CDT misses curl's `bool` macro (1,459 rows of the recall gap on curl, AppThreat/chen#305).
 - On curl, EDG's reachables went from 31 flows on main to 267 with tranche 6; the edg2atom change
-  that caused it was not isolated.
+  that caused it was not isolated (AppThreat/chen#306).
 - Python precision on httpie (0.949) is held down by typed attribute reads, `super()` into external
   bases and quoted `TYPE_CHECKING` annotations, which the Python oracle does not attribute yet
   (#314).
-- PHP names with one segment cannot be attributed by the scorer, and Ruby's recall has a ceiling
-  because ruby2atom excludes `db/migrate` by default. Whether that default should change has not been
-  decided.
-- With `--external-paths`, PHP and Ruby calls on untyped top-level locals into vendored code get
-  no record, the same as calls into any other dependency, and Python imports of namespace packages
-  (a directory without `__init__.py`) are recorded as dependencies with or without the option.
+- The scorer cannot attribute PHP names with one segment (`sprintf`, `PDO`, `config()`), which
+  holds PHP recall under the default settings far below the gate (#375).
+- PHP and Ruby calls on untyped top-level locals get no record, with or without `--external-paths`
+  (#376), and Python imports of namespace packages inside the project (a directory without
+  `__init__.py`) are recorded as dependencies (#377).
 - Bytecode renamed by R8 needs `mapping.txt` (atom#360), and calls through lambdas and method
   references are missing from reachables and callsites (atom#354). The SootUp migration
   (atom#351) will replace the Soot frontend these slices run on, in v5.
 
+Ruby's recall ceiling from `db/migrate` is gone: ruby2atom scans migrations by default since
+AppThreat/chen@42023446.
+
+chennai, the terminal explorer built on chen, does not read the callsites slice yet
+(AppThreat/chennai#4, Backlog).
+
 ## Next
 
-The JavaScript package-coverage round is done except for #320 (lines in Vue, Svelte and Astro
-components), which waits on AppThreat/atom-parsetools#82. The candidates for the next round are
-typed-call recall (#322), a reproducible harness (#312), the typed oracles (#314) and the
-language-versions tasks. The release chain (#343) and the decision on what `usages` keeps (#344)
-remain the maintainer's.
+The JavaScript work closes with [callsites-js-wrapup.md](callsites-js-wrapup.md): Vue, Svelte and
+Astro positions (#320, whose astgen fix is AppThreat/atom-parsetools#83 and #84), typed-call recall
+(#322), the astgen stall on cdxgen (AppThreat/atom-parsetools#33), TC39 auto-accessors
+(AppThreat/atom-parsetools#34) and Java method references with Lombok (#334), for the release at the
+end of November. A reproducible harness (#312) and the typed oracles (#314) come after it. The
+release chain (#343) and the decision on what `usages` keeps (#344) remain the maintainer's.
 
 Each round follows the overview's rules: tests with bad and good twins, a mutation table, equivalence
 tests for changes that keep output, member-level and builtin checks beside the package score, and a
