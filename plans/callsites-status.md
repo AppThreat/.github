@@ -1,6 +1,6 @@
 # callsites: status
 
-Updated 2026-11-04. This page says what has landed, what is in review and what comes next, so the
+Updated 2026-11-05. This page says what has landed, what is in review and what comes next, so the
 work can be picked up from here. The design is in the other callsites plans, starting with the
 [overview](callsites-overview.md), and the rules for what counts as a use are in
 [decision 0001](decisions/0001-callsites-what-counts.md); this page does not repeat them. The epics
@@ -17,7 +17,7 @@ production plan is under way: output is deterministic, memory is checked and eve
 documented. cdxgen still runs `callsites` for JavaScript and TypeScript only;
 its part and dep-scan's are now planned in their own organizations (see below).
 
-The work was done in eight tranches. In each, one AI agent implemented a written brief and another
+The work was done in nine tranches. In each, one AI agent implemented a written brief and another
 reviewed it, fixed what it found, measured again and opened the pull requests.
 
 | tranche | pull requests | what landed |
@@ -30,8 +30,9 @@ reviewed it, fixed what it found, measured again and opened the pull requests.
 | 6 | AppThreat/edga#10, #11, AppThreat/chen#297, AppThreat/atom#364 | edga exports includes, macro uses and enumerators from the IL; c2cpg and edg2atom tag the declaring header of every call, reference, field access, constructor call and macro use; CDT parses C23 attributes, digit separators and C++23 explicit object parameters; the C and C++ source with builtin headers decided by where they resolved; `--external-paths` for C and C++ |
 | 7 | AppThreat/chen#300, AppThreat/atom#365 | JavaScript and TypeScript records carry the SBOM's purl; `--external-paths` works on every source frontend through one x2cpg pass, and a BOM's component locations (`cdx:vendored:path`, `cdx:cmake:sourceDir`) mark vendored code too, with the component's purl on its records; c2cpg gives a translation unit's file-scope method the unit's own file instead of its first header's; Java `implements` is no longer reported as `extends` |
 | 8 | AppThreat/atom#369 | byte-identical slices across runs and across separately built atoms (ties in `CallSiteRecord.dedupe` and in the JavaScript, Python, PHP and vendored-code sources broken on stable properties, checked on reordered graphs); `callsites` peaks at or below `usages` in memory on five large projects; the lesson, CLI page and help text cover every language, and a test runs the lesson's commands; CI keeps one macOS job per pull request (AppThreat/atom#370 asks for reliable macOS runners) |
+| 9 | AppThreat/atom#374 | an import that binds no local name (`import 'x'`, a bare `require('x')`, or one passed straight to another call) is an `import` record; CommonJS interop helpers (`__importDefault`, `__importStar`, `_interopRequireDefault`, `_interopRequireWildcard`) are followed to the module they wrap; every source writes file paths with `/` on every platform |
 
-All eight tranches are merged; the last, AppThreat/atom#369, merged on 2026-11-04.
+All nine tranches are merged; the last, AppThreat/atom#374, merged on 2026-11-05.
 
 ## Measurements
 
@@ -83,6 +84,13 @@ a scorer, member and builtin checks, and the corpus in
 [callsites-corpus.corpus.json](callsites-corpus.corpus.json). Making it reproducible by others is
 AppThreat/atom#312.
 
+Package coverage (decision 0002) is measured separately: for each JavaScript and TypeScript corpus
+app and the frontend apps, the harness lists the declared packages the sources reference through
+code (imports, `require`, dynamic `import()`) and the share the callsites slice names. With
+tranche 9 the lowest share is 0.57 (astro-examples, whose misses are configuration files), and the
+gate is 0.55. ngx-admin went from 0.69 to 0.84. The share of packages with BOM occurrences after
+evinse is the same with and without the callsites slice on every app; that part is cdxgen's.
+
 ## Decisions taken
 
 - Decision 0001: every reference is a use (declared types, `implements`, C macros, generated code);
@@ -116,14 +124,13 @@ AppThreat/atom#312.
   (milestone 13.8.0, plan `plans/cdxgen-callsites-evidence.md` in cdxgen/.github), and
   dep-scan#552 and #553 under owasp-dep-scan/dep-scan#555 (milestone v7.0.0 Lodestar, plan
   `plans/depscan-callsites.md` in owasp-dep-scan/.github). The consumers epic atom#310 is closed.
-- Package coverage (decision 0002): a user's evinse run on ngx-admin showed that callsites adds
-  occurrences but no package; the same holds on the 13 frontend corpus apps. Side-effect imports
-  become records (#367, core-js D7) and the harness gains a package-coverage gate and the frontend
-  apps (#368, ground-truth D6). The cdxgen side of the same report (duplicate occurrences on Windows
-  from mixed path separators, and `offset` and `symbol` on each occurrence) is cdxgen/cdxgen#4726,
-  milestone 13.7.0.
+- Package coverage (decision 0002): done. Side-effect imports are records (#367) and the harness
+  has the package-coverage gate and the frontend apps (#368). The cdxgen side of the same report,
+  duplicate occurrences on Windows from mixed path separators and `offset` and `symbol` on each
+  occurrence (cdxgen/cdxgen#4726), merged in cdxgen/cdxgen#4727 for 13.7.0. cdxgen's own
+  `callsites` run needs an atom release with the command, which is cdxgen/cdxgen#4690.
 - Production (atom#311): #340 to #342 are done. #373 (every source writes `/` in paths on every
-  platform; today the Java and PHP sources write backslashes on Windows) is open. #343 (the release
+  platform) is done. #343 (the release
   chain) and #344 (what `usages` keeps) are the maintainer's.
 
 ## Known gaps
@@ -147,11 +154,11 @@ AppThreat/atom#312.
 
 ## Next
 
-The next round is about JavaScript package coverage, from decision 0002: side-effect imports as
-records (#367), correct lines in Vue, Svelte and Astro components (#320), the package-coverage gate
-with the frontend apps in the corpus (#368), and `/` in every source's paths (#373). The release
-chain (#343) and the decision on what `usages` keeps (#344) remain the maintainer's. The
-language-versions and other ground-truth tasks can run beside it.
+The JavaScript package-coverage round is done except for #320 (lines in Vue, Svelte and Astro
+components), which waits on AppThreat/atom-parsetools#82. The candidates for the next round are
+typed-call recall (#322), a reproducible harness (#312), the typed oracles (#314) and the
+language-versions tasks. The release chain (#343) and the decision on what `usages` keeps (#344)
+remain the maintainer's.
 
 Each round follows the overview's rules: tests with bad and good twins, a mutation table, equivalence
 tests for changes that keep output, member-level and builtin checks beside the package score, and a
