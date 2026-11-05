@@ -1,0 +1,19 @@
+plans/callsites-status.md
+  s_c0804e5357f0c5::t_588ed64f431e9d 3,20,33,35,87-93,127-131,133,157-161
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f75a775cabac23d6e2468497a87c346f89aaedab",
+  "prompts": {},
+  "sessions": {
+    "s_c0804e5357f0c5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "75227701-fd30-4fc7-8eae-71a8df8f3a1c",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
