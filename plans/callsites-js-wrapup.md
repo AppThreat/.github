@@ -147,7 +147,8 @@ All deliverables merged on 2026-11-06; the release at the end of November ships 
   typed-oracle projects recall moved from between 0.33 and 0.85 to between 0.56 and 0.91 (table
   in [callsites-status.md](callsites-status.md)), with precision equal or higher. The bar of 0.85 is met on angular-realworld and nestjs-realworld;
   on the other three the misses left are runtime built-ins (atom#379) and, on juice-shop, the
-  untyped nested app (AppThreat/atom-parsetools#89), so the done condition's second branch holds.
+  untyped nested app (AppThreat/atom-parsetools#89, fixed afterwards by #90 and #91, which took
+  juice-shop to 0.591), so the done condition's second branch holds.
 - **D5.** chen#307 names the declaring type of an unresolved constructor reference, and atom#378
   puts method references to external methods in `usages` and `callsites`. Lombok's `@Slf4j`
   `log.info` already resolved under `types-only`. On the Java corpus the slices only gain
