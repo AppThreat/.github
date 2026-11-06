@@ -32,8 +32,9 @@ reviewed it, fixed what it found, measured again and opened the pull requests.
 | 8 | AppThreat/atom#369 | byte-identical slices across runs and across separately built atoms (ties in `CallSiteRecord.dedupe` and in the JavaScript, Python, PHP and vendored-code sources broken on stable properties, checked on reordered graphs); `callsites` peaks at or below `usages` in memory on five large projects; the lesson, CLI page and help text cover every language, and a test runs the lesson's commands; CI keeps one macOS job per pull request (AppThreat/atom#370 asks for reliable macOS runners) |
 | 9 | AppThreat/atom#374 | an import that binds no local name (`import 'x'`, a bare `require('x')`, or one passed straight to another call) is an `import` record; CommonJS interop helpers (`__importDefault`, `__importStar`, `_interopRequireDefault`, `_interopRequireWildcard`) are followed to the module they wrap; every source writes file paths with `/` on every platform |
 | 10 | AppThreat/atom-parsetools#85, #86, #87, #88, AppThreat/chen#307, AppThreat/atom#378 | the JavaScript wrap-up ([callsites-js-wrapup.md](callsites-js-wrapup.md)): astgen streams large ASTs to disk and parses a file whose AST does not fit in a child process with more heap; TC39 auto-accessors parse and are class properties in jssrc2cpg; `release/1.x` gets the TypeScript 6 type budgets; jssrc2cpg types the receivers of member calls from the TypeScript 6 type map and tags every type reference; type positions are `decltype` records, a member a project class inherits from a package class is the package's, and Java method references are in `usages` and `callsites` |
+| 11 | AppThreat/atom-parsetools#90, #91 | astgen lets a project's own compiler options win over its defaults, which `parseJsonConfigFileContent` used to apply as command-line flags; each nested TypeScript project (juice-shop's `frontend/`, a workspace package) is typed by a program built from its own configuration, and a solution-style root `tsconfig.json` hands the root to the configuration it references |
 
-All ten rounds are merged; the last, AppThreat/atom#378, merged on 2026-11-06.
+All eleven rounds are merged; the last, AppThreat/atom-parsetools#90, merged on 2026-11-06.
 
 ## Measurements
 
@@ -78,17 +79,20 @@ Against the typed oracle, with `node_modules` installed and type-only imports co
 0001, P1), round 10 moved callsites recall / precision as follows, with TypeScript 6 types as on
 `release/1.x`:
 
-| project | before round 10 | after | after, runtime built-in misses left out |
-|---|---|---|---|
-| angular-realworld | 0.621 / 1.000 | 0.911 / 1.000 | 0.946 |
-| vue3-realworld | 0.441 / 1.000 | 0.567 / 1.000 | 0.944 |
-| nestjs-realworld | 0.854 / 0.996 | 0.914 / 0.996 | 0.993 |
-| express-realworld | 0.333 / 0.938 | 0.611 / 0.965 | 0.902 |
-| juice-shop | 0.400 / 0.973 | 0.555 / 0.976 | 0.804 |
+| project | before round 10 | after round 10 | after round 11 | after round 10, runtime built-in misses left out |
+|---|---|---|---|---|
+| angular-realworld | 0.621 / 1.000 | 0.911 / 1.000 | 0.915 / 1.000 | 0.946 |
+| vue3-realworld | 0.441 / 1.000 | 0.567 / 1.000 | 0.567 / 1.000 | 0.944 |
+| nestjs-realworld | 0.854 / 0.996 | 0.914 / 0.996 | 0.914 / 0.996 | 0.993 |
+| express-realworld | 0.333 / 0.938 | 0.611 / 0.965 | 0.611 / 0.965 | 0.902 |
+| juice-shop | 0.400 / 0.973 | 0.555 / 0.976 | 0.591 / 0.977 | 0.804 |
 
-The misses left are runtime built-ins (`console`, `Math`, `Array`), which the type map names
-without a module, and on juice-shop the `frontend/` app, which has its own tsconfig and
-`node_modules` and gets no types from the root program (see Known gaps). The bytecode and C tranches also checked records
+Round 11 was measured with chen and atom from main and astgen from `release/1.x` before and after
+AppThreat/atom-parsetools#91; the before column reproduces round 10's figures exactly. On
+juice-shop the `frontend/` app now gets its own types: 211 more true positives and one more false
+positive, a `src/app/...` import through the app's `baseUrl` that atom takes for a package
+(#382). The misses left are runtime built-ins (`console`, `Math`, `Array`), which the type map
+names without a module. The bytecode and C tranches also checked records
 at member level and the `builtin` flag against the oracle, because the package-level score hid
 errors in both. On a built atom `callsites` takes less time than `usages` on every C project above.
 Every tranche compared the other languages' slices with main and kept them identical, apart from
@@ -126,7 +130,8 @@ evinse is the same with and without the callsites slice on every app; that part 
   truth) and #316 (a dynamic recall floor) have not started.
 - Core and JS (atom#305): #321 (JavaScript purls) and #322 (typed-call recall) are done.
   AppThreat/atom-parsetools#33 (type generation stalls on cdxgen's repository) is fixed on
-  `release/1.x` by AppThreat/atom-parsetools#88. #320 (Vue, Svelte and Astro positions) is fixed in
+  `release/1.x` by AppThreat/atom-parsetools#88, and AppThreat/atom-parsetools#89 (nested
+  projects) on both branches by #90 and #91. #320 (Vue, Svelte and Astro positions) is fixed in
   astgen on both branches and tested in atom; it closes when the end-of-November release pins the
   new 1.x version in atom.
 - C and C++ (atom#308): #346 is done; every source frontend has the vendored-code option and
@@ -175,9 +180,10 @@ AppThreat/chen@42023446.
 - JavaScript runtime built-ins (`console`, `Math`, `Array` methods) get no record; the type map
   names their types without a module, and which module such a record names needs a decision
   (#379).
-- astgen types a nested project with its own tsconfig and `node_modules` (juice-shop's `frontend/`)
-  through the root program only, so its files get almost no types
-  (AppThreat/atom-parsetools#89).
+- Imports through a project's own path alias or `baseUrl` are taken for packages when the alias
+  sits in a configuration other than `tsconfig.json` or `jsconfig.json`, comes through `extends`,
+  or is a bare `baseUrl`; type-only imports through a root `paths` alias also keep the alias in
+  their `decltype` records (48 records on juice-shop, #382).
 - On Windows the PHP example of the lesson test misses one `extends` record, on main too (#380).
 
 chennai, the terminal explorer built on chen, does not read the callsites slice yet
