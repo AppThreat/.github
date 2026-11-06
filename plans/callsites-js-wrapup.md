@@ -121,4 +121,40 @@ bumps atom's pins (D1), and runs the full corpus once with the measurements goin
 
 ## Outcome
 
-Filled in when the work ends.
+All deliverables merged on 2026-11-06; the release at the end of November ships them.
+
+- **D0.** AppThreat/atom-parsetools#85 (main) and #86 (`release/1.x`) write the AST JSON as a
+  stream and parse a file whose AST does not fit the remaining heap in a child process with more
+  heap (`ASTGEN_LARGE_FILE_HEAP_MB`); a file that still does not fit is recorded as failed. CI is
+  green on both branches.
+- **D1.** The Vue, Svelte and Astro position fix is on both astgen branches (#83, #84), and
+  AppThreat/atom#378 adds the `sfc-positions` fixture, which fails with atom-parsetools 1.10.6
+  and passes with main. It gates in `js-parsetools-main`; #320 closes when the release pins the
+  new 1.x version.
+- **D2.** AppThreat/atom-parsetools#87 (main) and #88 (`release/1.x`) parse auto-accessors, with
+  every other file's AST unchanged; AppThreat/chen#307 makes `ClassAccessorProperty` a class
+  property (private ones included); atom#378 records calls in an accessor's initialiser.
+- **D3.** #88 also brings the type budgets to `release/1.x`. On cdxgen at 90baa955
+  `astgen -t ts` finishes in 95 s (it ran for more than 40 minutes) with one `type_budget` record,
+  for `lib/cli/index.js`; the JSON and type maps of eight corpus projects (2,517 files) are
+  byte-identical. The worker-stop race of D0 had no deterministic test.
+- **D4.** Most typed misses were uses atom could see but did not record. chen#307 types the
+  receiver of a member call on a field or a call result from the TypeScript 6 type map, keeps
+  that type through type recovery, and tags every type reference; atom#378 records type
+  positions as `decltype`, attributes members a project class inherits from a package class to
+  that package, and follows `(await import('m')).f()`. The oracle now counts type-only imports,
+  and juice-shop's `frontend/` dependencies are installed for the measurement. On the five
+  typed-oracle projects recall moved from between 0.33 and 0.85 to between 0.56 and 0.91 (table
+  in [callsites-status.md](callsites-status.md)), with precision equal or higher. The bar of 0.85 is met on angular-realworld and nestjs-realworld;
+  on the other three the misses left are runtime built-ins (atom#379) and, on juice-shop, the
+  untyped nested app (AppThreat/atom-parsetools#89), so the done condition's second branch holds.
+- **D5.** chen#307 names the declaring type of an unresolved constructor reference, and atom#378
+  puts method references to external methods in `usages` and `callsites`. Lombok's `@Slf4j`
+  `log.info` already resolved under `types-only`. On the Java corpus the slices only gain
+  method-reference records (webgoat 6, shiro 5).
+
+The work was first implemented by one agent and then reviewed and largely redone by another,
+which found an unformatted chen change, a committed local chen version, a path-duplication bug,
+and a measurement that had skipped juice-shop's frontend dependencies and type-only imports. The
+new suites pass on the Windows 11 test VM; the JavaScript fixtures used to cancel there, because
+the suite looked for a bare `astgen`.
