@@ -1,6 +1,6 @@
 # callsites: status
 
-Updated 2026-11-05. This page says what has landed, what is in review and what comes next, so the
+Updated 2026-11-06. This page says what has landed, what is in review and what comes next, so the
 work can be picked up from here. The design is in the other callsites plans, starting with the
 [overview](callsites-overview.md), and the rules for what counts as a use are in
 [decision 0001](decisions/0001-callsites-what-counts.md); this page does not repeat them. The epics
@@ -12,12 +12,12 @@ under milestone v4.0.0 Pelorus.
 Every atom language now has a `callsites` source: JavaScript and TypeScript, Python, Java source,
 PHP, Ruby, JVM bytecode (jars, Kotlin and Scala classes, Android APKs) and C and C++ on both
 frontends. Sprints 1 to 3 of the overview's order of work are done except
-for the language-versions plan and a few JavaScript and ground-truth tasks listed below. The
+for parts of the language-versions plan and a few ground-truth tasks listed below. The
 production plan is under way: output is deterministic, memory is checked and every language is
 documented. cdxgen still runs `callsites` for JavaScript and TypeScript only;
 its part and dep-scan's are now planned in their own organizations (see below).
 
-The work was done in nine tranches. In each, one AI agent implemented a written brief and another
+The work was done in ten rounds. In each, one AI agent implemented a written brief and another
 reviewed it, fixed what it found, measured again and opened the pull requests.
 
 | tranche | pull requests | what landed |
@@ -31,8 +31,9 @@ reviewed it, fixed what it found, measured again and opened the pull requests.
 | 7 | AppThreat/chen#300, AppThreat/atom#365 | JavaScript and TypeScript records carry the SBOM's purl; `--external-paths` works on every source frontend through one x2cpg pass, and a BOM's component locations (`cdx:vendored:path`, `cdx:cmake:sourceDir`) mark vendored code too, with the component's purl on its records; c2cpg gives a translation unit's file-scope method the unit's own file instead of its first header's; Java `implements` is no longer reported as `extends` |
 | 8 | AppThreat/atom#369 | byte-identical slices across runs and across separately built atoms (ties in `CallSiteRecord.dedupe` and in the JavaScript, Python, PHP and vendored-code sources broken on stable properties, checked on reordered graphs); `callsites` peaks at or below `usages` in memory on five large projects; the lesson, CLI page and help text cover every language, and a test runs the lesson's commands; CI keeps one macOS job per pull request (AppThreat/atom#370 asks for reliable macOS runners) |
 | 9 | AppThreat/atom#374 | an import that binds no local name (`import 'x'`, a bare `require('x')`, or one passed straight to another call) is an `import` record; CommonJS interop helpers (`__importDefault`, `__importStar`, `_interopRequireDefault`, `_interopRequireWildcard`) are followed to the module they wrap; every source writes file paths with `/` on every platform |
+| 10 | AppThreat/atom-parsetools#85, #86, #87, #88, AppThreat/chen#307, AppThreat/atom#378 | the JavaScript wrap-up ([callsites-js-wrapup.md](callsites-js-wrapup.md)): astgen streams large ASTs to disk and parses a file whose AST does not fit in a child process with more heap; TC39 auto-accessors parse and are class properties in jssrc2cpg; `release/1.x` gets the TypeScript 6 type budgets; jssrc2cpg types the receivers of member calls from the TypeScript 6 type map and tags every type reference; type positions are `decltype` records, a member a project class inherits from a package class is the package's, and Java method references are in `usages` and `callsites` |
 
-All nine tranches are merged; the last, AppThreat/atom#374, merged on 2026-11-05.
+All ten rounds are merged; the last, AppThreat/atom#378, merged on 2026-11-06.
 
 ## Measurements
 
@@ -72,8 +73,22 @@ pull request. `usages` is shown where the pull request measured it.
 | C++, CDT | leveldb | 0.279 / 0.979 | |
 | C++, EDG | leveldb | 0.781 / 0.937 | |
 
-JavaScript and TypeScript reached 0.99 recall before this work (AppThreat/atom#293); the JS gaps
-below are about positions, typed calls and purls. The bytecode and C tranches also checked records
+JavaScript and TypeScript reached 0.99 recall on binding uses before this work (AppThreat/atom#293).
+Against the typed oracle, with `node_modules` installed and type-only imports counted (decision
+0001, P1), round 10 moved callsites recall / precision as follows, with TypeScript 6 types as on
+`release/1.x`:
+
+| project | before round 10 | after | after, runtime built-in misses left out |
+|---|---|---|---|
+| angular-realworld | 0.621 / 1.000 | 0.911 / 1.000 | 0.946 |
+| vue3-realworld | 0.441 / 1.000 | 0.567 / 1.000 | 0.944 |
+| nestjs-realworld | 0.854 / 0.996 | 0.914 / 0.996 | 0.993 |
+| express-realworld | 0.333 / 0.938 | 0.611 / 0.965 | 0.902 |
+| juice-shop | 0.400 / 0.973 | 0.555 / 0.976 | 0.804 |
+
+The misses left are runtime built-ins (`console`, `Math`, `Array`), which the type map names
+without a module, and on juice-shop the `frontend/` app, which has its own tsconfig and
+`node_modules` and gets no types from the root program (see Known gaps). The bytecode and C tranches also checked records
 at member level and the `builtin` flag against the oracle, because the package-level score hid
 errors in both. On a built atom `callsites` takes less time than `usages` on every C project above.
 Every tranche compared the other languages' slices with main and kept them identical, apart from
@@ -109,16 +124,16 @@ evinse is the same with and without the callsites slice on every app; that part 
 - Ground truth (atom#304): #313 is done; every language has its test suite. #312 (a
   reproducible harness), #314 (typed oracles for JS and Python), #315 (complete Java and C/C++
   truth) and #316 (a dynamic recall floor) have not started.
-- Core and JS (atom#305): #321 is done (JavaScript purls; C and C++ records get one only from a
-  BOM component location). #320 (Vue, Svelte and Astro positions; fixed in astgen by
-  AppThreat/atom-parsetools#83 and #84, waiting on a 1.x release), #322 (typed-call recall) and
-  AppThreat/atom-parsetools#33 (type generation stalls on cdxgen's repository; the native type map work handles that input, see
-  [parsetools-native-status.md](parsetools-native-status.md)).
+- Core and JS (atom#305): #321 (JavaScript purls) and #322 (typed-call recall) are done.
+  AppThreat/atom-parsetools#33 (type generation stalls on cdxgen's repository) is fixed on
+  `release/1.x` by AppThreat/atom-parsetools#88. #320 (Vue, Svelte and Astro positions) is fixed in
+  astgen on both branches and tested in atom; it closes when the end-of-November release pins the
+  new 1.x version in atom.
 - C and C++ (atom#308): #346 is done; every source frontend has the vendored-code option and
   reads BOM component locations.
-- Language versions (chen#241): #255 (report files that could not be parsed),
-  atom-parsetools#34 (TC39 auto-accessors), atom#334 (Java method references and Lombok) and
-  atom#335 (version matrix fixtures).
+- Language versions (chen#241): atom-parsetools#34 (TC39 auto-accessors) and atom#334 (Java
+  method references; Lombok's generated members already resolve) are done. #255 (report files
+  that could not be parsed) and atom#335 (version matrix fixtures) have not started.
 - Performance (atom#309): #339 (the cost of `usages` on large Java and Python projects).
 - Consumers: moved out of this organization. cdxgen#4690 to #4693 are under cdxgen/cdxgen#4718
   (milestone 13.8.0, plan `plans/cdxgen-callsites-evidence.md` in cdxgen/.github), and
@@ -157,17 +172,24 @@ Each gap is an issue on the AppThreat roadmap board, in the Backlog with no mile
 Ruby's recall ceiling from `db/migrate` is gone: ruby2atom scans migrations by default since
 AppThreat/chen@42023446.
 
+- JavaScript runtime built-ins (`console`, `Math`, `Array` methods) get no record; the type map
+  names their types without a module, and which module such a record names needs a decision
+  (#379).
+- astgen types a nested project with its own tsconfig and `node_modules` (juice-shop's `frontend/`)
+  through the root program only, so its files get almost no types
+  (AppThreat/atom-parsetools#89).
+- On Windows the PHP example of the lesson test misses one `extends` record, on main too (#380).
+
 chennai, the terminal explorer built on chen, does not read the callsites slice yet
 (AppThreat/chennai#4, Backlog).
 
 ## Next
 
-The JavaScript work closes with [callsites-js-wrapup.md](callsites-js-wrapup.md): Vue, Svelte and
-Astro positions (#320, whose astgen fix is AppThreat/atom-parsetools#83 and #84), typed-call recall
-(#322), the astgen stall on cdxgen (AppThreat/atom-parsetools#33), TC39 auto-accessors
-(AppThreat/atom-parsetools#34) and Java method references with Lombok (#334), for the release at the
-end of November. A reproducible harness (#312) and the typed oracles (#314) come after it. The
-release chain (#343) and the decision on what `usages` keeps (#344) remain the maintainer's.
+The JavaScript wrap-up is done: [callsites-js-wrapup.md](callsites-js-wrapup.md) has the outcome.
+The end-of-November release publishes atom-parsetools 1.x with the wrap-up's astgen changes, pins
+that version in atom's container images and workflows (which closes #320) and runs the full corpus
+once. After it come a reproducible harness (#312) and the typed oracles (#314). The release chain
+(#343) and the decision on what `usages` keeps (#344) remain the maintainer's.
 
 Each round follows the overview's rules: tests with bad and good twins, a mutation table, equivalence
 tests for changes that keep output, member-level and builtin checks beside the package score, and a
