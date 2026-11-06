@@ -1,0 +1,29 @@
+plans/callsites-js-wrapup.md
+  s_1c472b30745397::t_37bf411d4c0817 124-160
+plans/callsites-status.md
+  s_c0804e5357f0c5::t_cfe363bebdb302 3,15,20,34,36,76-91,127-131,134-136,175-182,188-192
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "cbe299db57ab0552a2481193d5eb4f79dba778d7",
+  "prompts": {},
+  "sessions": {
+    "s_1c472b30745397": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a1ed9237-cf62-498e-9c3c-7c11b1513c7e",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    },
+    "s_c0804e5357f0c5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "75227701-fd30-4fc7-8eae-71a8df8f3a1c",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
