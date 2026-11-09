@@ -1,22 +1,23 @@
 # Native atom-parsetools: status
 
-Updated 2026-11-04. This page says what has landed, what is in review and what comes next, so the
+Updated 2026-11-09. This page says what has landed, what is in review and what comes next, so the
 work can be picked up from here. The design is in the other plans
 ([overview](parsetools-native-overview.md), [JS/TS](parsetools-native-js.md),
 [testing](parsetools-native-testing.md), [Ruby and PHP](parsetools-native-ruby-php.md),
 [ship](parsetools-native-ship.md)); this page does not repeat it. The epics and tasks are issues in
-AppThreat/atom-parsetools (#35 to #76), AppThreat/chen#295 and AppThreat/atom#361, all on the
+AppThreat/atom-parsetools (#35 to #92), AppThreat/chen#295 and AppThreat/atom#361, all on the
 AppThreat roadmap board under milestone v5.0.0.
 
 ## Where it stands
 
-The scope is the type map only (2026-11-04, see the overview). Steps 1 and 2 of the order of work
-(testing and the type map on typescript-go, behind `ASTGEN_TYPES=native`) are done, and the release
-builds of step 3 are in place (#72, #73). Babel still parses every file, and nothing changes unless
-`ASTGEN_TYPES=native` is set. Getting `parsa` to npm users, the default switch and the releases
-remain.
+The scope is the type map only (2026-11-04, see the overview). Steps 1 to 3 are done and step 4 has
+landed: native type maps are astgen's default (#80, `ASTGEN_VERSION` 4.7.1), TypeScript 6 is the
+fallback, and the TypeScript 6 phase has per-file and per-program budgets (#81). Babel still parses
+every file. What remains of step 5 is publishing: `parsa` into the cdxgen-plugins-bin platform
+packages and atom's images (#65), then the 2.0.0 release (the changelog, the docs and the publish
+checks are ready; `2.0.0-rc.1` notes are drafted for the maintainer).
 
-The work was done in two rounds by AI agents, each implemented by one agent and reviewed, fixed and
+The work was done in rounds by AI agents, each implemented by one agent and reviewed, fixed and
 measured again by another.
 
 | pull request | what it did | state |
@@ -25,9 +26,12 @@ measured again by another.
 | AppThreat/atom-parsetools#71 | the native binary renamed `parsa` (module `parsa/`, `parsa js --types-only`) and `CHANGELOG.md` with the breaking changes of 2.0.0 | merged |
 | AppThreat/atom-parsetools#72, #73 | release builds: `parsa/scripts/build-release.sh` cross-compiles six targets, `.github/workflows/parsa-release.yml` runs them on their platforms, pushes them to `ghcr.io/appthreat/parsa` on every push to main and attaches them to releases with hashes, provenance and a post-build SBOM (Go toolchain in the formulation) | merged |
 | AppThreat/atom-parsetools#69 | `.typespans` next to each `.typemap`: the type of each node keyed by `"start:end"`, native runs only (`docs/OUTPUT_FORMATS.md`) | merged |
+| AppThreat/atom-parsetools#80, #81 | native type maps as astgen's default with the TypeScript 6 fallback (`ASTGEN_TYPES`, `ASTGEN_NATIVE_BIN`, `ASTGEN_NATIVE_MEMORY_MB`, the manifest record, `docs/ASTGEN.md`), and per-file plus per-program budgets on the TypeScript 6 phase (`ASTGEN_TYPE_FILE_TIMEOUT_MS`, `ASTGEN_TYPE_PROGRAM_TIMEOUT_MS`, `type_budget` records) | merged |
+| AppThreat/atom-parsetools#83, #85, #87, #90 | Vue templates that keep their positions (void elements, slot shorthand, JSX-rejected attribute names), AST JSON written in chunks with a larger-heap child process for huge files, TC39 auto-accessors, and nested TypeScript projects typed with their own configuration on the TypeScript 6 path | merged |
 | AppThreat/chen#296 | jssrc2cpg reads native type maps; `TypeStringNormalizer` writes both engines' strings in one canonical spelling | merged |
 | AppThreat/chen#298 | jssrc2cpg types every node from `.typespans`, `TYPE_FULL_NAME` is one name or `ANY` in both modes (`TypeNames.scala`), type recovery starts from those names | merged |
 | AppThreat/atom#363 | atom option `--frontend-args astgen-types=native` (or `ts6`), passed to chen and astgen as `ASTGEN_TYPES` | merged |
+| AppThreat/atom-parsetools `feat/native-t5` (tranche 5 and its review) | `parsa` types each nested project with its own program and lets a project's own compiler options win over astgen's defaults, as astgen's TypeScript 6 path does since #90; the type map differ names differences from evidence (package versions read from node_modules, a `--reference` tree from main's ts6 mode) instead of from where a file sits; `npm run eval:typemaps` is the one command for the type map table and both score tables (#44); the 2.0.0 changelog and docs describe main as it is | in review |
 
 atom-parsetools 2.0.0 is not published yet; the latest release is 1.10.6. To try the native type
 map, build the binary (`npm run test:native` builds and tests it; `parsa/scripts/fetch-typescript.sh`
@@ -35,33 +39,68 @@ fetches the pinned TypeScript checkout) and point `ASTGEN_NATIVE_BIN` at it, or 
 `astgen.js` or on `PATH`. `docs/ASTGEN.md` ("Native type maps") documents the variables and the
 manifest record a native run writes.
 
-## Measurements
+## Measurements (2026-11-09, `feat/native-t5` after review)
 
-On the 19 JavaScript and TypeScript inputs of [the corpus](parsetools-native.corpus.json), against
-astgen 1.10.6 with its default file discovery, every run under the watchdog. "Agree" is exact or
-equal after the differ's listed normalizations; "with improved" also counts keys TypeScript 7 types
-where TypeScript 6 gave nothing or `any`.
+On the 19 JavaScript and TypeScript inputs of [the corpus](parsetools-native.corpus.json), every run
+under the watchdog (10 minutes, 8 GB per project). Each native run is compared with two references:
+astgen 1.10.6 with its default file discovery, and main's astgen in `ASTGEN_TYPES=ts6` mode, which
+shares the native path's file discovery, compiler options and programs per nested project. "Agree"
+is exact or equal after the differ's listed normalizations; "with improved" also counts keys
+TypeScript 7 types where 1.10.6 gave nothing or `any`. The full table is `final-table.txt` in the
+evaluation workspace (`final-table-2026-11-03.txt` and `final-table-glm-2026-11-09.txt` keep the
+earlier rounds). Output is byte-identical at 1 and 8 checkers on every input, and no input hit a cap.
 
-| input | keys | agree | with improved | astgen | native, 1 checker | native, 8 checkers |
+| input | keys | agree, 1.10.6 | with improved | agree, main ts6 | astgen 1.10.6 | native, 1 checker | native, 8 checkers |
+|---|---|---|---|---|---|---|---|
+| angular-realworld | 3,469 | 90.8% | 97.1% | 99.4% | 1.73 s, 386 MB | 0.30 s, 168 MB | 0.13 s, 192 MB |
+| vue3-realworld | 5,119 | 97.4% | 98.2% | 98.5% | 3.54 s, 1,062 MB | 0.61 s, 288 MB | 0.39 s, 320 MB |
+| nestjs-realworld | 6,188 | 83.6% | 98.8% | 90.1% | 0.96 s, 247 MB | 0.22 s, 89 MB | 0.07 s, 113 MB |
+| node-express-boilerplate | 1,897 | 88.7% | 92.2% | 88.7% | 0.73 s, 222 MB | 0.10 s, 52 MB | 0.06 s, 28 MB |
+| ver-js | 466 | 91.8% | 98.3% | 97.4% | 0.86 s, 330 MB | 0.16 s, 83 MB | 0.13 s, 92 MB |
+| bulletproof-react | 18,495 | 88.8% | 97.3% | 97.4% | 2.65 s, 315 MB | 0.53 s, 122 MB | 0.21 s, 126 MB |
+| vue-router-playground | 902 | 83.7% | 96.9% | 98.6% | 1.56 s, 524 MB | 0.22 s, 84 MB | 0.11 s, 116 MB |
+| angular-spotify | 16,956 | 91.5% | 98.5% | 98.8% | 3.28 s, 287 MB | 1.45 s, 92 MB | 1.33 s, 93 MB |
+| juice-shop | 362,809 | 94.6% | 97.0% | 97.6% | 18.3 s, 1,960 MB | 5.19 s, 705 MB | 1.65 s, 935 MB |
+| outline | 312,747 | 98.6% | 99.2% | 98.7% | 51.2 s, 1,625 MB | 5.64 s, 1,098 MB | 1.41 s, 1,482 MB |
+| cdxgen | 549,574 | 6.1% | 99.7% | 98.5% | killed at 600 s | 20.6 s, 2,968 MB | 12.4 s, 3,856 MB |
+
+The other eight inputs agree with 1.10.6 on 98.4 to 100 percent. cdxgen's raw agreement with 1.10.6
+is low because 1.10.6 was killed before typing 368 of 438 files. Agreement with 1.10.6 fell on the
+inputs whose own tsconfig or nested projects astgen now honours in both engines (#90): 1.10.6 typed
+bulletproof-react's apps, angular-spotify's libraries and juice-shop's `frontend/` with the root
+program and astgen's default options. Against main's TypeScript 6 mode, which types them the same
+way, agreement on those inputs is 97.4 to 98.8 percent. nestjs-realworld's 887 native-only keys are
+mostly in its compiled `dist/` output, which neither TypeScript 6 run types.
+
+One key in the corpus falls in no difference class: juice-shop `routes/chat.ts:9863`, the `event`
+of `for await (const event of result.fullStream)`, where TypeScript 6 expands the AI SDK's stream
+part union member by member and TypeScript 7 prints it through `ToolApprovalRequestOutput<...>`,
+both near the 4,096 character limit. A difference from 1.10.6 that no other class names, where the
+native answer equals main's TypeScript 6 answer for the same key, is `reference-agrees` (at most
+0.57 percent of an input's keys, on bulletproof-react).
+
+On the callsites subset (nine projects, the callsites scorer against the untyped truth, both engines
+on the same atom build), the scores of the reviewed binary equal those of the tranche-5 binary to
+three decimals, although its slices differ (bulletproof-react's usages slice grew by 33 KB), apart
+from juice-shop's usages precision, 0.388 to 0.387:
+
+| input | callsites recall ts6 | native | callsites precision ts6 | native | usages precision ts6 | native |
 |---|---|---|---|---|---|---|
-| angular-realworld | 3,469 | 90.9% | 98.0% | 1.7 s, 386 MB | 0.27 s, 171 MB | 0.15 s, 183 MB |
-| vue3-realworld | 5,109 | 97.3% | 98.1% | 3.5 s, 1,062 MB | 0.57 s, 312 MB | 0.29 s, 461 MB |
-| node-express-boilerplate | 1,897 | 88.7% | 95.6% | 0.7 s, 222 MB | 0.08 s, 54 MB | 0.05 s, 57 MB |
-| ver-js | 466 | 91.9% | 98.9% | 0.9 s, 330 MB | 0.09 s, 88 MB | 0.06 s, 87 MB |
-| bulletproof-react | 17,317 | 97.5% | 99.5% | 2.7 s, 315 MB | 0.42 s, 108 MB | 0.15 s, 144 MB |
-| juice-shop | 357,170 | 97.2% | 97.9% | 18.3 s, 1,960 MB | 4.9 s, 986 MB | 1.5 s, 1,321 MB |
-| outline | 312,740 | 98.6% | 99.2% | 51.3 s, 1,625 MB | 5.4 s, 1,032 MB | 1.4 s, 1,412 MB |
-| cdxgen | 552,720 | n/a | n/a | killed at 600 s | 21.0 s, 2,442 MB | 12.1 s, 3,689 MB |
+| svelte-realworld | 1.000 | 1.000 | 1.000 | 1.000 | 0.662 | 0.662 |
+| nestjs-realworld | 0.995 | 0.995 | 0.731 | 0.783 | 0.656 | 0.691 |
+| express-boilerplate | 0.993 | 0.993 | 0.993 | 0.993 | 0.730 | 0.730 |
+| bulletproof-react | 0.880 | 0.880 | 0.968 | 0.968 | 0.718 | 0.718 |
+| angular-realworld | 1.000 | 1.000 | 0.709 | 0.679 | 0.472 | 0.462 |
+| vue3-realworld | 1.000 | 1.000 | 0.613 | 0.620 | 0.515 | 0.538 |
+| express-realworld | 0.982 | 0.982 | 0.724 | 0.688 | 0.438 | 0.403 |
+| outline | 0.920 | 0.920 | 0.791 | 0.783 | 0.679 | 0.676 |
+| juice-shop | 0.986 | 0.986 | 0.579 | 0.575 | 0.386 | 0.387 |
 
-The other eleven inputs agree on 98.3 to 100 percent. Output is identical at 1 and 8 checkers and
-across two runs on every input. On the callsites subset, scored with the truth extended by calls
-through receivers typed with an imported package's class, native types give callsites precision of
-0.947 to 1.0 on eight projects and 0.772 on vue3-realworld, recall equal to or above TypeScript 6
-everywhere, and precision within 0.03 of TypeScript 6 where it is lower (details in chen#298).
-
-Against the gates for changing the default in the overview: type map agreement, callsites, wall
-time, memory, caps and determinism are met for the type map. The remaining gate is that astgen
-runs `parsa` when cdxgen starts it from cdxgen-plugins-bin and in atom's images on every platform.
+Recall is equal on every project; native precision is higher on nestjs-realworld and vue3-realworld
+and lower on angular-realworld and express-realworld, by at most 0.037. The vue3-realworld precision
+of 0.772 in chen#298 is not a property of native type maps: with `via=type` records dropped both
+engines sit at 0.780, and the false positives left are, for both engines, calls on receivers typed
+with `@playwright/test` classes that the untyped truth cannot credit.
 
 ## Decisions taken
 
@@ -112,34 +151,30 @@ runs `parsa` when cdxgen starts it from cdxgen-plugins-bin and in atom's images 
 
 ## Known gaps from the type map work
 
-- 523 of 728,991 compared keys fall in no named difference class (juice-shop 294, outline 163).
-  The differ reports them as `different:unclassified`.
+- One key in the corpus falls in no difference class (juice-shop `routes/chat.ts:9863`, see
+  Measurements).
 - A bare import specifier that only resolves through `baseUrl` is untyped: TypeScript 7 dropped
   `baseUrl` as a module root and only `paths` aliases are emulated.
-- A type alias that one engine prints by name and the other expands is not yet a normalized class.
 - The cdxgen evolving-array reproducer has not been reported to TypeScript (#67).
-- The callsites scores come from a harness kept outside the repositories; there is no single
-  command in atom-parsetools for it yet (#44).
-- Hostile-input tests cover the native type map (invalid UTF-8, binary files, a huge array literal,
-  a large file, symlink loops, output outside the output directory) but not the Node tools (#46).
+- The callsites scores now have one command in the repository, `npm run eval:typemaps`
+  (`docs/TESTING.md`); the scorer and its truth stay outside, passed as arguments (#44).
 - Type maps for files with syntax tsgo does not parse (Flow, `do` expressions, `export v from`)
   have not been measured: tsgo checks its recovered tree, so some nodes may be untyped or typed
   from the wrong span.
-- vue3-realworld callsites precision (0.772) is the lowest of the subset and has not been looked at.
+- atom's usages slice on outline peaks at 8.2 GB (JVM plus astgen), above the corpus cap of 8 GB;
+  the harness and the eval command need a 16 GB cap for that one project.
 
 ## Next
 
-1. `parsa` in cdxgen-plugins-bin's platform packages (cdxgen/cdxgen-plugins-bin#164), with cdxgen
-   setting `ASTGEN_NATIVE_BIN` from it (cdxgen/cdxgen#4721), and in atom's images (AppThreat/atom#361);
-   S2 in the ship plan, #65.
-2. Native types as astgen's default with the TypeScript 6 fallback, and the docs and changelog for it
-   (S3 and S4, #40, #66).
-3. chen's jssrc2cpg tests against atom-parsetools 1.x and 2.x in CI (AppThreat/chen#295), and atom's
-   images with `parsa` and the version report (AppThreat/atom#361).
-4. Releases: atom-parsetools 2.0.0, then chen and atom.
+1. Publish: `2.0.0-rc.1` (the changelog, the docs, the publish dry-run and the packed-tarball checks
+   are done; the release notes are drafted for the maintainer), then `parsa` in cdxgen-plugins-bin's
+   platform packages (cdxgen/cdxgen-plugins-bin#164), with cdxgen setting `ASTGEN_NATIVE_BIN` from it
+   (cdxgen/cdxgen#4721), and in atom's images (AppThreat/atom#361); S2 in the ship plan, #65.
+2. atom's images with `parsa` and the version report (AppThreat/atom#361); chen already tests
+   jssrc2cpg against atom-parsetools 1.x and 2.x (AppThreat/chen#295).
+3. Releases: atom-parsetools 2.0.0, then chen and atom.
 
-The upstream reports (#67), the callsites command (#44), the Node hostile-input tests (#46) and the
-unclassified type map differences can run alongside. Each round follows the testing plan's rules:
-every run under the watchdog with time and memory caps, one heavy job at a time on a developer
-machine, baselines kept outside the repositories, and any difference either fixed or allow-listed
-with a reason.
+The upstream reports (#67) and the one unclassified key can run alongside. Each round follows the
+testing plan's rules: every run under the watchdog with time and memory caps, one heavy job at a
+time on a developer machine, baselines kept outside the repositories, and any difference either
+fixed or allow-listed with a reason.
