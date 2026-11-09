@@ -1,0 +1,19 @@
+plans/parsetools-native-status.md
+  s_be48abf732935d::t_eca3dabd6a80a4 3,8,13-18,20,29-30,34,42,45-90,92-109,160-167,171-172,176-177,181-187,192-195
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d7840f3f275b7404b3a1ea4380d8664157c2d398",
+  "prompts": {},
+  "sessions": {
+    "s_be48abf732935d": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "sess_e9a6d2cf-9b65-4fbf-a3f7-18df64182d54",
+        "model": "GLM-5.3"
+      },
+      "human_author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
