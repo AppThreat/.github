@@ -15,22 +15,25 @@ Every push to main pushes each target's binary to `ghcr.io/appthreat/parsa` with
 commit and a moving `main` tag), and each release attaches the binaries to the GitHub release with a
 `.sha256` file, build provenance and the SBOM.
 
-The `@appthreat/atom-parsetools` npm package keeps all four commands and does not carry `parsa`;
-there are no per-platform npm packages for it (overview, decision 7, settled 2026-11-04). `parsa`
-reaches users in two ways:
+`parsa` ships as one npm package per binary, `@appthreat/parsa-linux-x64`, `-linux-arm64`,
+`-darwin-x64`, `-darwin-arm64`, `-win32-x64` and `-win32-arm64`, each declaring its `os` and `cpu`
+(the Linux binaries are static, so the Linux packages declare no `libc` and serve musl too).
+`@appthreat/atom-parsetools` lists them as optional dependencies at its exact version, so npm
+installs the one for the host, as `@typescript/native-preview` and esbuild do (overview, decision 7,
+changed 2026-11-09). astgen looks for the binary through `ASTGEN_NATIVE_BIN`, next to `astgen.js`,
+in the installed platform package, then on `PATH`, and falls back to TypeScript 6 when it finds
+none (`--omit=optional`, linux-arm, riscv64, ppc64). cdxgen, atom, chen and their container images
+need no setting: installing atom-parsetools 2.x is enough.
 
-- cdxgen-plugins-bin: its release workflow downloads the binary from a pinned atom-parsetools
-  release, checks the `.sha256`, and places it under `plugins/parsa/` in each platform package
-  (cdxgen/cdxgen-plugins-bin#164); cdxgen points astgen at it (cdxgen/cdxgen#4721).
-- Container images: atom's images download the binary from the GitHub release and check its hash
-  (AppThreat/atom#361).
+`parsa-release.yml` publishes the six packages with provenance through npm trusted publishing on
+each release; `ci.yml` waits for them before it publishes atom-parsetools with the optional
+dependencies, which are written at publish time and not kept in git. A maintainer of the
+`@appthreat` scope runs `parsa/scripts/setup-npm-trusted-publishing.sh` once before the first such
+release (AppThreat/atom-parsetools#94).
 
-astgen keeps its lookup as it is: `ASTGEN_NATIVE_BIN`, next to `astgen.js`, then `PATH`, and falls
-back to TypeScript 6 when it finds none, as it will after a plain `npm install` of atom-parsetools.
-astgen does not search cdxgen-plugins-bin or `CDXGEN_PLUGINS_DIR` itself. cdxgen already resolves its
-plugins directory and sets `ASTGEN_NATIVE_BIN` when it starts atom, and the images either place
-`parsa` next to `astgen.js` or set the same variable. This keeps cdxgen's package names and
-environment variables out of atom-parsetools.
+This replaces the earlier route through cdxgen-plugins-bin's platform packages and a download in
+atom's images (cdxgen/cdxgen-plugins-bin#164, cdxgen/cdxgen#4721's `ASTGEN_NATIVE_BIN`, and the
+image half of AppThreat/atom#361), which left anyone installing atom from npm on TypeScript 6.
 
 ## S3. Default, atom and chen
 
