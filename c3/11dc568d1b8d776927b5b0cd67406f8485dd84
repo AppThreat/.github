@@ -1,0 +1,19 @@
+plans/parsetools-native-status.md
+  s_8808d9e6ee938f::t_c90776e8b6e037 34,42-87,89-97,100-103,154-155,173-175
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c311dc568d1b8d776927b5b0cd67406f8485dd84",
+  "prompts": {},
+  "sessions": {
+    "s_8808d9e6ee938f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5df8b5bb-b1b1-4554-b720-2a19c73c15c2",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
