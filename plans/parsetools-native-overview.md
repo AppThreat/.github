@@ -108,8 +108,8 @@ Native type maps become astgen's default only when, on every JavaScript and Type
 Decisions 1, 2 and 6 were taken as recommended (Go host, an AppThreat shim over `microsoft/TypeScript`
 `tsc/`, TypeScript 7's order kept); see the status page. Decisions 3 to 5 (the PHP parser, Flow and
 Svelte in a native AST) no longer arise with the types-only scope. Decision 7 was settled on
-2026-11-04: no npm packages for `parsa`; it reaches users through cdxgen-plugins-bin and a direct
-download in container images.
+2026-11-04 for cdxgen-plugins-bin and container images, and changed on 2026-11-09 to npm platform
+packages that atom-parsetools installs as optional dependencies.
 
 - Decision 1: Go as the host language, or Rust as the host with types through the TypeScript 7.1 API.
 - Decision 2: how to track typescript-go. The `microsoft/typescript-go` repository was archived on 2026-08-31
@@ -120,8 +120,10 @@ download in container images.
    reordered to look like TypeScript 6. Keeping TypeScript 7's order is recommended.
 - Decision 7: how users get `parsa` (ship plan, S2): per-platform npm packages as optional
    dependencies of atom-parsetools, as `@typescript/native-preview` and esbuild do, or no npm
-   packages, with cdxgen-plugins-bin and container images carrying the binary (settled: the
-   latter).
+   packages, with cdxgen-plugins-bin and container images carrying the binary (settled on
+   2026-11-04 as the latter, changed on 2026-11-09 to the former: with the binary outside
+   atom-parsetools, every consumer had to point astgen at it, and a plain npm install of atom stayed
+   on TypeScript 6).
 
 ## Risks
 

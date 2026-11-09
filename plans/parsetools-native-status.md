@@ -104,7 +104,11 @@ with `@playwright/test` classes that the untyped truth cannot credit.
 
 ## Decisions taken
 
-- Distribution (2026-11-04, settles decision 7): no npm packages for `parsa`. It reaches users
+- Distribution (2026-11-09, changes decision 7): `parsa` ships as npm platform packages,
+  `@appthreat/parsa-<os>-<cpu>`, optional dependencies of atom-parsetools that astgen finds on its
+  own, so no consumer sets `ASTGEN_NATIVE_BIN` (AppThreat/atom-parsetools#94, ship plan S2). This
+  replaces the 2026-11-04 entry below.
+- Distribution (2026-11-04, superseded on 2026-11-09): no npm packages for `parsa`. It reaches users
   through the cdxgen-plugins-bin platform packages and a direct download in container images. astgen
   does not search for those itself: cdxgen and the images point it at `parsa` through
   `ASTGEN_NATIVE_BIN` (or the images place it next to `astgen.js`). This replaces the 2026-11-03 entry below.
@@ -166,13 +170,14 @@ with `@playwright/test` classes that the untyped truth cannot credit.
 
 ## Next
 
-1. Publish: `2.0.0-rc.1` (the changelog, the docs, the publish dry-run and the packed-tarball checks
-   are done; the release notes are drafted for the maintainer), then `parsa` in cdxgen-plugins-bin's
-   platform packages (cdxgen/cdxgen-plugins-bin#164), with cdxgen setting `ASTGEN_NATIVE_BIN` from it
-   (cdxgen/cdxgen#4721), and in atom's images (AppThreat/atom#361); S2 in the ship plan, #65.
-2. atom's images with `parsa` and the version report (AppThreat/atom#361); chen already tests
-   jssrc2cpg against atom-parsetools 1.x and 2.x (AppThreat/chen#295).
-3. Releases: atom-parsetools 2.0.0, then chen and atom.
+1. Publish `2.0.0-rc.1` with the six `parsa` npm packages: a maintainer runs
+   `parsa/scripts/setup-npm-trusted-publishing.sh` once, then tags the release (#65,
+   AppThreat/atom-parsetools#94). Then install it on each target and check that astgen runs the
+   packaged binary.
+2. atom: images and CI on atom-parsetools 2.x, and the atom-parsetools and `parsa` versions in its
+   version and perf reports (AppThreat/atom#361); chen already tests jssrc2cpg against 1.x and 2.x
+   (AppThreat/chen#295).
+3. Releases: atom-parsetools 2.0.0, then atom, then cdxgen on atom-parsetools 2.x (cdxgen/cdxgen#4721).
 
 The upstream reports (#67) and the one unclassified key can run alongside. Each round follows the
 testing plan's rules: every run under the watchdog with time and memory caps, one heavy job at a
