@@ -1,0 +1,42 @@
+plans/prompts/memsafe-allocation-styles/P06-reference-release.md
+  s_f4248adf62ddd8::t_cc6feee9aa0f6e 1-22
+plans/prompts/memsafe-allocation-styles/P03-scope-cleanup.md
+  s_f4248adf62ddd8::t_1907e843fb44cc 1-34
+plans/prompts/memsafe-allocation-styles/P05-regions.md
+  s_f4248adf62ddd8::t_96ac0dbaeee874 1-18
+plans/prompts/memsafe-allocation-styles/00-RULES.md
+  s_f4248adf62ddd8::t_5a82a49f63b473 9-10
+  s_f4248adf62ddd8::t_ce5d86d218f7aa 34
+  s_f4248adf62ddd8::t_b8b15b1518bd41 1-8,11-33,35-62
+plans/prompts/memsafe-allocation-styles/P04-families-profiles.md
+  s_f4248adf62ddd8::t_db2ad83781d3e3 1-31
+plans/prompts/memsafe-allocation-styles/P01-fixtures-arms-baseline.md
+  s_f4248adf62ddd8::t_a3f965dde3f8d4 1-41
+plans/memsafe-allocation-styles.md
+  s_f4248adf62ddd8::t_2868c9222b3517 52
+  s_f4248adf62ddd8::t_1175fa64e60386 1-29,33-51,53-58,73-104,106,108,110-112,114,116,118-150,153-158
+  s_f4248adf62ddd8::t_5e7b8d9b7c0012 30-32
+  s_f4248adf62ddd8::t_4f9cfd962cb3da 59-72
+  s_f4248adf62ddd8::t_f6906f76c8cdd4 105,107,109,113,115,117
+  s_f4248adf62ddd8::t_63242967657a1b 151-152
+plans/prompts/memsafe-allocation-styles/P02-false-positives-destroy-summaries.md
+  s_f4248adf62ddd8::t_df7ffa6c8f888f 1-30
+plans/prompts/memsafe-allocation-styles/P07-docs-final-measurement.md
+  s_f4248adf62ddd8::t_2fc85ff0ac9d79 1-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c9a18c08f5eba398ef102cbfac9ae7bf1e0d92f9",
+  "prompts": {},
+  "sessions": {
+    "s_f4248adf62ddd8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "25bbb232-7e05-4fd5-84a8-3e20a9f11228",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
