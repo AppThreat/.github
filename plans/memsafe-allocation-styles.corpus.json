@@ -1,0 +1,113 @@
+{
+  "plan": "memsafe-allocation-styles.md",
+  "items": [
+    {
+      "name": "arm-sqlite",
+      "description": "SQLite src/ at version-3.53.4; the header-prefixed allocator style",
+      "source": "github.com/sqlite/sqlite, tag version-3.53.4, commit b09c88c14082339b66c7b7158d609a771e64ca69; sha256 over git archive --format=tar <commit> src",
+      "sha256": "8b6d7d8a93e935053ccfeb72d3380913b78fb2c58721185024f3ce28713c5bae",
+      "sizeBytes": 8663040,
+      "license": "blessing",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/sqlite/sqlite"
+      }
+    },
+    {
+      "name": "arm-redis",
+      "description": "Redis src/ at 8.10.1, with the headers of its bundled deps/ for include resolution; the header-prefixed allocator style",
+      "source": "github.com/redis/redis, tag 8.10.1, commit 3399357e7c17b668289386b8a15a3037bc4527b1; sha256 over git archive --format=tar <commit> src deps",
+      "sha256": "1d1c620738a4b510c0e5e341ff6772eed9d95bafe1da2bb8aa39889cee447f0d",
+      "sizeBytes": 17059840,
+      "license": "RSALv2 OR SSPLv1 OR AGPLv3",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/redis/redis"
+      }
+    },
+    {
+      "name": "arm-nginx",
+      "description": "nginx src/ at release-1.31.6; the region (pool) style",
+      "source": "github.com/nginx/nginx, tag release-1.31.6, commit 0a5db852e18d1c22c62a5ede1412ac3f416111a0; sha256 over git archive --format=tar <commit> src",
+      "sha256": "52072a5d7b47d2f17841037e29f1a4a08044ddea5f3e3cd3f5447025638632e5",
+      "sizeBytes": 7127040,
+      "license": "BSD-2-Clause",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/nginx/nginx"
+      }
+    },
+    {
+      "name": "arm-pgvector",
+      "description": "pgvector src/ at v0.8.6, analysed against PostgreSQL's src/include (item arm-postgresql-include) as an include path; the region style with the allocator bodies outside the tree",
+      "source": "github.com/pgvector/pgvector, tag v0.8.6, commit 8ee86c96f0fd72390f890aa8a336fda6d3ab4c6c; sha256 over git archive --format=tar <commit> src",
+      "sha256": "96c4dae1122fa9654716a5ec78cfab0e53e9433b668c33f36dbab8551dfec7e5",
+      "sizeBytes": 368640,
+      "license": "PostgreSQL",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/pgvector/pgvector"
+      }
+    },
+    {
+      "name": "arm-postgresql-include",
+      "description": "PostgreSQL src/include at REL_18_6; header-only support checkout for the pgvector arm, never analysed on its own",
+      "source": "github.com/postgres/postgres, tag REL_18_6, commit 724edf9bde9d356724ad384a2e196edc3c9f80f7; sha256 over git archive --format=tar <commit> src/include",
+      "sha256": "ca9a914dd43b94eba78ba941aee0dbb45960dd83be04a05c5a268dd5e6ba7a4b",
+      "sizeBytes": 7598080,
+      "license": "PostgreSQL",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/postgres/postgres"
+      }
+    },
+    {
+      "name": "arm-qemu",
+      "description": "QEMU block/ and util/ at v11.1.2, with include/ for header resolution; the scope-cleanup (g_autofree) and allocator-wrapper styles",
+      "source": "github.com/qemu/qemu, tag v11.1.2, commit 4fc49f46dc95d4a27de2509e7fceb2931e91faeb; sha256 over git archive --format=tar <commit> block util include",
+      "sha256": "96b62711ea4aa24cf46de3e760e8627ea8aefa87d6b0277931f4ee0e8ef09d3b",
+      "sizeBytes": 11704320,
+      "license": "GPL-2.0-only",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/qemu/qemu"
+      }
+    },
+    {
+      "name": "arm-linux-input",
+      "description": "Linux drivers/input/ at v7.2 with include/ and arch/x86/include/ as a sparse checkout for header resolution; the scope-cleanup (__free) style",
+      "source": "github.com/torvalds/linux, tag v7.2, commit 8d3ae59288f1e7d58d76558a6ee96d533bc5019f; sha256 over git archive --format=tar <commit> drivers/input include arch/x86/include",
+      "sha256": "e4645ba1b0f8f3158b663fee5a0558c3f6d00e8d0b35b5f5a5070d65e3516cc9",
+      "sizeBytes": 60938240,
+      "license": "GPL-2.0-only",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/torvalds/linux"
+      }
+    },
+    {
+      "name": "arm-cpython",
+      "description": "CPython Objects/ at v3.14.7, with Include/ for header resolution; the reference-release style",
+      "source": "github.com/python/cpython, tag v3.14.7, commit 823f0323ee6ec1402088b73bce1a38473cac36dc; sha256 over git archive --format=tar <commit> Objects Include",
+      "sha256": "988189a1baf92863d07326019871cfb40de17d15c45bb23a14b7d597d49fddb0",
+      "sizeBytes": 7116800,
+      "license": "PSF-2.0",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/python/cpython"
+      }
+    },
+    {
+      "name": "arm-lua",
+      "description": "Lua development tree at v5.5.1, whole tree; the garbage-collected style, where a leak report is always wrong",
+      "source": "github.com/lua/lua, tag v5.5.1, commit 7579fc9d7ed90240487251dfb69168f8e64e9294; sha256 over git archive --format=tar <commit> (whole tree)",
+      "sha256": "4ef7a99521d0d770c5424d2fd2268bd9ba4936690b10068b3b8619b7b97d495f",
+      "sizeBytes": 1904640,
+      "license": "MIT",
+      "storage": {
+        "kind": "repository",
+        "location": "https://github.com/lua/lua"
+      }
+    }
+  ]
+}
