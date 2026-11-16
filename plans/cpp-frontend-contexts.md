@@ -5,7 +5,7 @@
 | Epic | https://github.com/AppThreat/chen/issues/335 |
 | Owner | @prabhu |
 | AI use | Auto: an implementation agent writes each deliverable from the prompts in [prompts/cpp-frontend-contexts](prompts/cpp-frontend-contexts/00-RULES.md), a reviewing agent verifies, refactors and opens the pull requests, a maintainer approves |
-| Schedule | After the work in [memsafe-allocation-styles.md](memsafe-allocation-styles.md) is merged |
+| Schedule | After the C memory safety across allocation styles plan ([AppThreat/chen#328](https://github.com/AppThreat/chen/issues/328), plan in [AppThreat/.github#40](https://github.com/AppThreat/.github/pull/40)) is merged |
 | Corpus | Fixtures added by D1; real-code arms reuse leveldb and abseil-cpp from the memory-safety corpus |
 
 ## Why
