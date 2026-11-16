@@ -1,0 +1,21 @@
+project/README.md
+  s_eada3e4226639d::t_8066fde4ee52cc 26-54
+workflow-templates/project-sync.yml
+  s_eada3e4226639d::t_f73a459cfb87db 5-7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "ac8ac47c537c5e1e07e5a7df90ac1ca6f9e2d848",
+  "prompts": {},
+  "sessions": {
+    "s_eada3e4226639d": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "sess_b7b72455-6757-4ce5-80c6-486816f659d0",
+        "model": "unknown"
+      },
+      "human_author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
