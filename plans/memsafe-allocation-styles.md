@@ -72,7 +72,7 @@ The work runs as seven prompts, each covering one or two deliverables and ending
 
 ## Gates
 
-Measured on the head of each pull request, at `medium` and at `low`:
+Measured on the head of each pull request, at `medium` and at `low`, with `tools/run_gates.sh` in the corpus:
 
 - The hand-written corpus: recall and precision no lower than the D1 baseline, and no finding on a `@nofinding` line.
 - The FFmpeg arm: no fewer CVE sites reported than the baseline, and no finding at the fixed-commit sites.
@@ -88,13 +88,15 @@ Add one corpus fixture per style, each a set of `bad_*` and `good_*` functions w
 
 Add real-project precision arms at the tags the survey links to, one subtree per style: SQLite `src/` (version-3.53.4), Redis `src/` (8.10.1), nginx `src/` (release-1.31.6), pgvector `src/` against PostgreSQL `src/include` (v0.8.6, REL_18_6), QEMU `block/` and `util/` (v11.1.2), Linux `drivers/input/` (v7.2), CPython `Objects/` (v3.14.7) and Lua (v5.5.1). Record each in `memsafe-allocation-styles.corpus.json` with its repository, tag, subtree and the SHA-256 of a `git archive` of that subtree.
 
-Done when the fixtures are in the manifest the scorer reads, and the baseline for every gate above is recorded at `medium` and `low` on chen and atom `main`, with no code change.
+Done when the fixtures are in the manifest the scorer reads, and the baseline for every gate above is recorded at `medium` and `low` on the base of `feat/memsafe-alloc-styles`, with no memory-safety code change. That base is chen `main` plus the flow-summary fix in AppThreat/chen#336, without which `--with-data-deps` does not finish on the FFmpeg worktrees, and atom `main`.
 
 ### D2. Default-level false positives
 
 MS-ALLOC-006 no longer fires on a release of a pointer moved back from a parameter or from a value derived only from a parameter (`free((hdr_t *)p - 1)`, `p--; free(p)`, `free((char *)ptr - PREFIX_SIZE)`). It still fires on a release of a pointer advanced from an allocation in the same method or walked forward through it. MS-BOUND-004 treats an index `n` into a buffer allocated with `n + k`, where `k` is a positive constant, as in bounds, including when the allocation and the index are written through different but equal expressions of the same variable.
 
-Done when the probe's two correct functions are silent at every level, the matching bad variants (`free(p + 1)` on a fresh allocation, `buf[len + 1]` after `malloc(len + 1)`) are still reported, and SQLite's and Redis's free functions produce no MS-ALLOC-006 finding.
+`close()` releases every file descriptor, from `open` or `socket` alike, and `fclose` releases a `FILE *`; a mismatch between the two is still MS-ALLOC-007.
+
+Done when the probe's two correct functions are silent at every level, the descriptor mismatches are reported and the matched pairs are not, the matching bad variants (`free(p + 1)` on a fresh allocation, `buf[len + 1]` after `malloc(len + 1)`) are still reported, and SQLite's and Redis's free functions produce no MS-ALLOC-006 finding.
 
 ### D3. Destructor free summaries
 
