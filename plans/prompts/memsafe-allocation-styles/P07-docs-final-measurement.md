@@ -2,7 +2,7 @@
 
 Read [00-RULES.md](00-RULES.md) first and follow it throughout. Then read D10 and the "Gates" section of [memsafe-allocation-styles.md](../../memsafe-allocation-styles.md), and every earlier report in `~/work/memsafe-alloc-styles/reports/`.
 
-Issue: AppThreat/atom#{{D10}}. Branches: `memsafe/p07-docs` in chen and atom, from `origin/feat/memsafe-alloc-styles` after all earlier prompts are merged. Write the report to `~/work/memsafe-alloc-styles/reports/P07-report.md`.
+Issue: AppThreat/atom#414. Branches: `memsafe/p07-docs` in chen and atom, from `origin/feat/memsafe-alloc-styles` after all earlier prompts are merged. Write the report to `~/work/memsafe-alloc-styles/reports/P07-report.md`.
 
 ## Task A: documentation
 

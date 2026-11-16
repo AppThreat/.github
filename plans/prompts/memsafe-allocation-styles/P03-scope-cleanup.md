@@ -2,7 +2,7 @@
 
 Read [00-RULES.md](00-RULES.md) first and follow it throughout. Then read D4, D5 and the first two risks in [memsafe-allocation-styles.md](../../memsafe-allocation-styles.md), and the P01 and P02 reports in `~/work/memsafe-alloc-styles/reports/`.
 
-Issues: AppThreat/chen#{{D4}} (task A) and AppThreat/chen#{{D5}} (task B). Branches: `memsafe/p03-scope-cleanup` in chen and atom, from `origin/feat/memsafe-alloc-styles`, or from the P02 branches if the prompt that hands you this one says they are not merged yet. Write the report to `~/work/memsafe-alloc-styles/reports/P03-report.md`.
+Issues: AppThreat/chen#322 (task A) and AppThreat/chen#323 (task B). Branches: `memsafe/p03-scope-cleanup` in chen and atom, from `origin/feat/memsafe-alloc-styles`, or from the P02 branches if the prompt that hands you this one says they are not merged yet. Write the report to `~/work/memsafe-alloc-styles/reports/P03-report.md`.
 
 ## Background
 

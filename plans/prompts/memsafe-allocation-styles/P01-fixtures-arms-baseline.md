@@ -2,7 +2,7 @@
 
 Read [00-RULES.md](00-RULES.md) first and follow it throughout. Then read these sections of [memsafe-allocation-styles.md](../../memsafe-allocation-styles.md): "Why", "Approach", "Gates" and D1. Read `~/work/memsafe-alloc-styles/refs/allocation-styles-probe.c` and the three findings files beside it.
 
-Issue: AppThreat/chen#{{D1}}. This prompt changes no product code. It works only in `~/sandbox/memsafe-corpus` (which is not a git repository, so keep a list of every file you add or change for the report) and reads chen and atom at `origin/main`. Write the report to `~/work/memsafe-alloc-styles/reports/P01-report.md`.
+Issue: AppThreat/chen#319. This prompt changes no product code. It works only in `~/sandbox/memsafe-corpus` (which is not a git repository, so keep a list of every file you add or change for the report) and reads chen and atom at `origin/main`. Write the report to `~/work/memsafe-alloc-styles/reports/P01-report.md`.
 
 ## Task A: fixtures
 

@@ -2,7 +2,7 @@
 
 Read [00-RULES.md](00-RULES.md) first and follow it throughout. Then read D6, D7 and the third risk in [memsafe-allocation-styles.md](../../memsafe-allocation-styles.md), and the earlier reports in `~/work/memsafe-alloc-styles/reports/`.
 
-Issues: AppThreat/chen#{{D6}} (task A) and AppThreat/chen#{{D7}} (task B). Branches: `memsafe/p04-families` in chen and atom, from `origin/feat/memsafe-alloc-styles` (or the branch the prompt that hands you this one names). Write the report to `~/work/memsafe-alloc-styles/reports/P04-report.md`.
+Issues: AppThreat/chen#324 (task A) and AppThreat/chen#325 (task B). Branches: `memsafe/p04-families` in chen and atom, from `origin/feat/memsafe-alloc-styles` (or the branch the prompt that hands you this one names). Write the report to `~/work/memsafe-alloc-styles/reports/P04-report.md`.
 
 ## Task A: offset allocator families (D6)
 

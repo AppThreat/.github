@@ -2,7 +2,7 @@
 
 Read [00-RULES.md](00-RULES.md) first and follow it throughout. Then read D2 and D3 in [memsafe-allocation-styles.md](../../memsafe-allocation-styles.md), and the P01 report at `~/work/memsafe-alloc-styles/reports/P01-report.md` for the baseline and the new fixtures.
 
-Issues: AppThreat/chen#{{D2}} (task A) and AppThreat/chen#{{D3}} (task B). Branches: `memsafe/p02-false-positives` in chen and atom, from `origin/feat/memsafe-alloc-styles`. Write the report to `~/work/memsafe-alloc-styles/reports/P02-report.md`.
+Issues: AppThreat/chen#320 (task A) and AppThreat/chen#321 (task B). Branches: `memsafe/p02-false-positives` in chen and atom, from `origin/feat/memsafe-alloc-styles`. Write the report to `~/work/memsafe-alloc-styles/reports/P02-report.md`.
 
 ## Task A: the two default-level false positives (D2)
 

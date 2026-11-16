@@ -2,7 +2,7 @@
 
 | | |
 | --- | --- |
-| Epic | https://github.com/AppThreat/chen/issues/EPIC |
+| Epic | https://github.com/AppThreat/chen/issues/328 |
 | Owner | @prabhu |
 | AI use | Auto: an implementation agent writes each deliverable from the prompts in [prompts/memsafe-allocation-styles](prompts/memsafe-allocation-styles/00-RULES.md), a reviewing agent verifies, refactors and opens the pull request, a maintainer approves |
 | Corpus | `memsafe-allocation-styles.corpus.json`, added by D1 |

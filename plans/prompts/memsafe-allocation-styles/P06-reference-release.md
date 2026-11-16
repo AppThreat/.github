@@ -2,7 +2,7 @@
 
 Read [00-RULES.md](00-RULES.md) first and follow it throughout. Then read D9 and the last risk in [memsafe-allocation-styles.md](../../memsafe-allocation-styles.md), and the earlier reports in `~/work/memsafe-alloc-styles/reports/`.
 
-Issue: AppThreat/chen#{{D9}}. Branches: `memsafe/p06-refcount` in chen and atom, from `origin/feat/memsafe-alloc-styles` (or the branch the prompt that hands you this one names). Write the report to `~/work/memsafe-alloc-styles/reports/P06-report.md`.
+Issue: AppThreat/chen#327. Branches: `memsafe/p06-refcount` in chen and atom, from `origin/feat/memsafe-alloc-styles` (or the branch the prompt that hands you this one names). Write the report to `~/work/memsafe-alloc-styles/reports/P06-report.md`.
 
 ## Measure first
 
