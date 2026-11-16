@@ -2,6 +2,9 @@ name: Project sync
 
 # Keeps the AppThreat organization project in step with issues and pull requests.
 # See https://github.com/AppThreat/.github/tree/main/project
+#
+# A public repository must also allow the pull_request_target event through an
+# Actions event policy, see the section "Optional sync" in project/README.md.
 on:
   issues:
     types: [labeled, unlabeled]

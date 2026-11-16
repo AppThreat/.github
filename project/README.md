@@ -23,3 +23,32 @@ The first command only reads from GitHub.
 ## Optional sync
 
 A sync workflow handles what the built-ins cannot: the `blocked` label, Area from labels, and pull requests to non-default branches. It needs the organization secrets `PROJECT_TOKEN` and `PROJECT_NUMBER` (the number is passed as a secret because a reusable workflow input cannot read secrets), because the workflow's automatic token cannot write to an organization project. It runs from each repository through the reusable workflow in cdxgen/.github, which fetches this schema through the `schema-repository` input. See [workflow-templates/project-sync.yml](../workflow-templates/project-sync.yml).
+
+Because the workflow triggers on `pull_request_target`, a public repository also needs an Actions event policy that allows the event. GitHub now attaches a default policy to public repositories that blocks `pull_request_target` unless an Actions event policy that applies to the repository allows it, and a run the default blocks ends as a startup failure before any job starts. Create one policy per repository, scoped so that it covers only the sync workflow:
+
+```
+{
+  "name": "Allow project-sync on pull_request_target",
+  "enforcement": "active",
+  "conditions": {
+    "workflow_path": {
+      "include": [".github/workflows/project-sync.yml"],
+      "exclude": []
+    }
+  },
+  "rules": [
+    {
+      "type": "restrict_action_events",
+      "parameters": {
+        "allowed_events": ["issues", "pull_request_target", "workflow_call"]
+      }
+    }
+  ]
+}
+```
+
+```
+gh api repos/OWNER/REPO/actions/policies -X POST -H "X-GitHub-Api-Version: 2026-03-10" --input policy.json
+```
+
+The `workflow_path` condition limits the rule to the sync workflow, and it is what keeps the rest of the repository working: `allowed_events` is an allowlist for every workflow the policy covers, so a policy aimed at all workflows would block `push`, `pull_request` and every other trigger. The event list names each trigger the sync workflow uses: `issues` for the label events, `pull_request_target` for the pull request events, and `workflow_call` for the reusable workflow the starter calls. An organization owner can apply one policy to every repository at once by adding `"repository_name": {"include": ["~ALL"]}` to the conditions and calling `/orgs/OWNER/actions/policies` instead, which also covers repositories that adopt the starter later; creating it needs the `admin:org` scope. The API is described under [Actions policies](https://docs.github.com/en/rest/actions/policies).
