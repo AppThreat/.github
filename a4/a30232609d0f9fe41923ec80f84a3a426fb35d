@@ -1,0 +1,26 @@
+plans/memsafe-allocation-styles.corpus.json
+  s_f4248adf62ddd8::t_22bb8c0270630c 1-17,22-65,70-89,94-113
+  s_f4248adf62ddd8::t_f4869ed6c96c47 18-21,66-69,90-93
+plans/memsafe-allocation-styles.md
+  s_f4248adf62ddd8::t_b35fd38013f3de 75,91,97-99
+plans/prompts/memsafe-allocation-styles/00-RULES.md
+  s_f4248adf62ddd8::t_6e6b8ba4a88346 8-9,17,36-37,39,42
+plans/prompts/memsafe-allocation-styles/P02-false-positives-destroy-summaries.md
+  s_f4248adf62ddd8::t_6adcdae38ac362 3,14-15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a4a30232609d0f9fe41923ec80f84a3a426fb35d",
+  "prompts": {},
+  "sessions": {
+    "s_f4248adf62ddd8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "25bbb232-7e05-4fd5-84a8-3e20a9f11228",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
