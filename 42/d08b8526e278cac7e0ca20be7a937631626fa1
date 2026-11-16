@@ -1,0 +1,35 @@
+plans/prompts/cpp-frontend-contexts/P04-toolchains-settings.md
+  s_8a4433d1784041::t_fac1864d064c10 5
+plans/prompts/cpp-frontend-contexts/P07-cdt-workers.md
+  s_8a4433d1784041::t_fac1864d064c10 5
+plans/cpp-frontend-contexts.md
+  s_8a4433d1784041::t_fac1864d064c10 5
+plans/prompts/cpp-frontend-contexts/P02-edga-templates.md
+  s_8a4433d1784041::t_fac1864d064c10 5
+plans/prompts/cpp-frontend-contexts/P01-fixtures-baseline.md
+  s_8a4433d1784041::t_fac1864d064c10 5
+plans/prompts/cpp-frontend-contexts/P05-contexts-headers.md
+  s_8a4433d1784041::t_fac1864d064c10 5
+plans/prompts/cpp-frontend-contexts/P03-template-model.md
+  s_8a4433d1784041::t_fac1864d064c10 5
+plans/prompts/cpp-frontend-contexts/P06-all-contexts.md
+  s_8a4433d1784041::t_fac1864d064c10 5
+plans/prompts/cpp-frontend-contexts/P08-docs-final-measurement.md
+  s_8a4433d1784041::t_fac1864d064c10 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "42d08b8526e278cac7e0ca20be7a937631626fa1",
+  "prompts": {},
+  "sessions": {
+    "s_8a4433d1784041": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5ef82bff-b756-4a5d-8551-a808005aa216",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
