@@ -2,7 +2,7 @@
 
 Read [00-RULES.md](00-RULES.md) first and follow it throughout. Then read D8, D9 and the risks in [cpp-frontend-contexts.md](../../cpp-frontend-contexts.md), and the P01 and P04 reports in `~/work/cpp-frontend-contexts/reports/`.
 
-Issues: {D8} (task A) and {D9} (task B). Branches: `cfc/p05-contexts` in chen and atom, from `origin/feat/cpp-frontend-contexts`, or from the P04 branches if they are not merged yet (D8 writes its duplicate records into the report section P04 added).
+Issues: AppThreat/chen#332 (task A) and AppThreat/chen#333 (task B). Branches: `cfc/p05-contexts` in chen and atom, from `origin/feat/cpp-frontend-contexts`, or from the P04 branches if they are not merged yet (D8 writes its duplicate records into the report section P04 added).
 
 ## Background
 

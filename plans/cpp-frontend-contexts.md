@@ -2,7 +2,7 @@
 
 | | |
 | --- | --- |
-| Epic | EPIC_URL |
+| Epic | https://github.com/AppThreat/chen/issues/335 |
 | Owner | @prabhu |
 | AI use | Auto: an implementation agent writes each deliverable from the prompts in [prompts/cpp-frontend-contexts](prompts/cpp-frontend-contexts/00-RULES.md), a reviewing agent verifies, refactors and opens the pull requests, a maintainer approves |
 | Schedule | After the work in [memsafe-allocation-styles.md](memsafe-allocation-styles.md) is merged |

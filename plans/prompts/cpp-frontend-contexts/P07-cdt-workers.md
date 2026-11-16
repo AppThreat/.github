@@ -2,7 +2,7 @@
 
 Read [00-RULES.md](00-RULES.md) first and follow it throughout. Then read D11 and the worker-overhead risk in [cpp-frontend-contexts.md](../../cpp-frontend-contexts.md), and the P01 report in `~/work/cpp-frontend-contexts/reports/`. This prompt does not depend on P02 to P06.
 
-Issue: {D11}. Branches: `cfc/p07-cdt-workers` in chen and atom, from `origin/feat/cpp-frontend-contexts`.
+Issue: AppThreat/chen#334. Branches: `cfc/p07-cdt-workers` in chen and atom, from `origin/feat/cpp-frontend-contexts`.
 
 ## Background
 

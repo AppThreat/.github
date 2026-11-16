@@ -2,7 +2,7 @@
 
 Read [00-RULES.md](00-RULES.md) first and follow it throughout. Then read D12 and the whole of [cpp-frontend-contexts.md](../../cpp-frontend-contexts.md), and every report in `~/work/cpp-frontend-contexts/reports/`.
 
-Issue: {D12}. Branches: `cfc/p08-docs` in edga, chen and atom, from `origin/feat/cpp-frontend-contexts` after P02 to P07 are merged into it. If any is not merged, stop and say which.
+Issue: AppThreat/atom#418. Branches: `cfc/p08-docs` in edga, chen and atom, from `origin/feat/cpp-frontend-contexts` after P02 to P07 are merged into it. If any is not merged, stop and say which.
 
 ## Task A: documentation
 

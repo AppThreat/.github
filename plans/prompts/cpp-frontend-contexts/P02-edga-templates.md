@@ -2,7 +2,7 @@
 
 Read [00-RULES.md](00-RULES.md) first and follow it throughout. Then read D2, D3 and the first two risks in [cpp-frontend-contexts.md](../../cpp-frontend-contexts.md), and the P01 report in `~/work/cpp-frontend-contexts/reports/`.
 
-Issues: {D2} (task A) and {D3} (task B). Branch: `cfc/p02-edga-templates` in edga, from `origin/feat/cpp-frontend-contexts`, or from the P01 branch if the prompt that hands you this one says it is not merged yet. Write the report to `~/work/cpp-frontend-contexts/reports/P02-report.md`.
+Issues: AppThreat/edga#14 (task A) and AppThreat/edga#15 (task B). Branch: `cfc/p02-edga-templates` in edga, from `origin/feat/cpp-frontend-contexts`, or from the P01 branch if the prompt that hands you this one says it is not merged yet. Write the report to `~/work/cpp-frontend-contexts/reports/P02-report.md`.
 
 ## Background
 

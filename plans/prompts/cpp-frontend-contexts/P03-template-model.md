@@ -2,7 +2,7 @@
 
 Read [00-RULES.md](00-RULES.md) first and follow it throughout. Then read the Approach section, D4, D5 and the risks in [cpp-frontend-contexts.md](../../cpp-frontend-contexts.md), and the P01 and P02 reports in `~/work/cpp-frontend-contexts/reports/`.
 
-Issues: {D4} (task A) and {D5} (task B). Branches: `cfc/p03-template-model` in chen and atom, from `origin/feat/cpp-frontend-contexts`, or from the P01 branches if the prompt that hands you this one says P01 is not merged yet. Build edga from the P02 branch (or `feat/cpp-frontend-contexts` once it is merged) and name its commit in the report.
+Issues: AppThreat/chen#330 (task A) and AppThreat/atom#415 (task B). Branches: `cfc/p03-template-model` in chen and atom, from `origin/feat/cpp-frontend-contexts`, or from the P01 branches if the prompt that hands you this one says P01 is not merged yet. Build edga from the P02 branch (or `feat/cpp-frontend-contexts` once it is merged) and name its commit in the report.
 
 ## Background
 

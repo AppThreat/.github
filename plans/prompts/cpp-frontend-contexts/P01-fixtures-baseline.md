@@ -2,7 +2,7 @@
 
 Read [00-RULES.md](00-RULES.md) first and follow it throughout. Then read the whole of [cpp-frontend-contexts.md](../../cpp-frontend-contexts.md), with D1 in detail, and the probes in `~/work/cpp-frontend-contexts/refs/`.
 
-Issue: {D1}. Branches: `cfc/p01-fixtures` in chen and edga, from `origin/feat/cpp-frontend-contexts`. Write the report to `~/work/cpp-frontend-contexts/reports/P01-report.md`.
+Issue: AppThreat/chen#329. Branches: `cfc/p01-fixtures` in chen and edga, from `origin/feat/cpp-frontend-contexts`. Write the report to `~/work/cpp-frontend-contexts/reports/P01-report.md`.
 
 This prompt changes no product code. It adds fixtures and the tests that read them, and records the baseline every later prompt is compared with.
 

@@ -2,7 +2,7 @@
 
 Read [00-RULES.md](00-RULES.md) first and follow it throughout. Then read D6, D7 and the vendor-table risk in [cpp-frontend-contexts.md](../../cpp-frontend-contexts.md), and the P01 report in `~/work/cpp-frontend-contexts/reports/`. This prompt does not depend on P02 or P03.
 
-Issues: {D6} (task A) and {D7} (task B). Branches: `cfc/p04-toolchains` in chen and atom, from `origin/feat/cpp-frontend-contexts`, or from the P01 branches if they are not merged yet.
+Issues: AppThreat/chen#331 (task A) and AppThreat/atom#416 (task B). Branches: `cfc/p04-toolchains` in chen and atom, from `origin/feat/cpp-frontend-contexts`, or from the P01 branches if they are not merged yet.
 
 ## Background
 

@@ -2,7 +2,7 @@
 
 Read [00-RULES.md](00-RULES.md) first and follow it throughout. Then read D10 and the name-stability and graph-growth risks in [cpp-frontend-contexts.md](../../cpp-frontend-contexts.md), and the P01 and P05 reports in `~/work/cpp-frontend-contexts/reports/`.
 
-Issue: {D10}. Branches: `cfc/p06-all-contexts` in chen and atom, from `origin/feat/cpp-frontend-contexts`, or from the P05 branches if they are not merged yet.
+Issue: AppThreat/atom#417. Branches: `cfc/p06-all-contexts` in chen and atom, from `origin/feat/cpp-frontend-contexts`, or from the P05 branches if they are not merged yet.
 
 ## Background
 
