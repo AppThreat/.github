@@ -1,5 +1,7 @@
 # P03: scope cleanup in c2cpg and in the allocation-state rules
 
+Load the "skill: dynamic workflow" skill (zcode's `dynamic-workflows`) and run this prompt with its `CreateWorkflow` tool, as `00-RULES.md` "Work as a workflow" describes; do not use the `Agent` tool for the pieces.
+
 Read [00-RULES.md](00-RULES.md) first and follow it throughout. Then read D4, D5 and the first two risks in [memsafe-allocation-styles.md](../../memsafe-allocation-styles.md), and the P01 and P02 reports in `~/work/memsafe-alloc-styles/reports/`.
 
 Issues: AppThreat/chen#322 (task A) and AppThreat/chen#323 (task B). Branches: `memsafe/p03-scope-cleanup` in chen and atom, from `origin/feat/memsafe-alloc-styles`, or from the P02 branches if the prompt that hands you this one says they are not merged yet. Write the report to `~/work/memsafe-alloc-styles/reports/P03-report.md`.

@@ -58,7 +58,7 @@ Every deliverable follows the rules the first memory-safety release learned the 
 
 ## Prompts
 
-The work runs as seven prompts, each covering one or two deliverables and ending in one pull request per repository into `feat/memsafe-alloc-styles` in chen and atom. One pull request per repository then takes the branch to `main`.
+The work runs as seven prompts, each covering one or two deliverables and ending in one pull request per repository into `feat/memsafe-alloc-styles` in chen and atom. One pull request per repository then takes the branch to `main`. Each prompt runs as a zcode workflow: a GLM-5.3 lead plans and decides, GLM-5.3-Flash workers implement bounded pieces, and fresh Flash reviewers check each piece before the lead merges it (`00-RULES.md`, "Work as a workflow").
 
 | Prompt | Deliverables |
 | --- | --- |

@@ -16,7 +16,7 @@ These prompts drive an implementation agent through [memsafe-allocation-styles.m
 1. Before starting, run `git fetch origin` in each repository the prompt touches and check that the working tree is clean. If the task branch already exists, inspect it with `git status` and `git log` and continue it; do not start over.
 2. Create task branches from `origin/feat/memsafe-alloc-styles` in chen and atom (the chen branch carries the flow-summary fix that the FFmpeg gate needs), using the branch names the prompt gives. When a prompt follows another whose branches have not been merged yet, the prompt names the branch to start from instead.
 3. Commit in small, reviewable steps. Each commit compiles.
-4. **Never push, never create or delete remote branches, never open pull requests, never comment on GitHub.**
+4. **Never push, never create or delete remote branches, never open pull requests, never comment on GitHub.** Worker branches and worktrees (see "Work as a workflow") are local only.
 5. **Never rewrite `main` or `feat/memsafe-alloc-styles`, never `git reset --hard` a branch you did not create in this prompt, and never run `git stash`.**
 
 ## Commit messages, code comments and docs
@@ -29,7 +29,7 @@ These prompts drive an implementation agent through [memsafe-allocation-styles.m
 
 ## How to work
 
-- **Iterate fast.** Write the C fixture for the case first, then run the single test suite that covers it, for example `sbt "c2cpg/testOnly io.appthreat.c2cpg.passes.AllocationStatePassTests"` in chen, with a timeout. Run `atom memory-safety` on one small directory, not on a whole project, while developing. Do not run benchmarks and do not time anything.
+- **Iterate fast.** Write the C fixture for the case first, then run the single test suite that covers it, for example `sbt "c2cpg/testOnly io.appthreat.c2cpg.passes.AllocationStatePassTests"` in chen, with a timeout. Run `atom memory-safety` on one small directory, not on a whole project, while developing; in a workflow only the lead does that, because it needs `publishLocal`, and a worker checks its piece with chen's suites. Do not run benchmarks and do not time anything.
 - **Negative control first.** For every new behaviour, write the correct-C look-alike before the detector: the style's own correct idiom, plus a loop, a `goto` error path, static storage and a freep wrapper where they apply. A finding on a correct function is a failure, whatever the recall gain.
 - **Evidence, never names.** Summaries come from declared attributes, inferred bodies, the built-in inventory or a declared profile. Do not add any decision based on a function's name; the existing name heuristic in `MemorySemanticsPass` stays limited to `low` findings.
 - **End to end.** Every rule change gets a test in atom's `MemorySafetyCommandTests` that runs the command and reads the rendered finding (rule, line, confidence). A tag assertion in chen alone does not count, because earlier work computed facts that the renderer then dropped.
@@ -43,6 +43,37 @@ These prompts drive an implementation agent through [memsafe-allocation-styles.m
 - **Tests check behaviour.** Do not record your own output as the expected value unless you checked every field by hand; list any such test under "Recorded expectations". Fixtures contain no local paths, usernames or hostnames.
 - **No silent clean results.** A front-end failure, a timeout or a skipped file is reported with its reason, never as zero findings.
 - **Stop when the prompt's tasks are done.** Do not start the next prompt.
+
+## Work as a workflow
+
+Run each prompt as a zcode workflow: you, the GLM-5.3 lead, read, plan and decide; GLM-5.3-Flash agents implement bounded pieces; other Flash agents review them. The reviewer on the other side should receive work that has already been through that loop.
+
+**Use the "skill: dynamic workflow" skill.** Load zcode's bundled `dynamic-workflows` skill (listed as "skill: dynamic workflow") before anything else, and run the workers and reviewers through a script submitted with its `CreateWorkflow` tool. Do not use the `Agent` tool, the legacy `Workflow` tool or `/expert` for the pieces. Pass `subagent_model: "GLM-5.3-Flash"` (or `agent(name, { model: "GLM-5.3-Flash" })` per subagent); the lead stays on GLM-5.3. Follow the skill's rules: one named subagent per piece and a separate fresh reviewer per piece, typed results, `world.run` for the checks a command decides (the piece's `sbt testOnly` suite, `clang -fsyntax-only` on a fixture), and holes where a later phase depends on what an earlier one finds. If `CreateWorkflow` refuses or is not available, stop and put that under "Questions" instead of falling back to `Agent`.
+
+**The lead keeps the judgment.** Before starting any worker, read the prompt, the plan's deliverables, the earlier reports and the code the prompt names, and write the split into `~/work/memsafe-alloc-styles/reports/P<nn>-plan.md`: each piece, the files it owns, the decisions it must follow, its negative controls, and the test that shows it is done. Settle every decision the prompt leaves open yourself, in that file, before a worker sees it. Workers implement decisions; they do not make them. Quote the decisions that matter most word for word in every worker's brief, in particular "evidence, never names", "negative control first" and the confidence each new finding must carry.
+
+**Pieces follow file ownership.** Each worker gets its own git worktree of chen (and of atom, if the piece adds an atom test) on a local branch cut from the task branch (`<task-branch>-<piece>`), and owns the files listed for it; two workers never edit the same file. The overlay's rules share large files (`MemorySafetyFindingPass.scala` holds most of them), so two rule changes in one file are one piece, or two pieces that run one after the other on the same branch. Good Flash pieces: one rule or one pass change with its tests, one inventory change with its tests, one corpus fixture, one atom end-to-end test. A worker commits on its own branch and runs only its piece's `sbt testOnly` suite, in its own worktree. Run at most three sbt-heavy workers at a time: each sbt server takes several GB.
+
+**Shared state belongs to the lead.** Three things are shared across worktrees, and only the lead touches them:
+
+- `~/.ivy2/local` (`sbt publishLocal`), and therefore atom's `sbt stage` and every atom test that needs the new chen code. A worker that needs an atom end-to-end test writes it; the lead runs it after merging.
+- The corpus at `~/sandbox/memsafe-corpus`, which is not a git repository. A worker may write a new fixture under a name the plan file assigns it; only the lead edits existing corpus files, regenerates `manifests/expected.json` and runs the gates.
+- The gates (`tools/run_gates.sh`) and the arm runs, which take every core.
+
+**Review before merging, by a different agent.** For each piece, start a fresh Flash reviewer that did not write it. Give it the diff, the plan file's decisions for the piece and this checklist, not the author's summary:
+
+- Does the code do what each decision says, including the cases the decision exists for (a NULL-guarded free, a free on some paths only, a flag-gated free, a loop, a `goto` error path)?
+- Is every new behaviour backed by a negative control that a wrong implementation would fail? Is any decision based on a function's name?
+- Does every new test fail on the code before the change? The reviewer checks this by running the test against the parent commit.
+- Does any test assert a behaviour the plan forbids, or record the author's own output as the expected value without the fields being checked by hand?
+- Are fixtures correct C apart from the seeded defect, and do comments, commit messages and test names follow the writing rules above (no process references, no first person)?
+- Is every claim in the piece's notes true? Look for the test or command it names.
+
+The author fixes what the reviewer finds; if they disagree, the lead decides and records it under "Decisions".
+
+**The lead finishes.** The lead merges the pieces into the task branch and resolves anything between them, then runs `sbt publishLocal` in chen, `sbt stage` in atom, the atom end-to-end tests, `sbt scalafmtAll` on the changed files, and the gates, once each, on the merged head. Before writing the report, the lead runs one more fresh Flash reviewer over the whole branch diff against `origin/feat/memsafe-alloc-styles` with the same checklist, and fixes what it finds. The lead reads every arm finding the change adds, writes the report, and checks every sentence in it; a worker's claim goes in only after the lead has seen the evidence.
+
+Keep the workflow small when the prompt is: a prompt with one change needs one worker and one reviewer. Delete the worker worktrees and their branches when the pieces are merged.
 
 ## When something is unclear
 
@@ -60,5 +91,6 @@ Write the report with these sections:
 6. **Not done:** each part not done, with the reason.
 7. **Decisions** and 8. **Questions.**
 9. **Recorded expectations.**
+10. **Workflow:** the workflow run name and the script file under `.zcode/workflow-drafts/`, the model each subagent ran on, the pieces, the subagent that did each, what each review found and what was fixed.
 
 Be exact. "All tests pass" needs the command and the count. If you did not run something, say so.

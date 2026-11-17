@@ -1,5 +1,7 @@
 # P04: offset allocator families and declared library profiles
 
+Load the "skill: dynamic workflow" skill (zcode's `dynamic-workflows`) and run this prompt with its `CreateWorkflow` tool, as `00-RULES.md` "Work as a workflow" describes; do not use the `Agent` tool for the pieces.
+
 Read [00-RULES.md](00-RULES.md) first and follow it throughout. Then read D6, D7 and the third risk in [memsafe-allocation-styles.md](../../memsafe-allocation-styles.md), and the earlier reports in `~/work/memsafe-alloc-styles/reports/`.
 
 Issues: AppThreat/chen#324 (task A) and AppThreat/chen#325 (task B). Branches: `memsafe/p04-families` in chen and atom, from `origin/feat/memsafe-alloc-styles` (or the branch the prompt that hands you this one names). Write the report to `~/work/memsafe-alloc-styles/reports/P04-report.md`.
