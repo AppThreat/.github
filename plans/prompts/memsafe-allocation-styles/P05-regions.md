@@ -1,5 +1,7 @@
 # P05: region semantics
 
+Load the "skill: dynamic workflow" skill (zcode's `dynamic-workflows`) and run this prompt with its `CreateWorkflow` tool, as `00-RULES.md` "Work as a workflow" describes; do not use the `Agent` tool for the pieces.
+
 Read [00-RULES.md](00-RULES.md) first and follow it throughout. Then read D8 in [memsafe-allocation-styles.md](../../memsafe-allocation-styles.md) and the earlier reports in `~/work/memsafe-alloc-styles/reports/`, P04 in particular for the profile format and the `region` role.
 
 Issue: AppThreat/chen#326. Branches: `memsafe/p05-regions` in chen and atom, from `origin/feat/memsafe-alloc-styles` (or the branch the prompt that hands you this one names). Write the report to `~/work/memsafe-alloc-styles/reports/P05-report.md`.

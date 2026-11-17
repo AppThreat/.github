@@ -1,8 +1,21 @@
 # P02: default-level false positives and destroy-function summaries
 
+Load the "skill: dynamic workflow" skill (zcode's `dynamic-workflows`) and run this prompt with its `CreateWorkflow` tool, as `00-RULES.md` "Work as a workflow" describes; do not use the `Agent` tool for the pieces.
+
 Read [00-RULES.md](00-RULES.md) first and follow it throughout. Then read D2 and D3 in [memsafe-allocation-styles.md](../../memsafe-allocation-styles.md), the P01 report at `~/work/memsafe-alloc-styles/reports/P01-report.md` for the new fixtures, and `~/work/memsafe-alloc-styles/reports/P01-baseline.md` for the baseline and the arm findings read by hand.
 
 Issues: AppThreat/chen#320 (task A) and AppThreat/chen#321 (task B). Branches: `memsafe/p02-false-positives` in chen and atom, from `origin/feat/memsafe-alloc-styles`. Write the report to `~/work/memsafe-alloc-styles/reports/P02-report.md`.
+
+## Pieces
+
+A split that respects file ownership, for the lead to confirm or change in `P02-plan.md` after reading the code:
+
+1. Task A items 1 and 2 (MS-ALLOC-006 and MS-BOUND-004). Both rules are in `MemorySafetyFindingPass.scala`, so they are one piece, or two that run one after the other on the same branch.
+2. Task A item 3 (descriptor families): `memory-apis.json`, the inventory's tests and new fixtures. Check first whether any Scala code names the `file` or `socket` family; if it does, that file belongs to this piece too.
+3. Task B (destroy-function summaries): `AllocationStatePass.scala` and `MemorySemanticsPass.scala` with their tests.
+4. The atom end-to-end tests for all three, in atom's `MemorySafetyCommandTests`, written by one worker after the others are merged and run by the lead after `publishLocal`.
+
+The corpus fixtures this prompt needs are new files; the plan file names them and assigns each to one piece.
 
 ## Task A: the two default-level false positives (D2)
 

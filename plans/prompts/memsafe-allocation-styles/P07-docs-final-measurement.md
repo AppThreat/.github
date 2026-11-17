@@ -1,5 +1,7 @@
 # P07: documentation and final measurement
 
+Load the "skill: dynamic workflow" skill (zcode's `dynamic-workflows`) and run this prompt with its `CreateWorkflow` tool, as `00-RULES.md` "Work as a workflow" describes; do not use the `Agent` tool for the pieces.
+
 Read [00-RULES.md](00-RULES.md) first and follow it throughout. Then read D10 and the "Gates" section of [memsafe-allocation-styles.md](../../memsafe-allocation-styles.md), and every earlier report in `~/work/memsafe-alloc-styles/reports/`.
 
 Issue: AppThreat/atom#414. Branches: `memsafe/p07-docs` in chen and atom, from `origin/feat/memsafe-alloc-styles` after all earlier prompts are merged. Write the report to `~/work/memsafe-alloc-styles/reports/P07-report.md`.
