@@ -58,17 +58,12 @@ Every deliverable follows the rules the first memory-safety release learned the 
 
 ## Prompts
 
-The work runs as seven prompts, each covering one or two deliverables and ending in one pull request per repository into `feat/memsafe-alloc-styles` in chen and atom. One pull request per repository then takes the branch to `main`. Each prompt runs as a zcode workflow: a GLM-5.3 lead plans and decides, GLM-5.3-Flash workers implement bounded pieces, and fresh Flash reviewers check each piece before the lead merges it (`00-RULES.md`, "Work as a workflow").
+P01 delivered D1 in its own session. The rest of the plan, D2 to D10, runs as one prompt in one session, so that one review and one pull request per repository take it to `main`. The prompt runs as zcode workflows: a GLM-5.3 lead plans, decides, merges and runs the shared steps, and each piece is written by a GLM-5.3-Flash developer and checked by a separate GLM-5.3-Flash reviewer before the lead merges it (`00-RULES.md`, "Work as a workflow"). The core passes are three files, so most pieces run one after another; the inventory, the front ends and atom run beside them.
 
 | Prompt | Deliverables |
 | --- | --- |
 | [P01](prompts/memsafe-allocation-styles/P01-fixtures-arms-baseline.md) | D1 |
-| [P02](prompts/memsafe-allocation-styles/P02-false-positives-destroy-summaries.md) | D2, D3 |
-| [P03](prompts/memsafe-allocation-styles/P03-scope-cleanup.md) | D4, D5 |
-| [P04](prompts/memsafe-allocation-styles/P04-families-profiles.md) | D6, D7 |
-| [P05](prompts/memsafe-allocation-styles/P05-regions.md) | D8 |
-| [P06](prompts/memsafe-allocation-styles/P06-reference-release.md) | D9 |
-| [P07](prompts/memsafe-allocation-styles/P07-docs-final-measurement.md) | D10 |
+| [P02](prompts/memsafe-allocation-styles/P02-allocation-styles.md) | D2 to D10 |
 
 ## Gates
 
