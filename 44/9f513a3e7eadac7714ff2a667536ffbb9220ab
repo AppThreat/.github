@@ -1,0 +1,24 @@
+plans/prompts/memsafe-allocation-styles/P02-allocation-styles.md
+  s_f4248adf62ddd8::t_a57c71444be664 1-144
+plans/prompts/memsafe-allocation-styles/00-RULES.md
+  s_f4248adf62ddd8::t_620017c91d9a78 19,32,55-57,61-62,76,78
+  s_f4248adf62ddd8::t_349f92b04bd4f6 17,20,39,49,51,53,65,74,96-97
+plans/memsafe-allocation-styles.md
+  s_f4248adf62ddd8::t_f0850ea9805e39 61,66
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "449f513a3e7eadac7714ff2a667536ffbb9220ab",
+  "prompts": {},
+  "sessions": {
+    "s_f4248adf62ddd8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "25bbb232-7e05-4fd5-84a8-3e20a9f11228",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Prabhu Subramanian <prabhu@appthreat.com>"
+    }
+  }
+}
